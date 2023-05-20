@@ -14,7 +14,10 @@ const Wrapper = styled.main`
   grid-area: content;
   width: 100%;
   height: 100%;
-  background-color: #c7719e;
+  border-radius: 10px 0 0;
+  overflow: hidden;
+  background-image: url(assets/images/cloud-background.jpeg);
+  /* background-color: #b59aa7; */
 `;
 
 export default Content;

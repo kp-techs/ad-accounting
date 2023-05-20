@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-function Consultes() {
+function Configuration() {
   return (
     <Wrapper>
-      <h1>Consultes</h1>
+      <h1>Página para configuraciones</h1>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   box-sizing: border-box;
   display: grid;
   margin: 20px;
@@ -17,4 +17,4 @@ const Wrapper = styled.div`
   background-color: white;
 `;
 
-export default Consultes;
+export default Configuration;
