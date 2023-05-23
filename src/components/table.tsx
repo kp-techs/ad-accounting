@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useTable } from "react-table";
-import useRows from "../pages/incomes/components/incomesRows";
-import useColumns from "../pages/incomes/components/incomesColumns";
+import useRows from "../pages/incomes/components/rows";
+import useColumns from "../pages/incomes/components/columns";
 
 function Table() {
   const data = useRows();
@@ -27,7 +27,6 @@ function Table() {
         <tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
-            console.log({ row });
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {

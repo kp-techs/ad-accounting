@@ -11,7 +11,7 @@ export const incomeTypes = [
   { id: "i9", name: "Ministerio de Misiones" },
   { id: "i10", name: "Ministerio de Música" },
   { id: "i11", name: "Colegio Evagelico Emmanuel" },
-  { id: "i12", name: "Actividades o eventos" },
+  { id: "i12", name: "Evento" },
   { id: "i13", name: "Actividades Misioneras" },
   { id: "i14", name: "Dorcas" },
 ];
