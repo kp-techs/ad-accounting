@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-function Logging() {
+function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = (e: any) => {
@@ -27,4 +27,4 @@ const Wrapper = styled.div`
   border: 1px solid black;
 `;
 
-export default Logging;
+export default Login;

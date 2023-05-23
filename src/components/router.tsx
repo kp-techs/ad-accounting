@@ -3,7 +3,7 @@ import Incomes from "../pages/incomes";
 import Outgoings from "../pages/outgoings";
 import ErrorPage from "../pages/error";
 import App from "../App";
-import Logging from "../pages/logging";
+import Login from "../pages/login";
 import Home from "../pages/home";
 import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/login", element: <Logging /> },
+  { path: "/login", element: <Login /> },
 ]);
 
 function Router() {
