@@ -1,20 +1,10 @@
 import { useMemo } from "react";
 import { Column } from "react-table";
-
-interface Data {
-  reference: string;
-  date: string;
-  concept: string;
-  amount: number;
-}
+import { Income } from "../../../types/models";
 
 function useColumns() {
-  const columns = useMemo<Column<Data>[]>(
+  const columns = useMemo<Column<Income>[]>(
     () => [
-      {
-        Header: "Referencia",
-        accessor: "reference",
-      },
       {
         Header: "Fecha",
         accessor: "date",

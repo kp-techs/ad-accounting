@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import Table from "../../components/table";
+import Table from "./components/table";
 import React from "react";
 import IncomesModal from "./components/incomeModal";
+import { useSupabase } from "../../hooks/useSupabase";
 
 function Incomes() {
   const [isModalOpen, setIsOpen] = React.useState(false);
+  const { supabase } = useSupabase();
+
+  console.log(supabase);
 
   function toggleModal() {
     setIsOpen(!isModalOpen);

@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import styled from "styled-components";
 import React, { FC } from "react";
 import { Formik, Field, Form, FormikProps } from "formik";
-import { incomeTypes } from "./incomesTypes";
+import { incomeTypes } from "../utils/incomesTypes";
 import SwitchButton from "../../../components/switchButton";
 
 const initialValues = {

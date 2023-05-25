@@ -1,15 +1,31 @@
 import styled from "styled-components";
 import { useTable } from "react-table";
-import useRows from "../pages/incomes/components/rows";
-import useColumns from "../pages/incomes/components/columns";
+// import useRows from "../utils/rows";
+import useColumns from "../const/columns";
+import { useEffect, useState } from "react";
+import { Income } from "../../../types/models";
+import { useSupabase } from "../../../hooks/useSupabase";
 
 function Table() {
-  const data = useRows();
+  const [incomesRow, setIncomes] = useState<Income[]>([]);
+  const { supabase } = useSupabase();
+
+  useEffect(() => {
+    fetchIncomes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function fetchIncomes() {
+    const { data } = await supabase.from("incomes").select();
+    setIncomes(data || []);
+  }
+
+  // const data = useRows();
   const columns = useColumns();
 
-  const table = useTable({ columns, data });
+  const table = useTable<Income>({ columns, data: incomesRow });
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
     table;
 
   return (
@@ -25,11 +41,11 @@ function Table() {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
+          {rows.map((income) => {
+            prepareRow(income);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
+              <tr {...income.getRowProps()}>
+                {income.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );

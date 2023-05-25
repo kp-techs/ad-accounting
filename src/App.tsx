@@ -1,6 +1,6 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import { Outlet } from "react-router-dom";
 import Aside from "./components/aside";
 import Content from "./components/content";
 import Header from "./components/header";
@@ -9,7 +9,6 @@ function App() {
   return (
     <>
       <GlobalStyles />
-
       <Wrapper>
         <Header />
         <Aside />
