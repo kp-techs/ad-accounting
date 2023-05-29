@@ -11,7 +11,7 @@ function useColumns() {
       },
       {
         Header: "Concepto",
-        accessor: "concept",
+        accessor: "type",
       },
       {
         Header: "Monto",

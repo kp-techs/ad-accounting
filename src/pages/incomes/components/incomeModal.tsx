@@ -1,28 +1,24 @@
 import Modal from "react-modal";
 import styled from "styled-components";
 import React, { FC } from "react";
-import { Formik, Field, Form, FormikProps } from "formik";
-import { incomeTypes } from "../utils/incomesTypes";
+import { Formik, Field, Form } from "formik";
 import SwitchButton from "../../../components/switchButton";
+import { useSupabase } from "../../../hooks/useSupabase";
+import { CreateIncome, IncomeType } from "../../../types/models";
+import useAppData from "../../../hooks/useAppData";
 
-const initialValues = {
-  incomeType: "",
+const initialIncome: CreateIncome = {
   date: "",
-  amount: "",
+  amount: 0,
+  createdBy: "",
+  createdDate: null,
+  updatedBy: "",
+  updatedDate: null,
   comment: "",
-  diezmante: "",
+  type: "",
+  tithingID: null,
+  ministryID: null,
   eventName: "",
-  ministeryName: "",
-};
-
-type Income = {
-  incomeType: string;
-  date: string;
-  amount: string;
-  comment: string;
-  diezmante: string;
-  eventName: string;
-  ministeryName: string;
 };
 
 type Props = {
@@ -42,7 +38,20 @@ const customStyles = {
 };
 
 const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
+  const { loadIncomes } = useAppData();
   const [on, setOn] = React.useState(false);
+  const [types, setTypes] = React.useState<IncomeType[]>([]);
+  const { supabase } = useSupabase();
+
+  React.useEffect(() => {
+    fetchIncomeTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function fetchIncomeTypes() {
+    const { data } = await supabase.from("incomeType").select(`*`);
+    setTypes(data || []);
+  }
 
   return (
     <Modal
@@ -50,52 +59,63 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
       // onAfterOpen={afterOpenModal}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Experimentacion con React Modal"
+      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
         <Formik
-          initialValues={initialValues}
-          onSubmit={async (values) => {
-            await new Promise((resolve) => setTimeout(resolve, 500));
-            alert(JSON.stringify(values, null, 2));
+          initialValues={initialIncome}
+          onSubmit={async (values, { resetForm }) => {
+            await supabase
+              .from("incomes")
+              .insert([values as any])
+              .single();
+            resetForm();
+            loadIncomes();
           }}
         >
-          {({ values }: FormikProps<Income>) => (
+          {({ values }) => (
             <Form>
               <div className="selectType-container">
                 <label htmlFor="selectIncomeType">Concepto</label>
-                <Field id="selectIncomeType" as="select" name="incomeType">
-                  {incomeTypes.map((type) => (
-                    <option key={type.id} value={type.name}>
-                      {type.name}
+                <Field id="selectIncomeType" as="select" name="type">
+                  <option>Seleccionar</option>
+                  {types.map(({ type }, i) => (
+                    <option key={`${i}`} value={type}>
+                      {type}
                     </option>
                   ))}
                 </Field>
               </div>
               <section></section>
-              {values.incomeType === "Diezmos" ? (
+              {values.type === "Diezmos" ? (
                 <section className="field-line">
                   <label htmlFor="diezmante-nombre">Diezmante</label>
-                  <Field id="diezmante-name" type="text" name="diezmante" />
+                  <Field
+                    id="diezmante-name"
+                    type="text"
+                    name="tithing"
+                    placeholder="Jocelin Sanchez"
+                  />
                 </section>
-              ) : values.incomeType === "Evento" ? (
+              ) : values.type === "Evento" ? (
                 <section
                   id="typeEventFields-container"
                   className="fields-container field-line"
                 >
                   <div>
                     <label htmlFor="event-name">Nombre</label>
-                    <Field id="event-name" type="text" name="eventName" />
+                    <Field
+                      id="event-name"
+                      type="text"
+                      name="eventName"
+                      placeholder="Congreso Estruendo"
+                    />
                   </div>
                   <div>
                     {/* aqui ira un tipo de input que sugerira 
                      de los que tiene, y sino hay lo agrega */}
                     <label htmlFor="event-name">Ministerio</label>
-                    <Field
-                      id="ministery-name"
-                      type="text"
-                      name="ministeryName"
-                    />
+                    <Field id="ministery-name" type="text" name="ministryID" />
                   </div>
                 </section>
               ) : null}
@@ -117,7 +137,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
               </div>
 
               <div className="foo-modal">
-                {values.incomeType === "Diezmos" ? (
+                {values.type === "Diezmos" ? (
                   <div className="toggle">
                     <SwitchButton on={on} onClick={() => setOn(!on)} />
 

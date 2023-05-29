@@ -1,29 +1,20 @@
 import styled from "styled-components";
 import { useTable } from "react-table";
-// import useRows from "../utils/rows";
 import useColumns from "../const/columns";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Income } from "../../../types/models";
-import { useSupabase } from "../../../hooks/useSupabase";
+import useAppData from "../../../hooks/useAppData";
 
 function Table() {
-  const [incomesRow, setIncomes] = useState<Income[]>([]);
-  const { supabase } = useSupabase();
+  const { incomes, loadIncomes } = useAppData();
 
   useEffect(() => {
-    fetchIncomes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    loadIncomes();
+  }, [loadIncomes]);
 
-  async function fetchIncomes() {
-    const { data } = await supabase.from("incomes").select();
-    setIncomes(data || []);
-  }
-
-  // const data = useRows();
   const columns = useColumns();
 
-  const table = useTable<Income>({ columns, data: incomesRow });
+  const table = useTable<Income>({ columns, data: incomes });
 
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
     table;
@@ -86,4 +77,5 @@ const Wrapper = styled.section`
     background-color: #ddd;
   }
 `;
+
 export default Table;

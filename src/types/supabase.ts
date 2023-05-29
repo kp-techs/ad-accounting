@@ -9,73 +9,73 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      eventIncome: {
-        Row: {
-          id: number
-          incomesID: number
-          ministry: string
-          nameEvent: string
-        }
-        Insert: {
-          id?: number
-          incomesID: number
-          ministry: string
-          nameEvent: string
-        }
-        Update: {
-          id?: number
-          incomesID?: number
-          ministry?: string
-          nameEvent?: string
-        }
-      }
       incomes: {
         Row: {
           amount: number | null
           comment: string | null
-          concept: string | null
           createdBy: string | null
           createdDate: string | null
           date: string
+          eventName: string | null
           id: number
+          ministryID: number | null
+          tithingID: number | null
+          type: string | null
           updatedBy: string | null
           updatedDate: string | null
         }
         Insert: {
           amount?: number | null
           comment?: string | null
-          concept?: string | null
           createdBy?: string | null
           createdDate?: string | null
           date: string
+          eventName?: string | null
           id?: number
+          ministryID?: number | null
+          tithingID?: number | null
+          type?: string | null
           updatedBy?: string | null
           updatedDate?: string | null
         }
         Update: {
           amount?: number | null
           comment?: string | null
-          concept?: string | null
           createdBy?: string | null
           createdDate?: string | null
           date?: string
+          eventName?: string | null
           id?: number
+          ministryID?: number | null
+          tithingID?: number | null
+          type?: string | null
           updatedBy?: string | null
           updatedDate?: string | null
         }
       }
       incomeType: {
         Row: {
-          id: number
           type: string
         }
         Insert: {
-          id?: number
           type?: string
         }
         Update: {
-          id?: number
           type?: string
+        }
+      }
+      ministries: {
+        Row: {
+          id: number
+          ministry: string
+        }
+        Insert: {
+          id?: number
+          ministry?: string
+        }
+        Update: {
+          id?: number
+          ministry?: string
         }
       }
       tithing: {
