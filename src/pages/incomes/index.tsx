@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import Table from "../../components/table";
+import Table from "./components/table";
 import React from "react";
 import IncomesModal from "./components/incomeModal";
+
 
 function Incomes() {
   const [isModalOpen, setIsOpen] = React.useState(false);
@@ -22,9 +23,9 @@ function Incomes() {
         </button>
       </nav>
 
-      <IncomesModal isOpen={isModalOpen} onClose={toggleModal} />
+        <IncomesModal isOpen={isModalOpen} onClose={toggleModal} />
+        <Table />
 
-      <Table />
     </Wrapper>
   );
 }

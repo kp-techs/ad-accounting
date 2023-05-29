@@ -1,15 +1,22 @@
 import styled from "styled-components";
 import { useTable } from "react-table";
-import useRows from "../pages/incomes/components/rows";
-import useColumns from "../pages/incomes/components/columns";
+import useColumns from "../const/columns";
+import { useEffect } from "react";
+import { Income } from "../../../types/models";
+import useAppData from "../../../hooks/useAppData";
 
 function Table() {
-  const data = useRows();
+  const { incomes, loadIncomes } = useAppData();
+
+  useEffect(() => {
+    loadIncomes();
+  }, [loadIncomes]);
+
   const columns = useColumns();
 
-  const table = useTable({ columns, data });
+  const table = useTable<Income>({ columns, data: incomes });
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
     table;
 
   return (
@@ -25,11 +32,11 @@ function Table() {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
+          {rows.map((income) => {
+            prepareRow(income);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
+              <tr {...income.getRowProps()}>
+                {income.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
@@ -70,4 +77,5 @@ const Wrapper = styled.section`
     background-color: #ddd;
   }
 `;
+
 export default Table;
