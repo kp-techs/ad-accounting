@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import { Formik, Field, Form } from "formik";
 import SwitchButton from "../../../components/switchButton";
 import { useSupabase } from "../../../hooks/useSupabase";
-import { CreateIncome, IncomeType } from "../../../types/models";
+import { CreateIncome, Income, IncomeType } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
 
 const initialIncome: CreateIncome = {
@@ -19,11 +19,13 @@ const initialIncome: CreateIncome = {
   tithingID: null,
   ministryID: null,
   eventName: "",
+  concept: null,
 };
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  income?: Income;
 };
 
 const customStyles = {
@@ -37,7 +39,7 @@ const customStyles = {
   },
 };
 
-const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
+const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
   const { loadIncomes } = useAppData();
   const [on, setOn] = React.useState(false);
   const [types, setTypes] = React.useState<IncomeType[]>([]);
@@ -63,12 +65,27 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
     >
       <Wrapper>
         <Formik
-          initialValues={initialIncome}
+          initialValues={income ?? initialIncome}
           onSubmit={async (values, { resetForm }) => {
-            await supabase
-              .from("incomes")
-              .insert([values as any])
-              .single();
+            if (income) {
+              // @ts-ignore
+              delete values.incomeType;
+              // @ts-ignore
+              delete values.ministries;
+              // @ts-ignore
+              delete values.tithing;
+              await supabase
+                .from("incomes")
+                .update({ ...values, id: income.id })
+                .eq("id", income.id);
+              onClose();
+            } else {
+              await supabase
+                .from("incomes")
+                .insert([values as any])
+                .single();
+            }
+
             resetForm();
             loadIncomes();
           }}
@@ -77,6 +94,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
             <Form>
               <div className="selectType-container">
                 <label htmlFor="selectIncomeType">Concepto</label>
+
                 <Field id="selectIncomeType" as="select" name="type">
                   <option>Seleccionar</option>
                   {types.map(({ type }, i) => (
@@ -137,7 +155,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
               </div>
 
               <div className="foo-modal">
-                {values.type === "Diezmos" ? (
+                {!income && values.type === "Diezmos" ? (
                   <div className="toggle">
                     <SwitchButton on={on} onClick={() => setOn(!on)} />
 
@@ -145,10 +163,10 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
                   </div>
                 ) : null}
                 <div className="buttons-container">
-                  <button type="submit" onClick={onClose}>
-                    Cerrar
+                  <button onClick={onClose}>Cancelar</button>
+                  <button type="submit">
+                    {income ? "Actualizar" : "Guardar"}
                   </button>
-                  <button type="submit">Guardar</button>
                 </div>
               </div>
             </Form>

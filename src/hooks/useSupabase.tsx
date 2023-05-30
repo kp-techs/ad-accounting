@@ -1,7 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { TableIncome } from "../types/models";
 import { Database } from "../types/supabase";
-import { generateConcept } from "../utils/helper";
 
 const supabase = createClient<Database>(
   process.env.REACT_APP_SUPABASE_URL || "",
@@ -18,10 +17,5 @@ export async function fetchIncomes() {
     .select(`*, incomeType(*), ministries(*),  tithing(*)`)
     .returns<TableIncome[]>();
 
-  const mapedIncome = (data || []).map((income) => ({
-    ...income,
-    type: generateConcept(income),
-  }));
-
-  return mapedIncome;
+  return data || [];
 }
