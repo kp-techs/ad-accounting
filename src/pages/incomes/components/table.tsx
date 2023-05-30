@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { useTable } from "react-table";
 import useColumns from "../const/columns";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Income } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
 
 function Table() {
   const { incomes, loadIncomes } = useAppData();
+  const [isAdmin] = useState(true);
 
   useEffect(() => {
     loadIncomes();
@@ -35,12 +36,28 @@ function Table() {
           {rows.map((income) => {
             prepareRow(income);
             return (
-              <tr {...income.getRowProps()}>
+              <tr {...income.getRowProps()} className="row">
                 {income.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
                 })}
+                {isAdmin && (
+                  <div id="modifyButtons-container">
+                    <div className="buttons">
+                      <img
+                        src="assets/images/pencil-161946_640.webp"
+                        alt="Modify"
+                      />
+                    </div>
+                    <div className="buttons">
+                      <img
+                        src="assets/images/delete_318-901546.avif"
+                        alt="Delete"
+                      />
+                    </div>
+                  </div>
+                )}
               </tr>
             );
           })}
@@ -75,6 +92,39 @@ const Wrapper = styled.section`
   tbody tr:hover {
     //css para filas
     background-color: #ddd;
+  }
+  tr {
+    position: relative;
+
+    &:hover {
+      #modifyButtons-container {
+        display: flex;
+      }
+    }
+  }
+
+  #modifyButtons-container {
+    display: none;
+    justify-content: center;
+    gap: 15px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    z-index: 50;
+  }
+
+  .buttons {
+    display: flex;
+    padding: 5px;
+  }
+  img {
+    cursor: pointer;
+    width: 20px;
+  }
+  .buttons:hover {
+    border-radius: 50%;
+    background-color: #99a7b46f;
+    border: 0.5 #f0f8ffbe solid;
   }
 `;
 
