@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Column } from "react-table";
 import { Income } from "../../../types/models";
+import { generateConcept } from "../../../utils/helper";
 
 function useColumns() {
   const columns = useMemo<Column<Income>[]>(
@@ -12,6 +13,8 @@ function useColumns() {
       {
         Header: "Concepto",
         accessor: "type",
+        // @ts-ignore
+        Cell: ({ row }) => generateConcept(row.original),
       },
       {
         Header: "Monto",
