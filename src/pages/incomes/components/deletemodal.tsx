@@ -36,6 +36,7 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
 
   return (
     <Modal
+      ariaHideApp={false}
       isOpen={isOpen}
       // onAfterOpen={afterOpenModal}
       onRequestClose={onClose}

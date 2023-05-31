@@ -57,6 +57,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 
   return (
     <Modal
+      ariaHideApp={false}
       isOpen={isOpen}
       // onAfterOpen={afterOpenModal}
       onRequestClose={onClose}
@@ -78,7 +79,6 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                 .from("incomes")
                 .update({ ...values, id: income.id })
                 .eq("id", income.id);
-              onClose();
             } else {
               await supabase
                 .from("incomes")
@@ -86,6 +86,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                 .single();
             }
 
+            onClose();
             resetForm();
             loadIncomes();
           }}
@@ -111,7 +112,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                   <Field
                     id="diezmante-name"
                     type="text"
-                    name="tithing"
+                    name="tithingID"
                     placeholder="Jocelin Sanchez"
                   />
                 </section>
