@@ -27,7 +27,6 @@ function Table() {
   const [deleteModalIsOpen, setdeleteModalIsOpen] = useState(false);
   function toggleDeleteModal() {
     setdeleteModalIsOpen(!deleteModalIsOpen);
-    // loadIncomes();
   }
 
   const [modifyModalIsOpen, setmodifyModalIsOpen] = useState(false);

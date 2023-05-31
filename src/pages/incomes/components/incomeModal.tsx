@@ -59,7 +59,6 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
     <Modal
       ariaHideApp={false}
       isOpen={isOpen}
-      // onAfterOpen={afterOpenModal}
       onRequestClose={onClose}
       style={customStyles}
       contentLabel="Formulario para registrar ingresos"

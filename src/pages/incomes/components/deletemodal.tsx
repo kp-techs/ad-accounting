@@ -26,7 +26,6 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
   const { loadIncomes } = useAppData();
 
   async function deleteIncome() {
-    console.log(income);
     if (income) {
       await supabase.from("incomes").delete().eq("id", income.id);
       onClose();
@@ -38,7 +37,6 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
     <Modal
       ariaHideApp={false}
       isOpen={isOpen}
-      // onAfterOpen={afterOpenModal}
       onRequestClose={onClose}
       style={customStyles}
       contentLabel="Formulario para registrar ingresos"
