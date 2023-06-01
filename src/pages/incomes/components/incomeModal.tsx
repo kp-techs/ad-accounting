@@ -7,7 +7,12 @@ import { useSupabase } from "../../../hooks/useSupabase";
 import { Income } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
 import SelectOptions from "../utils/selectOptions";
-import { initialIncome, customStyles, incomeTypeID } from "../constants";
+import {
+  initialIncome,
+  customStyles,
+  incomeTypeID,
+  ValidationIncomeForm,
+} from "../constants";
 
 type Props = {
   isOpen: boolean;
@@ -30,6 +35,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
     >
       <Wrapper>
         <Formik
+          validationSchema={ValidationIncomeForm}
           initialValues={income ?? initialIncome}
           onSubmit={async (values, { resetForm }) => {
             if (income) {
@@ -59,11 +65,10 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
             loadIncomes();
           }}
         >
-          {({ values }) => (
+          {({ values, errors, touched }) => (
             <Form>
               <div className="selectType-container">
                 <label htmlFor="selectIncomeType">Concepto</label>
-
                 <FastField
                   id="selectIncomeType"
                   name="type"
@@ -71,6 +76,9 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                     <SelectOptions {...props} table={"incomeTypes"} />
                   )}
                 />
+                {errors.type && touched.type && (
+                  <div style={{ color: "red" }}>{errors.type}</div>
+                )}
               </div>
               <section></section>
               {values.type === incomeTypeID.tithe ? (
@@ -83,6 +91,9 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                       <SelectOptions {...props} table={"tithing"} />
                     )}
                   />
+                  {errors.tithingID && touched.tithingID && (
+                    <div style={{ color: "red" }}>{errors.tithingID}</div>
+                  )}
                 </section>
               ) : values.type === incomeTypeID.event ? (
                 <section
@@ -97,6 +108,9 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                       name="eventName"
                       placeholder="Congreso Estruendo"
                     />
+                    {errors.eventName && touched.eventName && (
+                      <div style={{ color: "red" }}>{errors.eventName}</div>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="event-name">Ministerio</label>
@@ -108,6 +122,9 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                         <SelectOptions {...props} table={"ministries"} />
                       )}
                     />
+                    {errors.ministryID && touched.ministryID && (
+                      <div style={{ color: "red" }}>{errors.ministryID}</div>
+                    )}
                   </div>
                 </section>
               ) : null}
@@ -116,10 +133,16 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                 <div>
                   <label>Fecha</label>
                   <Field name="date" type="date" />
+                  {errors.date && touched.date && (
+                    <div style={{ color: "red" }}>{errors.date}</div>
+                  )}
                 </div>
                 <div>
                   <label>Monto</label>
                   <Field name="amount" type="number" />
+                  {errors.amount && touched.amount && (
+                    <div style={{ color: "red" }}>{errors.amount}</div>
+                  )}
                 </div>
               </div>
 
