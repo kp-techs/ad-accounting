@@ -1,7 +1,7 @@
 import Modal from "react-modal";
 import styled from "styled-components";
 import React, { FC } from "react";
-import { Formik, Field, Form } from "formik";
+import { Formik, Field, Form, FastField } from "formik";
 import SwitchButton from "../../../components/switchButton";
 import { useSupabase } from "../../../hooks/useSupabase";
 import { Income } from "../../../types/models";
@@ -43,13 +43,18 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                 .from("incomes")
                 .update({ ...values, id: income.id })
                 .eq("id", income.id);
+              onClose();
             } else {
               await supabase
                 .from("incomes")
                 .insert([values as any])
                 .single();
             }
-            onClose();
+            if (on) {
+              initialIncome.type = incomeTypeID.tithe;
+            } else {
+              initialIncome.type = null;
+            }
             resetForm();
             loadIncomes();
           }}
@@ -59,9 +64,8 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
               <div className="selectType-container">
                 <label htmlFor="selectIncomeType">Concepto</label>
 
-                <Field
+                <FastField
                   id="selectIncomeType"
-                  as="select"
                   name="type"
                   component={(props: any) => (
                     <SelectOptions {...props} table={"incomeTypes"} />
@@ -72,11 +76,9 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
               {values.type === incomeTypeID.tithe ? (
                 <section className="field-line">
                   <label htmlFor="diezmante-nombre">Diezmante</label>
-                  <Field
-                    id="diezmante-name"
-                    type="text"
+                  <FastField
                     name="tithingID"
-                    placeholder="Jocelin Sanchez"
+                    id="diezmante-name"
                     component={(props: any) => (
                       <SelectOptions {...props} table={"tithing"} />
                     )}
@@ -98,7 +100,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                   </div>
                   <div>
                     <label htmlFor="event-name">Ministerio</label>
-                    <Field
+                    <FastField
                       id="ministery-name"
                       type="text"
                       name="ministryID"
@@ -130,12 +132,19 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                 {!income && values.type === incomeTypeID.tithe ? (
                   <div className="toggle">
                     <SwitchButton on={on} onClick={() => setOn(!on)} />
-
                     <label>Mantener selección</label>
                   </div>
                 ) : null}
                 <div className="buttons-container">
-                  <button onClick={onClose}>Cancelar</button>
+                  <button
+                    onClick={() => {
+                      setOn(false);
+                      onClose();
+                      initialIncome.type = null;
+                    }}
+                  >
+                    {income ? "Cancelar" : "Cerrar"}
+                  </button>
                   <button type="submit">
                     {income ? "Actualizar" : "Guardar"}
                   </button>

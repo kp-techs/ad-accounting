@@ -3,7 +3,6 @@ import Table from "./components/table";
 import React from "react";
 import IncomesModal from "./components/incomeModal";
 
-
 function Incomes() {
   const [isModalOpen, setIsOpen] = React.useState(false);
 
@@ -23,9 +22,8 @@ function Incomes() {
         </button>
       </nav>
 
-        <IncomesModal isOpen={isModalOpen} onClose={toggleModal} />
-        <Table />
-
+      <IncomesModal isOpen={isModalOpen} onClose={toggleModal} />
+      <Table />
     </Wrapper>
   );
 }

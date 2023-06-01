@@ -1,15 +1,17 @@
 import { FieldProps } from "formik";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { useSupabase } from "../../../hooks/useSupabase";
 
 type Props = FieldProps<any> & {
   table: string;
 };
+
 type Option = {
   label: string;
   value: number | string;
 };
+
 function SelectOptions({ form, field, table }: Props) {
   const { supabase } = useSupabase();
 
@@ -32,7 +34,6 @@ function SelectOptions({ form, field, table }: Props) {
       .insert({ name })
       .select()
       .single();
-    console.dir(data);
     const newValue = { label: data?.name, value: data?.id };
     setOptions((prev) => [...prev, newValue]);
     form.setFieldValue(field.name, newValue?.value);
