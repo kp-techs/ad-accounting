@@ -13,6 +13,7 @@ export interface Database {
         Row: {
           amount: number | null;
           comment: string | null;
+          concept: string | null;
           createdBy: string | null;
           createdDate: string | null;
           date: string;
@@ -20,14 +21,14 @@ export interface Database {
           id: number;
           ministryID: number | null;
           tithingID: number | null;
-          type: string | null;
+          type: number | null;
           updatedBy: string | null;
           updatedDate: string | null;
-          concept: string | null;
         };
         Insert: {
           amount?: number | null;
           comment?: string | null;
+          concept?: string | null;
           createdBy?: string | null;
           createdDate?: string | null;
           date: string;
@@ -35,13 +36,14 @@ export interface Database {
           id?: number;
           ministryID?: number | null;
           tithingID?: number | null;
-          type?: string | null;
+          type?: number | null;
           updatedBy?: string | null;
           updatedDate?: string | null;
         };
         Update: {
           amount?: number | null;
           comment?: string | null;
+          concept?: string | null;
           createdBy?: string | null;
           createdDate?: string | null;
           date?: string;
@@ -49,34 +51,38 @@ export interface Database {
           id?: number;
           ministryID?: number | null;
           tithingID?: number | null;
-          type?: string | null;
+          type?: number | null;
           updatedBy?: string | null;
           updatedDate?: string | null;
         };
       };
-      incomeType: {
+
+      incomeTypes: {
         Row: {
-          type: string;
+          id: number;
+          name: string;
         };
         Insert: {
-          type?: string;
+          id?: number;
+          name?: string;
         };
         Update: {
-          type?: string;
+          id?: number;
+          name?: string;
         };
       };
       ministries: {
         Row: {
           id: number;
-          ministry: string;
+          name: string;
         };
         Insert: {
           id?: number;
-          ministry?: string;
+          name?: string;
         };
         Update: {
           id?: number;
-          ministry?: string;
+          name?: string;
         };
       };
       tithing: {

@@ -14,7 +14,7 @@ export const useSupabase = () => {
 export async function fetchIncomes() {
   const { data } = await supabase
     .from("incomes")
-    .select(`*, incomeType(*), ministries(*),  tithing(*)`)
+    .select(`*, incomeTypes(*), ministries(*),  tithing(*)`)
     .returns<TableIncome[]>();
 
   return data || [];

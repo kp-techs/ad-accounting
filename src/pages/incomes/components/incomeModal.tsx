@@ -4,23 +4,10 @@ import React, { FC } from "react";
 import { Formik, Field, Form } from "formik";
 import SwitchButton from "../../../components/switchButton";
 import { useSupabase } from "../../../hooks/useSupabase";
-import { CreateIncome, Income, IncomeType } from "../../../types/models";
+import { Income } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
-
-const initialIncome: CreateIncome = {
-  date: "",
-  amount: 0,
-  createdBy: "",
-  createdDate: null,
-  updatedBy: "",
-  updatedDate: null,
-  comment: "",
-  type: "",
-  tithingID: null,
-  ministryID: null,
-  eventName: "",
-  concept: null,
-};
+import SelectOptions from "../utils/selectOptions";
+import { initialIncome, customStyles, incomeTypeID } from "../constants";
 
 type Props = {
   isOpen: boolean;
@@ -28,32 +15,10 @@ type Props = {
   income?: Income;
 };
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
-
 const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
   const { loadIncomes } = useAppData();
   const [on, setOn] = React.useState(false);
-  const [types, setTypes] = React.useState<IncomeType[]>([]);
   const { supabase } = useSupabase();
-
-  React.useEffect(() => {
-    fetchIncomeTypes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  async function fetchIncomeTypes() {
-    const { data } = await supabase.from("incomeType").select(`*`);
-    setTypes(data || []);
-  }
 
   return (
     <Modal
@@ -69,7 +34,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
           onSubmit={async (values, { resetForm }) => {
             if (income) {
               // @ts-ignore
-              delete values.incomeType;
+              delete values.incomeTypes;
               // @ts-ignore
               delete values.ministries;
               // @ts-ignore
@@ -84,7 +49,6 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                 .insert([values as any])
                 .single();
             }
-
             onClose();
             resetForm();
             loadIncomes();
@@ -95,17 +59,17 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
               <div className="selectType-container">
                 <label htmlFor="selectIncomeType">Concepto</label>
 
-                <Field id="selectIncomeType" as="select" name="type">
-                  <option>Seleccionar</option>
-                  {types.map(({ type }, i) => (
-                    <option key={`${i}`} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </Field>
+                <Field
+                  id="selectIncomeType"
+                  as="select"
+                  name="type"
+                  component={(props: any) => (
+                    <SelectOptions {...props} table={"incomeTypes"} />
+                  )}
+                />
               </div>
               <section></section>
-              {values.type === "Diezmos" ? (
+              {values.type === incomeTypeID.tithe ? (
                 <section className="field-line">
                   <label htmlFor="diezmante-nombre">Diezmante</label>
                   <Field
@@ -113,9 +77,12 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                     type="text"
                     name="tithingID"
                     placeholder="Jocelin Sanchez"
+                    component={(props: any) => (
+                      <SelectOptions {...props} table={"tithing"} />
+                    )}
                   />
                 </section>
-              ) : values.type === "Evento" ? (
+              ) : values.type === incomeTypeID.event ? (
                 <section
                   id="typeEventFields-container"
                   className="fields-container field-line"
@@ -130,10 +97,15 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                     />
                   </div>
                   <div>
-                    {/* aqui ira un tipo de input que sugerira 
-                     de los que tiene, y sino hay lo agrega */}
                     <label htmlFor="event-name">Ministerio</label>
-                    <Field id="ministery-name" type="text" name="ministryID" />
+                    <Field
+                      id="ministery-name"
+                      type="text"
+                      name="ministryID"
+                      component={(props: any) => (
+                        <SelectOptions {...props} table={"ministries"} />
+                      )}
+                    />
                   </div>
                 </section>
               ) : null}
@@ -155,7 +127,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
               </div>
 
               <div className="foo-modal">
-                {!income && values.type === "Diezmos" ? (
+                {!income && values.type === incomeTypeID.tithe ? (
                   <div className="toggle">
                     <SwitchButton on={on} onClick={() => setOn(!on)} />
 
