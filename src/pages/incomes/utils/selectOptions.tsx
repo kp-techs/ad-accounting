@@ -6,12 +6,10 @@ import { useSupabase } from "../../../hooks/useSupabase";
 type Props = FieldProps<any> & {
   table: string;
 };
-
 type Option = {
   label: string;
   value: number | string;
 };
-
 function SelectOptions({ form, field, table }: Props) {
   const { supabase } = useSupabase();
 
