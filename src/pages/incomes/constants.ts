@@ -1,4 +1,10 @@
 import { CreateIncome } from "../../types/models";
+import * as Yup from "yup";
+
+export const incomeTypeID = {
+  tithe: 2,
+  event: 13,
+};
 
 export const initialIncome: CreateIncome = {
   date: "",
@@ -15,6 +21,30 @@ export const initialIncome: CreateIncome = {
   concept: null,
 };
 
+export const ValidationIncomeForm = Yup.object().shape({
+  date: Yup.date().required("Favor especificar la fecha"),
+  amount: Yup.number().min(1).required("Favor especificar el monto"),
+  type: Yup.number().required("Favor especificar el tipo de ingreso"),
+  tithingID: Yup.number()
+    .nullable()
+    .when("type", {
+      is: incomeTypeID.tithe,
+      then: () =>
+        Yup.number().required("Favor especificar el nombre del diezmante"),
+    }),
+  ministryID: Yup.number()
+    .nullable()
+    .when("type", {
+      is: incomeTypeID.event,
+      then: () =>
+        Yup.number().required("Favor especificar el nombre del ministerio"),
+    }),
+  eventName: Yup.string().when("type", {
+    is: incomeTypeID.event,
+    then: () => Yup.string().required("Favor especificar el nombre del evento"),
+  }),
+});
+
 export const customStyles = {
   content: {
     top: "50%",
@@ -24,9 +54,4 @@ export const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
-};
-
-export const incomeTypeID = {
-  tithe: 2,
-  event: 13,
 };
