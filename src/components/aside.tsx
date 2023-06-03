@@ -19,6 +19,7 @@ function Aside() {
       <Link to={`/outgoings`}>Egresos</Link>
       <Link to={`/reportes`}>Reportes</Link>
       <Link to={`/configuration`}>Configuración</Link>
+      <Link to={`/signUpForm`}>Nuevo usuario</Link>
     </Wrapper>
   );
 }

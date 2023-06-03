@@ -4,12 +4,14 @@ import styled, { createGlobalStyle } from "styled-components";
 import Aside from "./components/aside";
 import Content from "./components/content";
 import Header from "./components/header";
+import Login from "./pages/login";
+import NewAccount from "./pages/signUpForm";
+
 
 function App() {
   return (
     <>
       <GlobalStyles />
-
       <Wrapper>
         <Header />
         <Aside />
