@@ -8,3 +8,13 @@ export function generateConcept({ type, ...income }: TableIncome) {
     ? `${income.ministries?.name}: ${income.eventName}`
     : income.incomeTypes.name;
 }
+
+export function formatMoney(amount: number | null) {
+  if (amount) {
+    const number = new Intl.NumberFormat("es-DO", {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    }).format(amount);
+    return `RD$ ${number}`;
+  }
+}
