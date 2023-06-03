@@ -1,101 +1,130 @@
 import Modal from "react-modal";
 import styled from "styled-components";
 import React, { FC } from "react";
-import { Formik, Field, Form, FormikProps } from "formik";
-import { incomeTypes } from "./incomesTypes";
+import { Formik, Field, Form, FastField } from "formik";
 import SwitchButton from "../../../components/switchButton";
-
-const initialValues = {
-  incomeType: "",
-  date: "",
-  amount: "",
-  comment: "",
-  diezmante: "",
-  eventName: "",
-  ministeryName: "",
-};
-
-type Income = {
-  incomeType: string;
-  date: string;
-  amount: string;
-  comment: string;
-  diezmante: string;
-  eventName: string;
-  ministeryName: string;
-};
+import { useSupabase } from "../../../hooks/useSupabase";
+import { Income } from "../../../types/models";
+import useAppData from "../../../hooks/useAppData";
+import SelectOptions from "../utils/selectOptions";
+import {
+  initialIncome,
+  customStyles,
+  incomeTypeID,
+  ValidationIncomeForm,
+} from "../constants";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  income?: Income;
 };
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
-
-const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
+const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
+  const { loadIncomes } = useAppData();
   const [on, setOn] = React.useState(false);
+  const { supabase } = useSupabase();
 
   return (
     <Modal
+      ariaHideApp={false}
       isOpen={isOpen}
-      // onAfterOpen={afterOpenModal}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Experimentacion con React Modal"
+      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
         <Formik
-          initialValues={initialValues}
-          onSubmit={async (values) => {
-            await new Promise((resolve) => setTimeout(resolve, 500));
-            alert(JSON.stringify(values, null, 2));
+          validationSchema={ValidationIncomeForm}
+          initialValues={income ?? initialIncome}
+          onSubmit={async (values, { resetForm }) => {
+            if (income) {
+              // @ts-ignore
+              delete values.incomeTypes;
+              // @ts-ignore
+              delete values.ministries;
+              // @ts-ignore
+              delete values.tithing;
+              await supabase
+                .from("incomes")
+                .update({ ...values, id: income.id })
+                .eq("id", income.id);
+              onClose();
+            } else {
+              await supabase
+                .from("incomes")
+                .insert([values as any])
+                .single();
+            }
+            if (on) {
+              initialIncome.type = incomeTypeID.tithe;
+            } else {
+              initialIncome.type = null;
+            }
+            resetForm();
+            loadIncomes();
           }}
         >
-          {({ values }: FormikProps<Income>) => (
+          {({ values, errors, touched }) => (
             <Form>
               <div className="selectType-container">
                 <label htmlFor="selectIncomeType">Concepto</label>
-                <Field id="selectIncomeType" as="select" name="incomeType">
-                  {incomeTypes.map((type) => (
-                    <option key={type.id} value={type.name}>
-                      {type.name}
-                    </option>
-                  ))}
-                </Field>
+                <FastField
+                  id="selectIncomeType"
+                  name="type"
+                  component={(props: any) => (
+                    <SelectOptions {...props} table={"incomeTypes"} />
+                  )}
+                />
+                {errors.type && touched.type && (
+                  <div style={{ color: "red" }}>{errors.type}</div>
+                )}
               </div>
               <section></section>
-              {values.incomeType === "Diezmos" ? (
+              {values.type === incomeTypeID.tithe ? (
                 <section className="field-line">
                   <label htmlFor="diezmante-nombre">Diezmante</label>
-                  <Field id="diezmante-name" type="text" name="diezmante" />
+                  <FastField
+                    name="tithingID"
+                    id="diezmante-name"
+                    component={(props: any) => (
+                      <SelectOptions {...props} table={"tithing"} />
+                    )}
+                  />
+                  {errors.tithingID && touched.tithingID && (
+                    <div style={{ color: "red" }}>{errors.tithingID}</div>
+                  )}
                 </section>
-              ) : values.incomeType === "Evento" ? (
+              ) : values.type === incomeTypeID.event ? (
                 <section
                   id="typeEventFields-container"
                   className="fields-container field-line"
                 >
                   <div>
                     <label htmlFor="event-name">Nombre</label>
-                    <Field id="event-name" type="text" name="eventName" />
+                    <Field
+                      id="event-name"
+                      type="text"
+                      name="eventName"
+                      placeholder="Congreso Estruendo"
+                    />
+                    {errors.eventName && touched.eventName && (
+                      <div style={{ color: "red" }}>{errors.eventName}</div>
+                    )}
                   </div>
                   <div>
-                    {/* aqui ira un tipo de input que sugerira 
-                     de los que tiene, y sino hay lo agrega */}
                     <label htmlFor="event-name">Ministerio</label>
-                    <Field
+                    <FastField
                       id="ministery-name"
                       type="text"
-                      name="ministeryName"
+                      name="ministryID"
+                      component={(props: any) => (
+                        <SelectOptions {...props} table={"ministries"} />
+                      )}
                     />
+                    {errors.ministryID && touched.ministryID && (
+                      <div style={{ color: "red" }}>{errors.ministryID}</div>
+                    )}
                   </div>
                 </section>
               ) : null}
@@ -104,10 +133,16 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
                 <div>
                   <label>Fecha</label>
                   <Field name="date" type="date" />
+                  {errors.date && touched.date && (
+                    <div style={{ color: "red" }}>{errors.date}</div>
+                  )}
                 </div>
                 <div>
                   <label>Monto</label>
                   <Field name="amount" type="number" />
+                  {errors.amount && touched.amount && (
+                    <div style={{ color: "red" }}>{errors.amount}</div>
+                  )}
                 </div>
               </div>
 
@@ -117,18 +152,25 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose }) => {
               </div>
 
               <div className="foo-modal">
-                {values.incomeType === "Diezmos" ? (
+                {!income && values.type === incomeTypeID.tithe ? (
                   <div className="toggle">
                     <SwitchButton on={on} onClick={() => setOn(!on)} />
-
                     <label>Mantener selección</label>
                   </div>
                 ) : null}
                 <div className="buttons-container">
-                  <button type="submit" onClick={onClose}>
-                    Cerrar
+                  <button
+                    onClick={() => {
+                      setOn(false);
+                      onClose();
+                      initialIncome.type = null;
+                    }}
+                  >
+                    {income ? "Cancelar" : "Cerrar"}
                   </button>
-                  <button type="submit">Guardar</button>
+                  <button type="submit">
+                    {income ? "Actualizar" : "Guardar"}
+                  </button>
                 </div>
               </div>
             </Form>

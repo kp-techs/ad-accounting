@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Table from "../../components/table";
+import Table from "./components/table";
 import React from "react";
 import IncomesModal from "./components/incomeModal";
 
@@ -23,7 +23,6 @@ function Incomes() {
       </nav>
 
       <IncomesModal isOpen={isModalOpen} onClose={toggleModal} />
-
       <Table />
     </Wrapper>
   );

@@ -4,106 +4,113 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json }
-  | Json[]
+  | Json[];
 
 export interface Database {
   public: {
     Tables: {
-      eventIncome: {
-        Row: {
-          id: number
-          incomesID: number
-          ministry: string
-          nameEvent: string
-        }
-        Insert: {
-          id?: number
-          incomesID: number
-          ministry: string
-          nameEvent: string
-        }
-        Update: {
-          id?: number
-          incomesID?: number
-          ministry?: string
-          nameEvent?: string
-        }
-      }
       incomes: {
         Row: {
-          amount: number | null
-          comment: string | null
-          concept: string | null
-          createdBy: string | null
-          createdDate: string | null
-          date: string
-          id: number
-          updatedBy: string | null
-          updatedDate: string | null
-        }
+          amount: number | null;
+          comment: string | null;
+          concept: string | null;
+          createdBy: string | null;
+          createdDate: string | null;
+          date: string;
+          eventName: string | null;
+          id: number;
+          ministryID: number | null;
+          tithingID: number | null;
+          type: number | null;
+          updatedBy: string | null;
+          updatedDate: string | null;
+        };
         Insert: {
-          amount?: number | null
-          comment?: string | null
-          concept?: string | null
-          createdBy?: string | null
-          createdDate?: string | null
-          date: string
-          id?: number
-          updatedBy?: string | null
-          updatedDate?: string | null
-        }
+          amount?: number | null;
+          comment?: string | null;
+          concept?: string | null;
+          createdBy?: string | null;
+          createdDate?: string | null;
+          date: string;
+          eventName?: string | null;
+          id?: number;
+          ministryID?: number | null;
+          tithingID?: number | null;
+          type?: number | null;
+          updatedBy?: string | null;
+          updatedDate?: string | null;
+        };
         Update: {
-          amount?: number | null
-          comment?: string | null
-          concept?: string | null
-          createdBy?: string | null
-          createdDate?: string | null
-          date?: string
-          id?: number
-          updatedBy?: string | null
-          updatedDate?: string | null
-        }
-      }
-      incomeType: {
+          amount?: number | null;
+          comment?: string | null;
+          concept?: string | null;
+          createdBy?: string | null;
+          createdDate?: string | null;
+          date?: string;
+          eventName?: string | null;
+          id?: number;
+          ministryID?: number | null;
+          tithingID?: number | null;
+          type?: number | null;
+          updatedBy?: string | null;
+          updatedDate?: string | null;
+        };
+      };
+
+      incomeTypes: {
         Row: {
-          id: number
-          type: string
-        }
+          id: number;
+          name: string;
+        };
         Insert: {
-          id?: number
-          type?: string
-        }
+          id?: number;
+          name?: string;
+        };
         Update: {
-          id?: number
-          type?: string
-        }
-      }
+          id?: number;
+          name?: string;
+        };
+      };
+      ministries: {
+        Row: {
+          id: number;
+          name: string;
+        };
+        Insert: {
+          id?: number;
+          name?: string;
+        };
+        Update: {
+          id?: number;
+          name?: string;
+        };
+      };
       tithing: {
         Row: {
-          id: number
-          name: string
-        }
+          id: number;
+          name: string;
+        };
         Insert: {
-          id?: number
-          name: string
-        }
+          id?: number;
+          name: string;
+        };
         Update: {
-          id?: number
-          name?: string
-        }
-      }
-    }
+          id?: number;
+          name?: string;
+        };
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
+      [_ in never]: never;
+    };
+  };
 }

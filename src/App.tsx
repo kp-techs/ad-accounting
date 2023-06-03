@@ -1,16 +1,14 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import { Outlet } from "react-router-dom";
 import Aside from "./components/aside";
 import Content from "./components/content";
 import Header from "./components/header";
-import Login from "./pages/login";
-import NewAccount from "./pages/signUpForm";
-
+import { AppProvider } from "./contexts/app";
 
 function App() {
   return (
-    <>
+    <AppProvider>
       <GlobalStyles />
       <Wrapper>
         <Header />
@@ -19,7 +17,7 @@ function App() {
           <Outlet />
         </Content>
       </Wrapper>
-    </>
+    </AppProvider>
   );
 }
 
