@@ -13,24 +13,16 @@ export function generateConcept({ type, ...income }: TableIncome) {
 
 export function formatDate(date: string | null) {
   moment.locale("es");
-  const formattedDate = moment(date, "YYYYMMDD");
-  const daysPassed = moment().diff(formattedDate, "days");
-  const yearsPassed = moment().diff(formattedDate, "year");
+  const momentDate = moment(date);
+  const daysPassed = moment().diff(moment(date, "YYYYMMDD"), "days");
+  const yearsPassed = moment().diff(moment(date, "YYYYMMDD"), "year");
 
-  if (daysPassed < 0) {
-    //tiempo aproximado
-    let newDate = moment(date).fromNow();
+  if (daysPassed < 7) {
+    const newDate = momentDate.fromNow();
     return newDate.charAt(0).toUpperCase() + newDate.slice(1);
-  } else if (daysPassed === 0) {
-    return "Hoy";
-  } else if (daysPassed < 7) {
-    // dia de la semana
-    let newDate = moment(date).format("dddd");
-    return newDate.charAt(0).toLocaleUpperCase() + newDate.slice(1);
   } else if (yearsPassed === 0) {
-    // dia mes
-    return moment(date).format("D [de] MMMM");
+    return momentDate.format("D [de] MMMM");
   } else {
-    return moment(date).format("DD/MM/YY");
+    return momentDate.format("DD/MM/YY");
   }
 }
