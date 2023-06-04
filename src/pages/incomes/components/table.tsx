@@ -104,6 +104,7 @@ function Table() {
 
 const Wrapper = styled.section`
   table {
+    overflow: scroll;
     width: 100%;
     border-collapse: collapse;
     font-size: 16px;
