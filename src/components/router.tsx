@@ -7,6 +7,7 @@ import Login from "../pages/login";
 import Home from "../pages/home";
 import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
+import SignUpForm from "../pages/signUpForm";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/configuration",
         element: <Configuration />,
+      },
+      {
+        path: "/signUpForm",
+        element: <SignUpForm />,
       },
     ],
   },
