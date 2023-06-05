@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Router from "./components/router";
 import reportWebVitals from "./reportWebVitals";
+import "./fonts/Poppins/Poppins-Regular.ttf";
+import "./fonts/Poppins/Poppins-Bold.ttf";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
