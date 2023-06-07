@@ -13,12 +13,11 @@ const Wrapper = styled.main`
   display: flex;
   grid-area: content;
   flex-direction: column;
-
+  height: calc(100vh - 190px);
+  overflow: hidden;
   border-radius: 10px 0 0;
-  padding: 5px;
-
+  padding: 25px;
   margin: 0 15px 10px;
-
   background: rgba(125, 125, 125, 0.2);
   border-radius: 40px;
   box-sizing: border-box;

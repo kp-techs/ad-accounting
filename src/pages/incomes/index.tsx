@@ -1,28 +1,53 @@
 import styled from "styled-components";
 import Table from "./components/table";
-import React from "react";
+import React, { useState } from "react";
 import IncomesModal from "./components/incomeModal";
+import { FaPlus, FaFilter, FaSearch } from "react-icons/fa";
 
+type Action = "ADD" | "FILTER" | "SEARCH";
 function Incomes() {
-  const [isModalOpen, setIsOpen] = React.useState(false);
-
-  function toggleModal() {
-    setIsOpen(!isModalOpen);
-  }
+  const [activeAction, setActiveAction] = useState<Action>();
 
   return (
     <Wrapper>
       <nav>
-        <button className="button--addIncome" onClick={toggleModal}>
-          Agregar ingreso
-        </button>
-        <input type="text" />
-        <button className="button--filter">
-          <img alt="filter icon" src="assets/images/filter-icon.png" />
-        </button>
+        {(activeAction === "ADD" || !activeAction) && (
+          <div
+            onClick={() => setActiveAction("ADD")}
+            className={`nav-button ${activeAction === "ADD" ? "active" : ""}`}
+          >
+            <FaPlus size={20} />
+            {activeAction === "ADD" && <span>Agregar</span>}
+          </div>
+        )}
+        {(activeAction === "FILTER" || !activeAction) && (
+          <div
+            onClick={() => setActiveAction("FILTER")}
+            className={`nav-button ${
+              activeAction === "FILTER" ? "active" : ""
+            }`}
+          >
+            <FaFilter size={20} />
+            {activeAction === "FILTER" && <span>Filtrar</span>}
+          </div>
+        )}
+        {(activeAction === "SEARCH" || !activeAction) && (
+          <div
+            onClick={() => setActiveAction("SEARCH")}
+            className={`nav-button ${
+              activeAction === "SEARCH" ? "active" : ""
+            }`}
+          >
+            <FaSearch size={20} />
+            {activeAction === "SEARCH" && <input type="text" />}
+          </div>
+        )}
       </nav>
 
-      <IncomesModal isOpen={isModalOpen} onClose={toggleModal} />
+      <IncomesModal
+        isOpen={activeAction === "ADD"}
+        onClose={() => setActiveAction(undefined)}
+      />
       <Table />
     </Wrapper>
   );
@@ -30,41 +55,41 @@ function Incomes() {
 
 const Wrapper = styled.section`
   box-sizing: border-box;
-  margin: 20px;
   border-radius: 8px;
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   nav {
     height: 48px;
     display: flex;
-    gap: 10px;
-    padding: 20px 20px 5px;
-    border-bottom: 1px solid gray;
-    margin: 5px;
+    gap: 30px;
   }
   input {
     width: 500px;
     border-radius: 20px;
+    background: #ffffff;
+    height: 20px;
+    margin-left: 10px;
   }
-  img {
-    object-fit: fill;
-    width: 30px;
+  .nav-button {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+      color: #5a5a5a;
+    }
+    &.active {
+      background-color: #ffffff;
+      border-radius: 5px;
+    }
   }
-  .button--addIncome {
-    background-color: transparent;
-    border-radius: 15px;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    cursor: pointer;
-  }
-  .button--filter {
-    background-color: transparent;
-    /* background-image: url(assets/images/filter-icon.png); */
-    border-radius: 50%;
-    width: 50px;
-    cursor: pointer;
-  }
-  .button--filter:hover {
-    background-color: #ffffff77;
+  span {
+    font-family: "Poppins";
+    font-size: 18px;
+    text-align: center;
   }
 `;
 

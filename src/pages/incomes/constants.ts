@@ -1,5 +1,6 @@
 import { CreateIncome } from "../../types/models";
 import * as Yup from "yup";
+import { scryRenderedComponentsWithType } from "react-dom/test-utils";
 
 export const incomeTypeID = {
   tithe: 2,
@@ -53,5 +54,6 @@ export const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    background: "#83a3bbc9",
   },
 };

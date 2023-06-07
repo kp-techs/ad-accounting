@@ -192,6 +192,18 @@ const Wrapper = styled.div`
 
   input {
     width: 100%;
+    height: 25px;
+    background: #273b6c;
+    border-radius: 4px;
+    border: 0px;
+    padding: 1px 5px;
+    border-color: hsl(0, 0%, 80%);
+    border-style: solid;
+    outline: 0;
+    &:active,
+    .active {
+      background-color: hsl(0, 0%, 100%);
+    }
   }
 
   .selectType-container {

@@ -13,7 +13,7 @@ function Table() {
   const [isAdmin] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 18;
+  const pageSize = 15;
   const [activeIncome, setActiveIncome] = useState<Income | undefined>();
 
   useEffect(() => {
@@ -49,58 +49,62 @@ function Table() {
         onClose={toggleModifyModal}
         income={activeIncome}
       />
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((income) => {
-            prepareRow(income);
-
-            return (
-              <tr {...income.getRowProps()} className="row">
-                {income.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+      <div className="table-container">
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
                 ))}
-                {isAdmin && (
-                  <div id="modifyButtons-container">
-                    <div
-                      className="buttons"
-                      onClick={() => {
-                        setActiveIncome(income.original);
-                        toggleModifyModal();
-                      }}
-                    >
-                      <img
-                        src="assets/images/pencil-161946_640.webp"
-                        alt="Modify"
-                      />
-                    </div>
-                    <div
-                      className="buttons"
-                      onClick={() => {
-                        setActiveIncome(income.original);
-                        toggleDeleteModal();
-                      }}
-                    >
-                      <img
-                        src="assets/images/delete_318-901546.avif"
-                        alt="Delete"
-                      />
-                    </div>
-                  </div>
-                )}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((income) => {
+              prepareRow(income);
+
+              return (
+                <tr {...income.getRowProps()} className="row">
+                  {income.cells.map((cell) => (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  ))}
+                  {isAdmin && (
+                    <div id="modifyButtons-container">
+                      <div
+                        className="buttons"
+                        onClick={() => {
+                          setActiveIncome(income.original);
+                          toggleModifyModal();
+                        }}
+                      >
+                        <img
+                          src="assets/images/pencil-161946_640.webp"
+                          alt="Modify"
+                        />
+                      </div>
+                      <div
+                        className="buttons"
+                        onClick={() => {
+                          setActiveIncome(income.original);
+                          toggleDeleteModal();
+                        }}
+                      >
+                        <img
+                          src="assets/images/delete_318-901546.avif"
+                          alt="Delete"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <div className="pagination-container">
         <Pagination
           className="pagination-bar"
@@ -118,14 +122,15 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100% - 84px);
-  padding: 10px;
+  height: calc(100% - 65px);
   box-sizing: border-box;
 
-  table {
+  .table-container {
     overflow: scroll;
+    height: calc(100% - 45px);
+  }
+  table {
     width: 100%;
-    overflow: hidden;
     border-collapse: collapse;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
@@ -187,7 +192,6 @@ const Wrapper = styled.section`
   .pagination-container {
     display: flex;
     justify-content: right;
-    padding-right: 20px;
   }
 `;
 
