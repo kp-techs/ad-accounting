@@ -7,6 +7,7 @@ import Login from "../pages/login";
 import Home from "../pages/home";
 import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
+import { createGlobalStyle } from "styled-components";
 import SignUpForm from "../pages/signUpForm";
 
 const router = createBrowserRouter([
@@ -45,7 +46,24 @@ const router = createBrowserRouter([
 ]);
 
 function Router() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <GlobalStyles />
+      <RouterProvider router={router} />;
+    </>
+  );
 }
+
+const GlobalStyles = createGlobalStyle`
+  @font-face {
+    font-family: "Poppins-Regular";
+    src: local("Poppins-Regular") url('./fonst/Poppins/Poppins-Regular.ttf') format('truetype');
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 export default Router;

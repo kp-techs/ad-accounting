@@ -9,7 +9,7 @@ type AppContextType = [
 ];
 
 type Props = {
-  children: JSX.Element[];
+  children: JSX.Element;
 };
 
 export const AppProvider: FC<Props> = ({ children }) => {

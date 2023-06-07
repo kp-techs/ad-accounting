@@ -1,7 +1,7 @@
 import { FieldProps } from "formik";
 import { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
-import { useSupabase } from "../../../hooks/useSupabase";
+import { useSupabase } from "../hooks/useSupabase";
 
 type Props = FieldProps<any> & {
   table: string;

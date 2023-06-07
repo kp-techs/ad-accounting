@@ -1,4 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, Session } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
 import { TableIncome } from "../types/models";
 import { Database } from "../types/supabase";
 
@@ -8,7 +9,22 @@ const supabase = createClient<Database>(
 );
 
 export const useSupabase = () => {
-  return { supabase };
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then((response) => {
+      const { session } = response.data;
+      setSession(session);
+    });
+
+    const { data } = supabase.auth.onAuthStateChange((_, session) => {
+      setSession(session);
+    });
+
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  return { supabase, session };
 };
 
 export async function fetchIncomes() {

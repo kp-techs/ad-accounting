@@ -6,7 +6,8 @@ import SwitchButton from "../../../components/switchButton";
 import { useSupabase } from "../../../hooks/useSupabase";
 import { Income } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
-import SelectOptions from "../utils/selectOptions";
+import SelectOptions from "../../../components/selectOptions";
+
 import {
   initialIncome,
   customStyles,
