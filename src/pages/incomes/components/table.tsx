@@ -106,6 +106,7 @@ const Wrapper = styled.section`
   table {
     overflow: scroll;
     width: 100%;
+    overflow: hidden;
     border-collapse: collapse;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
