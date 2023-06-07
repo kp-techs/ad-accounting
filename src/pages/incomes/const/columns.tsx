@@ -1,11 +1,10 @@
 import { useMemo } from "react";
 import { Column } from "react-table";
 import { Income } from "../../../types/models";
-import { formatDate, generateConcept } from "../../../utils/helper";
-        import {
-	formatDate,
-	formatMoney,
-	generateConcept
+import {
+  formatDate,
+  formatMoney,
+  generateConcept,
 } from "../../../utils/helper";
 
 function useColumns() {
@@ -23,17 +22,16 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => generateConcept(row.original),
       },
-      		{
-				Header: "Monto",
-				accessor: "amount",
-				// @ts-ignore
-				Cell: ({ row }) => formatMoney(row.original.amount)
-			}
+      {
+        Header: "Monto",
+        accessor: "amount",
+        // @ts-ignore
+        Cell: ({ row }) => formatMoney(row.original.amount),
+      },
     ],
     []
   );
   return columns;
-
 }
 
 export default useColumns;

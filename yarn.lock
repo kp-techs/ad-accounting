@@ -4957,10 +4957,10 @@ formdata-polyfill@^4.0.10:
   dependencies:
     fetch-blob "^3.1.2"
 
-formik@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/formik/-/formik-2.3.2.tgz#9a911a05e9a6a6790d81fcd44f9e3df4d496956b"
-  integrity sha512-pdPurzQ+JGGj9jDDPUz4O3nrNyduWu1P4m1w5kVLrUeyqktoDVHf9KId9eNeIjLnCUSGlkUnAnJ/F7e5Xg3XYg==
+formik@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/formik/-/formik-2.4.1.tgz#f2630b51a866c86144a5faf68d31200c9d8ceea9"
+  integrity sha512-ajOB9EmFhXb4PACTlaooVEn7PLtLtBJEZ8fPs+wFZjL5KSGwgAoU+n9DHN8JcqNKcXkloEYYtn1lxrLav18ecQ==
   dependencies:
     deepmerge "^2.1.1"
     hoist-non-react-statics "^3.3.0"
@@ -8098,17 +8098,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-2.0.4.tgz"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-
 react-fast-compare@^3.0.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz#929a97a532304ce9fee4bcae44234f1ce2c21d49"
   integrity sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==
-
-react-hook-form@^7.43.9:
-  version "7.43.9"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.43.9.tgz"
-  integrity sha512-AUDN3Pz2NSeoxQ7Hs6OhQhDr6gtF9YRuutGDwPQqhSUAHJSgGl2VeY3qN19MG0SucpjgDiuMJ4iC5T5uB+eaNQ==
-
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
