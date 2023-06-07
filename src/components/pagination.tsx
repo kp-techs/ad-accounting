@@ -119,8 +119,8 @@ const Wrapper = styled.div`
     }
 
     img {
-      width: 3.9473700523376616px;
-      height: 9.210525512695348px;
+      width: 4px;
+      height: 9px;
     }
   }
 `;

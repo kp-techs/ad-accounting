@@ -69,31 +69,3 @@ export const usePagination = ({
 
   return paginationRange || [];
 };
-
-// function Pagination({
-//   totalCount,
-//   currentPage,
-//   pageSize,
-//   onPageChange,
-//   siblingCount,
-// }: Props) {
-//   return (
-//     <Wrapper>
-//       <button className="pageButton prevButton">
-//         <GrPrevious color="#dae6f3" size="11px" />
-//       </button>
-//       <button className="pageButton">1</button>
-//       <button className="pageButton">2</button>
-//       <button className="pageButton">3</button>
-//       <button className="pageButton">4</button>
-//       <button className="pageButton">5</button>
-//       <button className="pageButton">...</button>
-//       <button className="pageButton">12</button>
-//       <button className="pageButton">
-//         <GrNext color="#dae6f3" size="11px" />
-//       </button>
-//     </Wrapper>
-//   );
-// }
-
-// export default Pagination;

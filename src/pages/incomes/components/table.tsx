@@ -7,7 +7,6 @@ import DeleteModal from "./deletemodal";
 import { Income } from "../../../types/models";
 import IncomesModal from "./incomeModal";
 import Pagination from "../../../components/pagination";
-// import Pagination from "../../../components/pagination";
 
 function Table() {
   const { incomes, loadIncomes } = useAppData();
