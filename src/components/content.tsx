@@ -10,14 +10,17 @@ const Content: FC<Props> = ({ children }) => {
 };
 
 const Wrapper = styled.main`
-  display: grid;
+  display: flex;
   grid-area: content;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px 0 0;
-  overflow: hidden;
-  background-image: url(assets/images/cloud-background.jpeg);
-  /* background-color: #b59aa7; */
-`;
+  flex-direction: column;
 
+  border-radius: 10px 0 0;
+  padding: 5px;
+
+  margin: 0 15px 10px;
+
+  background: rgba(125, 125, 125, 0.2);
+  border-radius: 40px;
+  box-sizing: border-box;
+`;
 export default Content;

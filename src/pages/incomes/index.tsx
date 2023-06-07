@@ -32,7 +32,6 @@ const Wrapper = styled.section`
   box-sizing: border-box;
   margin: 20px;
   border-radius: 8px;
-  background-color: #ffffffc0;
 
   nav {
     height: 48px;
