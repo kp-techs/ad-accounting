@@ -30,7 +30,6 @@ function Incomes() {
 
 const Wrapper = styled.section`
   box-sizing: border-box;
-  display: grid;
   margin: 20px;
   border-radius: 8px;
   background-color: #ffffffc0;
@@ -40,7 +39,6 @@ const Wrapper = styled.section`
     display: flex;
     gap: 10px;
     padding: 20px 20px 5px;
-    /* box-sizing: border-box; */
     border-bottom: 1px solid gray;
     margin: 5px;
   }

@@ -8,8 +8,8 @@ function useAppData() {
     throw new Error(`useAppData must be used inside a AppProvider`);
   }
   const [incomes, setIncomes] = context;
-  async function loadIncomes() {
-    const data = await fetchIncomes();
+  async function loadIncomes(page: number = 1, size: number = 18) {
+    const data = await fetchIncomes(page, size);
     setIncomes(data);
   }
 

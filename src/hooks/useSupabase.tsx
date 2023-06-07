@@ -27,11 +27,14 @@ export const useSupabase = () => {
   return { supabase, session };
 };
 
-export async function fetchIncomes() {
-  const { data } = await supabase
-    .from("incomes")
-    .select(`*, incomeTypes(*), ministries(*),  tithing(*)`)
-    .returns<TableIncome[]>();
+export async function fetchIncomes(page: number, size: number) {
+  const from = (page - 1) * size;
+  const to = from + size;
 
-  return data || [];
+  const { data, count } = await supabase
+    .from("incomes")
+    .select(`*, incomeTypes(*), ministries(*),  tithing(*)`, { count: "exact" })
+    .range(from, to)
+    .returns<TableIncome[]>();
+  return { data: data || [], count: count || 0 };
 }

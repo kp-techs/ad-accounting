@@ -3,9 +3,14 @@ import { TableIncome } from "../../types/models";
 
 const AppContext = createContext<AppContextType | null>(null);
 
+type IncomesData = {
+  data: TableIncome[];
+  count: number;
+};
+
 type AppContextType = [
-  TableIncome[],
-  React.Dispatch<React.SetStateAction<TableIncome[]>>
+  IncomesData,
+  React.Dispatch<React.SetStateAction<IncomesData>>
 ];
 
 type Props = {
@@ -13,7 +18,7 @@ type Props = {
 };
 
 export const AppProvider: FC<Props> = ({ children }) => {
-  const value = useState<TableIncome[]>([]);
+  const value = useState<IncomesData>({ data: [], count: 0 });
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

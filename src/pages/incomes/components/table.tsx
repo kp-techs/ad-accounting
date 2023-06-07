@@ -6,21 +6,24 @@ import useAppData from "../../../hooks/useAppData";
 import DeleteModal from "./deletemodal";
 import { Income } from "../../../types/models";
 import IncomesModal from "./incomeModal";
+import Pagination from "../../../components/pagination";
 
 function Table() {
   const { incomes, loadIncomes } = useAppData();
   const [isAdmin] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 18;
   const [activeIncome, setActiveIncome] = useState<Income | undefined>();
 
   useEffect(() => {
-    loadIncomes();
+    loadIncomes(currentPage, pageSize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   const columns = useColumns();
 
-  const table = useTable<Income>({ columns, data: incomes });
+  const table = useTable<Income>({ columns, data: incomes.data });
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
     table;
 
@@ -98,17 +101,34 @@ function Table() {
           })}
         </tbody>
       </table>
+      <div className="pagination-container">
+        <Pagination
+          className="pagination-bar"
+          currentPage={currentPage}
+          totalCount={incomes.count}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 84px);
+  padding: 10px;
+  box-sizing: border-box;
+
   table {
     overflow: scroll;
     width: 100%;
     border-collapse: collapse;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 20px;
   }
   td,
   th {
@@ -161,6 +181,12 @@ const Wrapper = styled.section`
     border-radius: 50%;
     background-color: #99a7b46f;
     border: 0.5 #f0f8ffbe solid;
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: right;
+    padding-right: 20px;
   }
 `;
 
