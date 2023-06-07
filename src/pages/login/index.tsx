@@ -9,9 +9,6 @@ function Login() {
   const { session, supabase } = useSupabase();
   const navigate = useNavigate();
   if (session) navigate("/");
-  document.querySelector("a")?.classList.add("linkLabel");
-  document.querySelector("#email")?.classList.add("user-icon");
-  document.querySelector("#password")?.classList.add("password-icon");
 
   return (
     <Wrapper>

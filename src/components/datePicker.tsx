@@ -8,7 +8,6 @@ registerLocale("es", es);
 type Props = FieldProps<any>;
 
 function PickDate({ form, field }: Props) {
-  console.log(field.value);
   return (
     <DatePicker
       showTimeSelect
