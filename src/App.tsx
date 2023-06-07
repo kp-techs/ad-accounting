@@ -9,7 +9,6 @@ import { AppProvider } from "./contexts/app";
 function App() {
   return (
     <AppProvider>
-      <GlobalStyles />
       <Wrapper>
         <Header />
         <Aside />
@@ -21,13 +20,6 @@ function App() {
   );
 }
 
-const GlobalStyles = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-  }
-`;
-
 const Wrapper = styled.div`
   display: grid;
   width: 100vw;
@@ -38,5 +30,4 @@ const Wrapper = styled.div`
     "aside content" 1fr/250px 1fr;
   background-color: aliceblue;
 `;
-
 export default App;

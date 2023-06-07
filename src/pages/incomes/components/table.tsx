@@ -123,6 +123,7 @@ const Wrapper = styled.section`
   box-sizing: border-box;
 
   table {
+    overflow: scroll;
     width: 100%;
     border-collapse: collapse;
     font-size: 16px;
