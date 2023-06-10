@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "./nav";
-
+import { MdSettings } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 function Header() {
   return (
     <Wrapper>
@@ -14,8 +15,19 @@ function Header() {
         </div>
         <div className="links">
           <Link to={`/`}>Inicio</Link>
-          <Link to={`/configuration`}>Configuración</Link>
-          <Link to={`/login`}>Salir</Link>
+          <Link to={`/configuration`}>
+            <div className="button">
+              <MdSettings size={30} />
+            </div>
+          </Link>
+          <div className="log-container">
+            <Link to={`/login`}>
+              <div className="button">
+                <FaUserCircle size={30} color="green" />
+              </div>
+            </Link>
+            <div className="button logout">Salir</div>
+          </div>
         </div>
       </nav>
       <Nav />
@@ -24,6 +36,8 @@ function Header() {
 }
 
 const Wrapper = styled.header`
+  font-size: 20px;
+  font-family: Poppins;
   grid-area: header;
   margin: 0;
   box-sizing: border-box;
@@ -31,7 +45,6 @@ const Wrapper = styled.header`
   flex-direction: column;
   width: 100%;
   height: 100%;
-
   padding: 15px 30px;
   background: linear-gradient(
     180.78deg,
@@ -39,6 +52,16 @@ const Wrapper = styled.header`
     rgba(255, 255, 255, 0) 75%
   );
 
+  .button {
+    display: flex;
+  }
+
+  .logout {
+    padding: 0px 20px;
+    background-color: #273b6c;
+    color: #ffffff;
+    border-radius: 20px;
+  }
   nav {
     display: flex;
     width: 100%;
@@ -47,7 +70,6 @@ const Wrapper = styled.header`
       width: 60px;
     }
   }
-
   .links {
     display: flex;
     align-items: center;
@@ -56,9 +78,13 @@ const Wrapper = styled.header`
     text-decoration: none;
     padding: 10px;
     font-size: 20px;
-
     font-family: "Poppins";
     color: #000000;
+  }
+  .log-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 

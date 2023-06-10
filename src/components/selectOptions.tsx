@@ -1,4 +1,5 @@
 import { FieldProps } from "formik";
+import { basename } from "path";
 import { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { useSupabase } from "../hooks/useSupabase";
@@ -46,6 +47,15 @@ function SelectOptions({ form, field, table }: Props) {
       onCreateOption={handleCreate}
       options={options}
       value={options.find((t) => t.value === field.value)}
+      styles={
+        {
+          // menu: (baseStyles) => ({
+          //   ...baseStyles,
+          //   height: 180,
+          //   overflow: "scroll",
+          // }),
+        }
+      }
     />
   );
 }
