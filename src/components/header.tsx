@@ -45,7 +45,7 @@ const Wrapper = styled.header`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 15px 30px;
+  padding: 15px 30px 0;
   background: linear-gradient(
     180.78deg,
     #ffffff 25%,

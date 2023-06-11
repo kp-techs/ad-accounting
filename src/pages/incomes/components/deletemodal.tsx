@@ -52,8 +52,6 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
 const Wrapper = styled.div`
   width: 450px;
   text-align: center;
-
-  font-family: Poppins, Arial, Helvetica, sans-serif;
   margin: 10px;
 
   h3 {

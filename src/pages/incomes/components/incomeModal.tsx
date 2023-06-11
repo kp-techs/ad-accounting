@@ -14,8 +14,6 @@ import {
   incomeTypeID,
   ValidationIncomeForm,
 } from "../constants";
-import { type } from "os";
-import { incomeTypes } from "../utils/incomesTypes";
 
 type Props = {
   isOpen: boolean;
@@ -73,7 +71,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
               <section className="form-content">
                 <div className="top-modal">
                   <div className="selectType-container selectIncomeType">
-                    <div className="">
+                    <div>
                       <label htmlFor="selectIncomeType">Concepto</label>
                     </div>
                     <FastField
@@ -194,12 +192,15 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
   box-sizing: border-box;
-  font-family: Poppins, Arial, Helvetica, sans-serif;
+  gap: 15px;
   width: 700px;
   height: 350px;
-
+  label {
+    font-family: Poppins;
+    font-weight: 400;
+    font-size: 18px;
+  }
   .form-content {
     display: flex;
     flex-direction: column;

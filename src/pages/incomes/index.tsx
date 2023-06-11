@@ -3,8 +3,10 @@ import Table from "./components/table";
 import React, { useState } from "react";
 import IncomesModal from "./components/incomeModal";
 import { FaPlus, FaFilter, FaSearch } from "react-icons/fa";
+import FilterModal from "./components/filterModal";
 
 type Action = "ADD" | "FILTER" | "SEARCH";
+
 function Incomes() {
   const [activeAction, setActiveAction] = useState<Action>();
 
@@ -14,7 +16,9 @@ function Incomes() {
         {(activeAction === "ADD" || !activeAction) && (
           <div
             onClick={() => setActiveAction("ADD")}
-            className={`nav-button ${activeAction === "ADD" ? "active" : ""}`}
+            className={`button nav-button ${
+              activeAction === "ADD" ? "active" : ""
+            }`}
           >
             <FaPlus size={20} />
             {activeAction === "ADD" && <span>Agregar</span>}
@@ -23,7 +27,7 @@ function Incomes() {
         {(activeAction === "FILTER" || !activeAction) && (
           <div
             onClick={() => setActiveAction("FILTER")}
-            className={`nav-button ${
+            className={`button nav-button ${
               activeAction === "FILTER" ? "active" : ""
             }`}
           >
@@ -33,19 +37,30 @@ function Incomes() {
         )}
         {(activeAction === "SEARCH" || !activeAction) && (
           <div
-            onClick={() => setActiveAction("SEARCH")}
-            className={`nav-button ${
-              activeAction === "SEARCH" ? "active" : ""
-            }`}
+            onClick={() => {
+              activeAction === "SEARCH"
+                ? setActiveAction(undefined)
+                : setActiveAction("SEARCH");
+            }}
+            className={"button"}
           >
             <FaSearch size={20} />
-            {activeAction === "SEARCH" && <input type="text" />}
+            {activeAction === "SEARCH" && (
+              <select>
+                <option value="Consulta frecuente"></option>
+                <option value="Consulta frecuente">Consulta frecuente</option>
+              </select>
+            )}
           </div>
         )}
       </nav>
 
       <IncomesModal
         isOpen={activeAction === "ADD"}
+        onClose={() => setActiveAction(undefined)}
+      />
+      <FilterModal
+        isOpen={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
       />
       <Table />
@@ -66,14 +81,16 @@ const Wrapper = styled.section`
     display: flex;
     gap: 30px;
   }
-  input {
+  select {
     width: 500px;
     border-radius: 20px;
     background: #ffffff;
-    height: 20px;
+    height: 25px;
     margin-left: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-  .nav-button {
+  .button {
     display: flex;
     gap: 9px;
     align-items: center;
@@ -81,10 +98,10 @@ const Wrapper = styled.section`
       cursor: pointer;
       color: #5a5a5a;
     }
-    &.active {
-      background-color: #ffffff;
-      border-radius: 5px;
-    }
+  }
+  .nav-button:active {
+    background-color: #ffffff;
+    border-radius: 5px;
   }
   span {
     font-family: "Poppins";

@@ -56,5 +56,6 @@ export const customStyles = {
     background: "#83a3bbc9",
     boxShadow: "7px 13px 23px -2px rgba(0, 0, 0, 0.25)",
     borderRadius: "20px",
+    fontFamily: "Poppins",
   },
 };

@@ -5,11 +5,60 @@ import styled from "styled-components";
 function Nav() {
   return (
     <Wrapper>
-      <Link to={`/incomes`}>Ingresos</Link>
-      <div className="separate-line"></div>
-      <Link to={`/outgoings`}>Egresos</Link>
-      <div className="separate-line"></div>
-      <Link to={`/reportes`}>Reportes</Link>
+      <div className="link-container">
+        <Link to={`/incomes`}>Ingresos</Link>
+        <svg
+          width="48"
+          height="32"
+          viewBox="0 0 48 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.5 32L25 0L47.5 32H0.5Z"
+            fill="#7D7D7D"
+            fill-opacity="0.2"
+          />
+        </svg>
+      </div>
+      <div className="separation">
+        <div className="separate-line"></div>
+      </div>
+      <div className="link-container">
+        <Link to={`/outgoings`}>Egresos</Link>
+        <svg
+          width="48"
+          height="32"
+          viewBox="0 0 48 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.5 32L25 0L47.5 32H0.5Z"
+            fill="#7d7d7d0"
+            fill-opacity="0.2"
+          />
+        </svg>
+      </div>
+      <div className="separation">
+        <div className="separate-line"></div>
+      </div>
+      <div className="link-container">
+        <Link to={`/reportes`}>Reportes</Link>
+        <svg
+          width="48"
+          height="32"
+          viewBox="0 0 48 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.5 32L25 0L47.5 32H0.5Z"
+            fill="#7d7d7d0"
+            fill-opacity="0.2"
+          />
+        </svg>
+      </div>
     </Wrapper>
   );
 }
@@ -41,7 +90,17 @@ const Wrapper = styled.div`
       border-radius: 20px;
     }
   }
-
+  .link-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+  }
+  .separation {
+    padding-top: 20px;
+    height: 100%;
+  }
   .separate-line {
     border: 1px solid black;
     height: 50px;
