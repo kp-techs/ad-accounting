@@ -49,7 +49,7 @@ function Router() {
   return (
     <>
       <GlobalStyles />
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </>
   );
 }

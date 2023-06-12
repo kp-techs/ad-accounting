@@ -68,112 +68,119 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
         >
           {({ values, errors, touched }) => (
             <Form>
-              <div className="selectType-container">
-                <label htmlFor="selectIncomeType">Concepto</label>
-                <FastField
-                  id="selectIncomeType"
-                  name="type"
-                  component={(props: any) => (
-                    <SelectOptions {...props} table={"incomeTypes"} />
-                  )}
-                />
-                {errors.type && touched.type && (
-                  <div style={{ color: "red" }}>{errors.type}</div>
-                )}
-              </div>
-              <section></section>
-              {values.type === incomeTypeID.tithe ? (
-                <section className="field-line">
-                  <label htmlFor="diezmante-nombre">Diezmante</label>
-                  <FastField
-                    name="tithingID"
-                    id="diezmante-name"
-                    component={(props: any) => (
-                      <SelectOptions {...props} table={"tithing"} />
-                    )}
-                  />
-                  {errors.tithingID && touched.tithingID && (
-                    <div style={{ color: "red" }}>{errors.tithingID}</div>
-                  )}
-                </section>
-              ) : values.type === incomeTypeID.event ? (
-                <section
-                  id="typeEventFields-container"
-                  className="fields-container field-line"
-                >
-                  <div>
-                    <label htmlFor="event-name">Nombre</label>
-                    <Field
-                      id="event-name"
-                      type="text"
-                      name="eventName"
-                      placeholder="Congreso Estruendo"
-                    />
-                    {errors.eventName && touched.eventName && (
-                      <div style={{ color: "red" }}>{errors.eventName}</div>
-                    )}
-                  </div>
-                  <div>
-                    <label htmlFor="event-name">Ministerio</label>
+              <section className="form-content">
+                <div className="top-modal">
+                  <div className="selectType-container selectIncomeType">
+                    <div>
+                      <label htmlFor="selectIncomeType">Concepto</label>
+                    </div>
                     <FastField
-                      id="ministery-name"
-                      type="text"
-                      name="ministryID"
+                      id="selectIncomeType"
+                      name="type"
                       component={(props: any) => (
-                        <SelectOptions {...props} table={"ministries"} />
+                        <SelectOptions {...props} table={"incomeTypes"} />
                       )}
                     />
-                    {errors.ministryID && touched.ministryID && (
-                      <div style={{ color: "red" }}>{errors.ministryID}</div>
+                    {errors.type && touched.type && (
+                      <div style={{ color: "red" }}>{errors.type}</div>
                     )}
                   </div>
-                </section>
-              ) : null}
+                  {values.type === incomeTypeID.tithe ? (
+                    <section className="field-line">
+                      <label htmlFor="diezmante-nombre">Diezmante</label>
+                      <FastField
+                        name="tithingID"
+                        id="diezmante-name"
+                        component={(props: any) => (
+                          <SelectOptions {...props} table={"tithing"} />
+                        )}
+                      />
+                      {errors.tithingID && touched.tithingID && (
+                        <div style={{ color: "red" }}>{errors.tithingID}</div>
+                      )}
+                    </section>
+                  ) : values.type === incomeTypeID.event ? (
+                    <section
+                      id="typeEventFields-container"
+                      className="fields-container field-line"
+                    >
+                      <div>
+                        <label htmlFor="event-name">Nombre</label>
+                        <Field
+                          id="event-name"
+                          className="field"
+                          type="text"
+                          name="eventName"
+                          placeholder="Congreso Estruendo"
+                        />
+                        {errors.eventName && touched.eventName && (
+                          <div style={{ color: "red" }}>{errors.eventName}</div>
+                        )}
+                      </div>
+                      <div>
+                        <label htmlFor="event-name">Ministerio</label>
+                        <FastField
+                          id="ministery-name"
+                          type="text"
+                          name="ministryID"
+                          component={(props: any) => (
+                            <SelectOptions {...props} table={"ministries"} />
+                          )}
+                        />
+                        {errors.ministryID && touched.ministryID && (
+                          <div style={{ color: "red" }}>
+                            {errors.ministryID}
+                          </div>
+                        )}
+                      </div>
+                    </section>
+                  ) : null}
 
-              <div className="fields-container field-line">
-                <div>
-                  <label>Fecha</label>
-                  <Field name="date" type="date" />
-                  {errors.date && touched.date && (
-                    <div style={{ color: "red" }}>{errors.date}</div>
-                  )}
-                </div>
-                <div>
-                  <label>Monto</label>
-                  <Field name="amount" type="number" />
-                  {errors.amount && touched.amount && (
-                    <div style={{ color: "red" }}>{errors.amount}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="field-line">
-                <label>Comentario</label>
-                <Field name="comment" type="text" />
-              </div>
-
-              <div className="foo-modal">
-                {!income && values.type === incomeTypeID.tithe ? (
-                  <div className="toggle">
-                    <SwitchButton on={on} onClick={() => setOn(!on)} />
-                    <label>Mantener selección</label>
+                  <div className="fields-container field-line">
+                    <div>
+                      <label>Fecha</label>
+                      <Field name="date" type="date" className="field" />
+                      {errors.date && touched.date && (
+                        <div style={{ color: "red" }}>{errors.date}</div>
+                      )}
+                    </div>
+                    <div>
+                      <label>Monto</label>
+                      <Field className="field" name="amount" type="number" />
+                      {errors.amount && touched.amount && (
+                        <div style={{ color: "red" }}>{errors.amount}</div>
+                      )}
+                    </div>
                   </div>
-                ) : null}
-                <div className="buttons-container">
-                  <button
-                    onClick={() => {
-                      setOn(false);
-                      onClose();
-                      initialIncome.type = null;
-                    }}
-                  >
-                    {income ? "Cancelar" : "Cerrar"}
-                  </button>
-                  <button type="submit">
-                    {income ? "Actualizar" : "Guardar"}
-                  </button>
+
+                  <div className="field-line">
+                    <label>Comentario</label>
+                    <Field className="field" name="comment" type="text" />
+                  </div>
                 </div>
-              </div>
+                <div className="foo-modal">
+                  {!income && values.type === incomeTypeID.tithe ? (
+                    <div className="toggle">
+                      <SwitchButton on={on} onClick={() => setOn(!on)} />
+                      <label>Mantener selección</label>
+                    </div>
+                  ) : null}
+                  <div className="buttons-container">
+                    <button
+                      onClick={() => {
+                        setOn(false);
+                        onClose();
+                        initialIncome.type = null;
+                      }}
+                    >
+                      {income ? "Cancelar" : "Cerrar"}
+                    </button>
+                    <button type="submit">
+                      {income ? "Actualizar" : "Guardar"}
+                    </button>
+                  </div>
+                </div>
+              </section>
             </Form>
           )}
         </Formik>
@@ -185,18 +192,54 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-  gap: 10px;
+  gap: 15px;
+  width: 700px;
+  height: 350px;
+  label {
+    font-family: Poppins;
+    font-weight: 400;
+    font-size: 18px;
+  }
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 350px;
+  }
+
+  .selectIncomeType {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+  }
+
+  .incomeTypeLabel-container {
+    display: flex;
+    align-items: center;
+  }
 
   input {
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    font-size: 14px;
     width: 100%;
+    background-color: hsl(0, 0%, 100%);
+    border-radius: 4px;
+    border: 1px;
+    border-color: hsl(0, 0%, 80%);
+    border-style: solid;
+    outline: 0;
+  }
+
+  .field {
+    padding: 2px 8px;
+    box-sizing: border-box;
+    height: 38px;
   }
 
   .selectType-container {
     box-sizing: border-box;
-    display: flex;
+    display: grid;
+    grid-template: 1fr 1fr;
     border-bottom: 1px gray solid;
     width: 100%;
     margin: 5px;
@@ -212,6 +255,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     width: 100%;
   }
+
   .field-line {
     margin: 10px 0;
   }
@@ -226,30 +270,30 @@ const Wrapper = styled.div`
     display: flex;
     grid-area: right;
     gap: 15px;
-  }
-  select {
-    width: 100%;
-  }
-  .buttons-container button {
-    /* margin: 10px; */
-    width: 70px;
-    justify-content: center;
-    font-size: 14px;
-    box-sizing: border-box;
-    background-color: #a4a4a4;
-    border-radius: 5px;
-    font-family: Arial, Helvetica, sans-serif;
-    border: 0;
-    cursor: pointer;
-  }
-  .buttons-container button:active {
-    background-color: #a4a4a494;
+
+    button {
+      width: 93px;
+      height: 30px;
+      text-align: center;
+      justify-content: center;
+      font-size: 16px;
+      box-sizing: border-box;
+      background-color: #eeeeee;
+      border-radius: 5px;
+      font-family: Poppins, Arial, Helvetica, sans-serif;
+      border: 0;
+      cursor: pointer;
+      &:active {
+        background-color: #a4a4a494;
+      }
+    }
   }
 
   .foo-modal {
     display: grid;
     grid-template: "left right" 25px/1fr;
     padding: 5px;
+    height: 40px;
   }
 `;
 
