@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "./nav";
-import { MdSettings } from "react-icons/md";
+// import { MdSettings } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 function Header() {
   return (
@@ -14,12 +14,12 @@ function Header() {
           />
         </div>
         <div className="links">
-          <Link to={`/`}>Inicio</Link>
-          <Link to={`/configuration`}>
+          {/* <Link to={`/`}>Inicio</Link> */}
+          {/* <Link to={`/configuration`}>
             <div className="button">
               <MdSettings size={30} />
             </div>
-          </Link>
+          </Link> */}
           <div className="log-container">
             <Link to={`/login`}>
               <div className="button">
@@ -51,9 +51,9 @@ const Wrapper = styled.header`
     #ffffff 25%,
     rgba(255, 255, 255, 0) 75%
   );
-
   .button {
     display: flex;
+    cursor: pointer;
   }
 
   .logout {

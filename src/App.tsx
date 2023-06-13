@@ -28,4 +28,5 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   background-image: url(assets/images/imagen-fondo.png);
 `;
+
 export default App;

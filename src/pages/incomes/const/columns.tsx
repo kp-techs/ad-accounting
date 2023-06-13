@@ -1,20 +1,20 @@
 import { useMemo } from "react";
 import { Column } from "react-table";
-import { Income } from "../../../types/models";
+import { TableIncome } from "../../../types/models";
 import {
-  formatDate,
+  formatTableDate,
   formatMoney,
   generateConcept,
 } from "../../../utils/helper";
 
 function useColumns() {
-  const columns = useMemo<Column<Income>[]>(
+  const columns = useMemo<Column<TableIncome>[]>(
     () => [
       {
         Header: "Fecha",
         accessor: "date",
         // @ts-ignore
-        Cell: ({ row }) => formatDate(row.original.date),
+        Cell: ({ row }) => formatTableDate(row.original.date),
       },
       {
         Header: "Concepto",

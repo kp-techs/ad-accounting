@@ -1,16 +1,20 @@
 import { CreateIncome } from "../../types/models";
 import * as Yup from "yup";
+import moment from "moment";
 
 export const incomeTypeID = {
   tithe: 2,
   event: 13,
 };
+//TO DO: recibir el nombre del usuario que esta logeado.
+const userName = "Jocelin Sanchez";
+const today = moment().format();
 
 export const initialIncome: CreateIncome = {
   date: "",
   amount: 0,
-  createdBy: "",
-  createdDate: null,
+  createdBy: userName,
+  createdDate: today,
   updatedBy: "",
   updatedDate: null,
   comment: "",

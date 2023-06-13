@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import IncomesModal from "./components/incomeModal";
 import { FaPlus, FaFilter, FaSearch } from "react-icons/fa";
 import FilterModal from "./components/filterModal";
-import DetailsModal from "./components/detailsModal";
 
 type Action = "ADD" | "FILTER" | "SEARCH";
 
@@ -64,7 +63,7 @@ function Incomes() {
         isOpen={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
       />
-      <DetailsModal isOpen={false} onClose={() => setActiveAction(undefined)} />
+
       <Table />
     </Wrapper>
   );
