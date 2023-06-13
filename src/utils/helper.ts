@@ -11,7 +11,7 @@ export function generateConcept({ type, ...income }: TableIncome) {
     : income.incomeTypes.name;
 }
 
-export function formatMoney(amount: number | null) {
+export function formatMoney(amount?: number) {
   if (amount) {
     const number = new Intl.NumberFormat("es-DO", {
       maximumFractionDigits: 2,

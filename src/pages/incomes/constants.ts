@@ -6,7 +6,7 @@ export const incomeTypeID = {
   tithe: 2,
   event: 13,
 };
-
+//TO DO: recibir el nombre del usuario que esta logeado.
 const userName = "Jocelin Sanchez";
 const today = moment().format();
 

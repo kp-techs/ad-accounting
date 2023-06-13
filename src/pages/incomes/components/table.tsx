@@ -14,6 +14,8 @@ import useToggle from "../../../hooks/useToggle";
 
 function Table() {
   const { incomes, loadIncomes } = useAppData();
+
+  //TO DO: recibir info de si esta logeado como Admin o no.
   const [isAdmin] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
