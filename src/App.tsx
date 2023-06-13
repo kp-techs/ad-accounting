@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import Content from "./components/content";
 import Header from "./components/header";
@@ -9,7 +9,6 @@ function App() {
   return (
     <AppProvider>
       <Wrapper>
-        <GlobalStyle />
         <Header />
         <Content>
           <Outlet />
@@ -30,9 +29,4 @@ const Wrapper = styled.div`
   background-image: url(assets/images/imagen-fondo.png);
 `;
 
-const GlobalStyle = createGlobalStyle`
-
-.unavailable{
-  cursor:not-allowed;
-}`;
 export default App;
