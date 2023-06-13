@@ -51,7 +51,6 @@ const Wrapper = styled.header`
     #ffffff 25%,
     rgba(255, 255, 255, 0) 75%
   );
-
   .button {
     display: flex;
     cursor: pointer;
