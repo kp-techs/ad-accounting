@@ -26,7 +26,7 @@ export function captalize(str: string) {
 }
 
 export function formatDate(date: string | null) {
-  moment.locale("es");
+  moment.locale("es-do");
   const momentDate = moment(date);
   const daysPassed = moment().diff(moment(date, "YYYYMMDD"), "days");
   const yearsPassed = moment().diff(moment(date, "YYYYMMDD"), "year");
@@ -44,4 +44,14 @@ export function formatDate(date: string | null) {
   } else {
     return momentDate.format("DD/MM/YY");
   }
+}
+
+export function formatLongDate(date: string | null) {
+  moment.locale("es");
+  return moment(date).format("LL[,] hh:mm A");
+}
+
+export function formatRelativeDate(date: string | null) {
+  moment.locale("es-do");
+  return moment(date).fromNow();
 }

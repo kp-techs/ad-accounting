@@ -38,3 +38,9 @@ export async function fetchIncomes(page: number, size: number) {
     .returns<TableIncome[]>();
   return { data: data || [], count: count || 0 };
 }
+
+export async function loadDetails(rowId: number) {
+  const { data } = await supabase.from("incomes").select("*").eq("id", 48);
+
+  return { data: data || [] };
+}

@@ -4,11 +4,13 @@ import useColumns from "../const/columns";
 import { useEffect, useState } from "react";
 import useAppData from "../../../hooks/useAppData";
 import DeleteModal from "./deletemodal";
-import { Income } from "../../../types/models";
+import { TableIncome } from "../../../types/models";
 import IncomesModal from "./incomeModal";
 import Pagination from "../../../components/pagination";
 import { MdDelete } from "react-icons/md";
 import { ImPencil } from "react-icons/im";
+import DetailsModal from "./detailsModal";
+import useToggle from "../../../hooks/useToggle";
 
 function Table() {
   const { incomes, loadIncomes } = useAppData();
@@ -16,7 +18,7 @@ function Table() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 15;
-  const [activeIncome, setActiveIncome] = useState<Income | undefined>();
+  const [activeIncome, setActiveIncome] = useState<TableIncome | undefined>();
 
   useEffect(() => {
     loadIncomes(currentPage, pageSize);
@@ -25,32 +27,32 @@ function Table() {
 
   const columns = useColumns();
 
-  const table = useTable<Income>({ columns, data: incomes.data });
+  const table = useTable<TableIncome>({ columns, data: incomes.data });
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
     table;
 
-  const [deleteModalIsOpen, setdeleteModalIsOpen] = useState(false);
-  function toggleDeleteModal() {
-    setdeleteModalIsOpen(!deleteModalIsOpen);
-  }
-
-  const [modifyModalIsOpen, setmodifyModalIsOpen] = useState(false);
-  function toggleModifyModal() {
-    setmodifyModalIsOpen(!modifyModalIsOpen);
-  }
+  const [isDeleteModalOpen, toggleDeleteModal] = useToggle();
+  const [isDetailsModalOpen, toggleDetailsModal] = useToggle();
+  const [isModifyModalOpen, toggleModifyModal] = useToggle();
 
   return (
     <Wrapper>
       <DeleteModal
-        isOpen={deleteModalIsOpen}
+        isOpen={isDeleteModalOpen}
         onClose={toggleDeleteModal}
         income={activeIncome}
       />
       <IncomesModal
-        isOpen={modifyModalIsOpen}
+        isOpen={isModifyModalOpen}
         onClose={toggleModifyModal}
         income={activeIncome}
       />
+      <DetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={toggleDetailsModal}
+        income={activeIncome}
+      />
+
       <div className="table-container">
         <table {...getTableProps()}>
           <thead>
@@ -72,10 +74,18 @@ function Table() {
 
               return (
                 <div className="row-body">
-                  <tr {...income.getRowProps()} className="row">
+                  <tr
+                    {...income.getRowProps()}
+                    className="row"
+                    onClick={() => {
+                      setActiveIncome(income.original);
+                      toggleDetailsModal();
+                    }}
+                  >
                     {income.cells.map((cell) => (
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     ))}
+
                     {isAdmin && (
                       <div id="modifyButtons-container">
                         <div
