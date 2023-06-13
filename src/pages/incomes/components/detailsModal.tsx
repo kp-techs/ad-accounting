@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { FC} from "react";
+import { FC } from "react";
 import { customStyles, incomeTypeID } from "../constants";
 import styled from "styled-components";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -9,6 +9,7 @@ import {
   formatLongDate,
   formatMoney,
   formatRelativeDate,
+  generateConcept,
 } from "../../../utils/helper";
 
 type Props = {
@@ -18,6 +19,11 @@ type Props = {
 };
 
 const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
+  let concept = "";
+  if (income) {
+    concept = generateConcept(income);
+  }
+
   return (
     <Modal
       ariaHideApp={false}
@@ -27,6 +33,9 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
       contentLabel="Modal para ver detalles"
     >
       <Wrapper>
+        <div className="concept-container">
+          <h3>{concept}</h3>
+        </div>
         <section className="side">
           <p className="title">Creación</p>
           <div className="user-info">
@@ -35,12 +44,12 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           </div>
         </section>
         <section className="side">
-          <p className="title">Tipo de ingreso</p>
-          <p>{income?.incomeTypes.name}</p>
-        </section>
-        <section className="side">
           <p className="title">Fecha</p>
           <p>{formatLongDate(income?.createdDate || null)}</p>
+        </section>
+        <section className="side">
+          <p className="title">Tipo de ingreso</p>
+          <p>{income?.incomeTypes.name}</p>
         </section>
         {income?.type === incomeTypeID.tithe ? (
           <section className="side">
@@ -89,11 +98,17 @@ const Wrapper = styled.div`
   font-size: 14px;
   color: #000000b1;
   padding: 10px;
-  padding-bottom: 30px;
   width: 300px;
   display: grid;
   gap: 10px;
 
+  .concept-container {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    h3 {
+      margin: 0;
+    }
+  }
   .side {
     display: grid;
     grid-template-columns: 1fr 1fr;
