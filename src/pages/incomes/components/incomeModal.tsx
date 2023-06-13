@@ -14,6 +14,7 @@ import {
   incomeTypeID,
   ValidationIncomeForm,
 } from "../constants";
+import Textarea from "../../../components/textarea";
 
 type Props = {
   isOpen: boolean;
@@ -153,9 +154,13 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                     </div>
                   </div>
 
-                  <div className="field-line">
-                    <label>Comentario</label>
-                    <Field className="field" name="comment" type="text" />
+                  <div className="field-line field-comment">
+                    <label htmlFor="comment">Comentario</label>
+                    <FastField
+                      className="comment"
+                      name="comment"
+                      component={Textarea}
+                    />
                   </div>
                 </div>
                 <div className="foo-modal">
@@ -196,7 +201,9 @@ const Wrapper = styled.div`
   gap: 15px;
   width: 700px;
   height: 350px;
+
   label {
+    color: #ffffff;
     font-family: Poppins;
     font-weight: 400;
     font-size: 18px;
@@ -210,7 +217,8 @@ const Wrapper = styled.div`
 
   .selectIncomeType {
     display: grid;
-    grid-template-columns: 80px 1fr;
+    grid-template-columns: 90px 1fr;
+    align-items: center;
   }
 
   .incomeTypeLabel-container {
@@ -218,7 +226,8 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  input {
+  input,
+  .comment {
     font-family: Poppins, Arial, Helvetica, sans-serif;
     font-size: 14px;
     width: 100%;
@@ -228,12 +237,20 @@ const Wrapper = styled.div`
     border-color: hsl(0, 0%, 80%);
     border-style: solid;
     outline: 0;
+    padding: 2px 8px;
+    box-sizing: border-box;
+    color: #2f2f2f;
   }
 
   .field {
-    padding: 2px 8px;
-    box-sizing: border-box;
     height: 38px;
+  }
+  .field-comment {
+    display: flex;
+    flex-direction: column;
+    .comment {
+      padding: 5px 8px;
+    }
   }
 
   .selectType-container {
