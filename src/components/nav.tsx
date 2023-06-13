@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -21,11 +22,13 @@ function Nav() {
           />
         </svg>
       </div>
-      <div className="separation">
+      {/* <div className="separation">
         <div className="separate-line"></div>
-      </div>
+      </div> */}
       <div className="link-container">
-        <Link to={`/outgoings`}>Egresos</Link>
+        {/* <Link to={`/outgoings`} className="unavailable">
+          Egresos
+        </Link> */}
         <svg
           width="48"
           height="32"
@@ -40,11 +43,11 @@ function Nav() {
           />
         </svg>
       </div>
-      <div className="separation">
+      {/* <div className="separation">
         <div className="separate-line"></div>
-      </div>
+      </div> */}
       <div className="link-container">
-        <Link to={`/reportes`}>Reportes</Link>
+        {/* <Link to={`/reportes`}>Reportes</Link> */}
         <svg
           width="48"
           height="32"
