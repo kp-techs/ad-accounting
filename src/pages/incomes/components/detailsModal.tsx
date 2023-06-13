@@ -6,9 +6,9 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { TableIncome } from "../../../types/models";
 import {
+  formatDate,
   formatLongDate,
   formatMoney,
-  formatRelativeDate,
   generateConcept,
 } from "../../../utils/helper";
 
@@ -37,15 +37,12 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           <h3>{concept}</h3>
         </div>
         <section className="side">
-          <p className="title">Creación</p>
-          <div className="user-info">
-            <FaRegUserCircle size={30} />
-            <p>{income?.createdBy}</p>
-          </div>
+          <p className="title">Monto</p>
+          <p>{formatMoney(income?.amount || null)}</p>
         </section>
         <section className="side">
           <p className="title">Fecha</p>
-          <p>{formatLongDate(income?.createdDate || null)}</p>
+          <p>{formatDate(income?.date || null)}</p>
         </section>
         <section className="side">
           <p className="title">Tipo de ingreso</p>
@@ -69,17 +66,27 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           </>
         ) : null}
         <section className="side">
-          <p className="title">Monto</p>
-          <p>{formatMoney(income?.amount || null)}</p>
+          <p className="title">Comentario</p>
+          <p>{income?.comment}</p>
         </section>
 
+        <section className="side">
+          <p className="title">Creación</p>
+          <div className="user-info">
+            <FaRegUserCircle size={30} />
+            <p>
+              {income?.createdBy}. {formatLongDate(income?.createdDate || null)}
+            </p>
+          </div>
+        </section>
         {income?.updatedDate !== null && (
           <section className="side">
             <p className="title">Última modificación</p>
-            <div>
+            <div className="user-info">
+              <FaRegUserCircle size={30} />
               <p>
-                {income?.updatedBy},{" "}
-                {formatRelativeDate(income?.updatedDate || null)}
+                {income?.updatedBy}.{" "}
+                {formatLongDate(income?.updatedDate || null)}
               </p>
             </div>
           </section>
@@ -98,7 +105,7 @@ const Wrapper = styled.div`
   font-size: 14px;
   color: #000000b1;
   padding: 10px;
-  width: 300px;
+
   display: grid;
   gap: 10px;
 
@@ -111,9 +118,8 @@ const Wrapper = styled.div`
   }
   .side {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
-    height: 40px;
+    grid-template-columns: 150px 1fr;
+    gap: 5px;
   }
 
   .title {

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Column } from "react-table";
 import { TableIncome } from "../../../types/models";
 import {
-  formatDate,
+  formatTableDate,
   formatMoney,
   generateConcept,
 } from "../../../utils/helper";
@@ -14,7 +14,7 @@ function useColumns() {
         Header: "Fecha",
         accessor: "date",
         // @ts-ignore
-        Cell: ({ row }) => formatDate(row.original.date),
+        Cell: ({ row }) => formatTableDate(row.original.date),
       },
       {
         Header: "Concepto",
