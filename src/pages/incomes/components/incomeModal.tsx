@@ -200,7 +200,6 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   gap: 15px;
   width: 700px;
-  height: 350px;
 
   label {
     color: #ffffff;
@@ -212,7 +211,6 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 350px;
   }
 
   .selectIncomeType {
