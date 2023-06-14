@@ -3,12 +3,14 @@ import Table from "./components/table";
 import React, { useState } from "react";
 import IncomesModal from "./components/incomeModal";
 import { FaPlus, FaFilter, FaSearch } from "react-icons/fa";
-import FilterModal from "./components/filterModal";
+import FilterSeccion from "./components/incomesFilter";
+import { filterInitialValues } from "./constants";
 
 type Action = "ADD" | "FILTER" | "SEARCH";
 
 function Incomes() {
   const [activeAction, setActiveAction] = useState<Action>();
+  const [filters, setFilters] = useState<Filters>(filterInitialValues);
 
   return (
     <Wrapper>
@@ -59,12 +61,14 @@ function Incomes() {
         isOpen={activeAction === "ADD"}
         onClose={() => setActiveAction(undefined)}
       />
-      <FilterModal
+      <FilterSeccion
         isOpen={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
+        filters={filters}
+        setFilters={setFilters}
       />
 
-      <Table />
+      <Table filters={filters} />
     </Wrapper>
   );
 }

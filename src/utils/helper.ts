@@ -59,3 +59,37 @@ export function formatRelativeDate(date: string | null) {
   moment.locale("es-do");
   return moment(date).fromNow();
 }
+
+export function generateFilterString({ ...filters }: Filters) {
+  if (!filters) return null;
+  const entries = Object.entries(filters).filter(([_, value]) =>
+    Boolean(value)
+  );
+  const mappedFilters = entries.map(([key, value]) => {
+    switch (key) {
+      case "eventName":
+      case "comment":
+        return `${key}.ilike.%${value}%`;
+      case "startAmount":
+        return `amount.gte.${value}`;
+      case "startDate":
+        return `date.gte.${value}`;
+      case "endDate":
+        return `date.lt.${value}`;
+      case "endAmount":
+        return `amount.lt.${value}`;
+      case "type":
+      case "tithingID":
+      case "ministryID":
+        console.log(value);
+        if (Array.isArray(value)) {
+          return value.map((id: number) => `${key}.eq.${id}`).join(",");
+        }
+        return "";
+      default:
+        return "";
+    }
+  });
+
+  return mappedFilters;
+}

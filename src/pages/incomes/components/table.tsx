@@ -8,24 +8,28 @@ import { TableIncome } from "../../../types/models";
 import IncomesModal from "./incomeModal";
 import Pagination from "../../../components/pagination";
 import { MdDelete } from "react-icons/md";
-import { ImPencil } from "react-icons/im";
+import { ImPencil, ImSad } from "react-icons/im";
 import DetailsModal from "./detailsModal";
 import useToggle from "../../../hooks/useToggle";
 
-function Table() {
+type Props = {
+  filters: Filters;
+};
+
+function Table({ filters }: Props) {
   const { incomes, loadIncomes } = useAppData();
 
   //TO DO: recibir info de si esta logeado como Admin o no.
   const [isAdmin] = useState(true);
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeIncome, setActiveIncome] = useState<TableIncome>();
+
   const pageSize = 15;
-  const [activeIncome, setActiveIncome] = useState<TableIncome | undefined>();
 
   useEffect(() => {
-    loadIncomes(currentPage, pageSize);
+    loadIncomes(currentPage, pageSize, filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, filters]);
 
   const columns = useColumns();
 
@@ -54,71 +58,80 @@ function Table() {
         onClose={toggleDetailsModal}
         income={activeIncome}
       />
-
-      <div className="table-container">
-        <table {...getTableProps()}>
-          <thead>
-            <div className="head-row">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </div>
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((income) => {
-              prepareRow(income);
-
-              return (
-                <div className="row-body">
-                  <tr
-                    {...income.getRowProps()}
-                    className="row"
-                    onClick={() => {
-                      setActiveIncome(income.original);
-                      toggleDetailsModal();
-                    }}
-                  >
-                    {income.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+      {incomes.count ? (
+        <div className="table-container">
+          <table {...getTableProps()}>
+            <thead>
+              <div className="head-row">
+                {headerGroups.map((headerGroup) => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map((column) => (
+                      <th {...column.getHeaderProps()}>
+                        {column.render("Header")}
+                      </th>
                     ))}
+                  </tr>
+                ))}
+              </div>
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((income) => {
+                prepareRow(income);
 
-                    {isAdmin && (
-                      <div id="modifyButtons-container">
-                        <div
-                          className="button"
-                          onClick={() => {
-                            setActiveIncome(income.original);
-                            toggleModifyModal();
-                          }}
-                        >
-                          <ImPencil size={18} />
-                        </div>
-                        <div
-                          className="button"
-                          onClick={() => {
-                            setActiveIncome(income.original);
-                            toggleDeleteModal();
-                          }}
-                        >
-                          <div className="button">
-                            <MdDelete size={24} />
+                return (
+                  <div className="row-body">
+                    <tr
+                      {...income.getRowProps()}
+                      className="row"
+                      onClick={() => {
+                        setActiveIncome(income.original);
+                        toggleDetailsModal();
+                      }}
+                    >
+                      {income.cells.map((cell) => (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      ))}
+
+                      {isAdmin && (
+                        <div id="modifyButtons-container">
+                          <div
+                            className="button"
+                            onClick={() => {
+                              setActiveIncome(income.original);
+                              toggleModifyModal();
+                            }}
+                          >
+                            <ImPencil size={18} />
+                          </div>
+                          <div
+                            className="button"
+                            onClick={() => {
+                              setActiveIncome(income.original);
+                              toggleDeleteModal();
+                            }}
+                          >
+                            <div className="button">
+                              <MdDelete size={16} />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </tr>
-                </div>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                      )}
+                    </tr>
+                  </div>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="noInfo">
+          <div>
+            <p>No hay registros disponibles</p>
+            <ImSad size={25} />
+          </div>
+        </div>
+      )}
+
       <div className="pagination-container">
         <Pagination
           className="pagination-bar"
@@ -141,9 +154,19 @@ const Wrapper = styled.section`
   box-sizing: border-box;
 
   .table-container {
-    overflow: scroll;
+    overflow: auto;
     height: calc(100% - 45px);
+
+    &::-webkit-scrollbar {
+      background-color: #ffffff;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #273b6c;
+      border-radius: 10px;
+    }
   }
+
   table {
     font-family: Poppins;
     font-size: 14px;
@@ -220,6 +243,20 @@ const Wrapper = styled.section`
   .pagination-container {
     display: flex;
     justify-content: right;
+  }
+
+  .noInfo {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: Poppins;
+      font-size: 16px;
+    }
   }
 `;
 

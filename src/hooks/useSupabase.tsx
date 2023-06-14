@@ -2,6 +2,7 @@ import { createClient, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { TableIncome } from "../types/models";
 import { Database } from "../types/supabase";
+import { generateFilterString } from "../utils/helper";
 
 const supabase = createClient<Database>(
   process.env.REACT_APP_SUPABASE_URL || "",
@@ -27,20 +28,27 @@ export const useSupabase = () => {
   return { supabase, session };
 };
 
-export async function fetchIncomes(page: number, size: number) {
+export async function fetchIncomes(
+  page: number,
+  size: number,
+  filters: Filters
+) {
   const from = (page - 1) * size;
   const to = from + size;
 
-  const { data, count } = await supabase
+  let query = supabase
     .from("incomes")
     .select(`*, incomeTypes(*), ministries(*),  tithing(*)`, { count: "exact" })
-    .range(from, to)
-    .returns<TableIncome[]>();
+    .range(from, to);
+
+  const mappedFilters = generateFilterString(filters);
+  if (mappedFilters) {
+    mappedFilters.forEach((filter) => {
+      query = query.or(filter);
+    });
+  }
+
+  const { data, count } = await query.returns<TableIncome[]>();
+
   return { data: data || [], count: count || 0 };
-}
-
-export async function loadDetails(rowId: number) {
-  const { data } = await supabase.from("incomes").select("*").eq("id", 48);
-
-  return { data: data || [] };
 }
