@@ -62,7 +62,7 @@ function Incomes() {
         onClose={() => setActiveAction(undefined)}
       />
       <FilterSeccion
-        isOpen={activeAction === "FILTER"}
+        isActive={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
         filters={filters}
         setFilters={setFilters}

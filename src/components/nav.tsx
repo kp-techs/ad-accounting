@@ -103,10 +103,10 @@ const Wrapper = styled.div`
   .separation {
     padding-top: 20px;
     height: 100%;
-  }
-  .separate-line {
-    border: 1px solid black;
-    height: 50px;
+    .separate-line {
+      border: 1px solid black;
+      height: 50px;
+    }
   }
 `;
 

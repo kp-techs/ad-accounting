@@ -1,162 +1,217 @@
-import Modal from "react-modal";
-import { FC } from "react";
-import { customStyles, incomeTypeID } from "../constants";
+import { FC, useState } from "react";
 import styled from "styled-components";
 import SelectOptions from "../../../components/selectOptions";
 import { FastField, Field, Form, Formik } from "formik";
+import { filterInitialValues, incomeTypeID } from "../constants";
 
 type Props = {
-  isOpen: boolean;
+  isActive: boolean;
   onClose: () => void;
   filters: Filters;
   setFilters: (filters: Filters) => void;
 };
 
-const FilterSeccion: FC<Props> = ({ isOpen, filters, onClose, setFilters }) => {
+const FilterSeccion: FC<Props> = ({
+  isActive,
+  filters,
+  onClose,
+  setFilters,
+}) => {
+  const [isSubmiting, setSubmiting] = useState(true);
+
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
-    >
-      <Wrapper>
+    <Wrapper>
+      {isActive ? (
         <Formik
           initialValues={filters}
-          onSubmit={(values) => {
-            setFilters(values);
-            onClose();
+          onSubmit={async (values, { resetForm }) => {
+            if (isSubmiting) {
+              setFilters(values);
+            } else {
+              setFilters(filterInitialValues);
+              resetForm();
+              onClose();
+            }
           }}
         >
           {({ values }) => (
             <Form>
-              <div className="field-line">
-                <div>
-                  <label htmlFor="selectIncomeType">Tipo de ingreso</label>
-                </div>
-                <FastField
-                  id="selectIncomeType"
-                  name="type"
-                  component={(props: any) => (
-                    <SelectOptions
-                      {...props}
-                      table={"incomeTypes"}
-                      isCreatable={false}
-                    />
-                  )}
-                />
-              </div>
-              {values.type?.includes(incomeTypeID.tithe) ? (
-                <section className="field-line">
-                  <label htmlFor="tithing-name">Diezmante</label>
-                  <FastField
-                    name="tithingID"
-                    id="tithing-name"
-                    component={(props: any) => (
-                      <SelectOptions
-                        {...props}
-                        table={"tithing"}
-                        isCreatable={false}
-                      />
-                    )}
-                  />
-                </section>
-              ) : values.type?.includes(incomeTypeID.event) ? (
-                <section
-                  id="typeEventFields-container"
-                  className="fields-container field-line"
-                >
-                  <div>
-                    <label htmlFor="event-name">Nombre</label>
-                    <Field
-                      id="event-name"
-                      className="field"
-                      type="text"
-                      name="eventName"
-                      placeholder="Congreso Estruendo"
-                    />
+              <section className="container">
+                <div className="slide-container">
+                  <div className="field-title">
+                    <label htmlFor="selectIncomeType">Tipo de ingreso</label>
                   </div>
-                  <div>
-                    <label htmlFor="event-name">Ministerio</label>
+                  <div className="select">
                     <FastField
-                      id="ministery-name"
-                      type="text"
-                      name="ministryID"
+                      id="selectIncomeType"
+                      name="type"
                       component={(props: any) => (
                         <SelectOptions
                           {...props}
-                          table={"ministries"}
+                          table={"incomeTypes"}
                           isCreatable={false}
                         />
                       )}
                     />
                   </div>
-                </section>
-              ) : null}
+                  {values.type?.includes(incomeTypeID.tithe) ? (
+                    <section>
+                      <label htmlFor="tithing-name">Diezmante</label>
+                      <div className="select">
+                        <FastField
+                          name="tithingID"
+                          id="tithing-name"
+                          component={(props: any) => (
+                            <SelectOptions
+                              {...props}
+                              table={"tithing"}
+                              isCreatable={false}
+                            />
+                          )}
+                        />
+                      </div>
+                    </section>
+                  ) : null}
+                  {values.type?.includes(incomeTypeID.event) ? (
+                    <section
+                      id="typeEventFields-container"
+                      className="field-container doble-field"
+                    >
+                      <div>
+                        <label htmlFor="event-name">Nombre</label>
+                        <Field
+                          id="event-name"
+                          className="field"
+                          type="text"
+                          name="eventName"
+                          placeholder="Congreso Estruendo"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="event-name">Ministerio</label>
+                        <div className="select">
+                          <FastField
+                            id="ministery-name"
+                            type="text"
+                            name="ministryID"
+                            component={(props: any) => (
+                              <SelectOptions
+                                {...props}
+                                table={"ministries"}
+                                isCreatable={false}
+                              />
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </section>
+                  ) : null}
+                </div>
 
-              <div className="fields-container field-line">
-                <label>Rango de fecha</label>
-                <div>
-                  <Field name="startDate" type="date" className="field" />
-                </div>
-                <div>
-                  <Field name="endDate" type="date" className="field" />
-                </div>
-              </div>
+                <div className="slide-container">
+                  <div className="field-title">
+                    <label>Rango de fecha</label>
+                  </div>
 
-              <div className="fields-container field-line">
-                <label>Rango de monto</label>
-                <div>
-                  <Field name="startAmount" type="number" className="field" />
+                  <div className="fields-container doble-field">
+                    <div className="field-container">
+                      <Field
+                        title="Fecha inicial"
+                        name="startDate"
+                        type="date"
+                        className="field"
+                      />
+                    </div>
+                    <div className="field-container">
+                      <Field
+                        title="Fecha final"
+                        name="endDate"
+                        type="date"
+                        className="field"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <Field name="endAmount" type="number" className="field" />
-                </div>
-              </div>
 
-              <div className="field-line field-comment">
-                <label htmlFor="comment">Comentario</label>
-                <Field className="field" name="comment" type="text" />
-              </div>
+                <div className="slide-container">
+                  <div className="field-title">
+                    <label>Rango de monto</label>
+                  </div>
+                  <div className="fields-container doble-field">
+                    <div className="field-container">
+                      <Field
+                        title="Monto inicial"
+                        name="startAmount"
+                        type="number"
+                        className="field"
+                      />
+                    </div>
+                    <div className="field-container">
+                      <Field
+                        title="Monto final"
+                        name="endAmount"
+                        type="number"
+                        className="field"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="slide-container">
+                  <div className="field-title">
+                    <label htmlFor="comment">Comentario</label>
+                  </div>
+                  <Field className="field" name="comment" type="text" />
+                </div>
+              </section>
               <div className="buttons-container">
-                <button type="submit">Aplicar</button>
                 <button
+                  type="submit"
                   onClick={() => {
-                    onClose();
+                    setSubmiting(true);
                   }}
                 >
-                  Cerrar
+                  Aplicar
+                </button>
+                <button
+                  onClick={() => {
+                    setSubmiting(false);
+                  }}
+                >
+                  Limpiar
                 </button>
               </div>
             </Form>
           )}
         </Formik>
-      </Wrapper>
-    </Modal>
+      ) : null}
+    </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 700px;
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
   padding: 20px 10px;
+  font-family: Poppins, Arial, Helvetica, sans-serif;
+  font-size: 14px;
 
-  h3 {
-    margin: 0;
-    margin-bottom: 5px;
-    font-family: Poppins;
-    font-weight: 400;
-  }
-  .selectIncomeType {
-    grid-template-columns: 100px 1fr;
-  }
-
-  .incomeTypeLabel-container {
+  .container {
     display: flex;
-    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    gap: 30px;
+    box-sizing: border-box;
+  }
+
+  .separation {
+    display: flex;
+
+    padding-top: 20px;
+    height: 50px;
+    .separate-line {
+      border: 1px solid black;
+      height: 50px;
+    }
   }
 
   input {
@@ -172,37 +227,43 @@ const Wrapper = styled.div`
   }
 
   .field {
+    margin-bottom: 15px;
     padding: 2px 8px;
     box-sizing: border-box;
     height: 38px;
   }
 
-  .selectType-container {
-    box-sizing: border-box;
-    display: grid;
-    border-bottom: 1px gray solid;
-    width: 100%;
-    margin: 5px;
-    padding: 10px;
-    gap: 10px;
+  .select {
+    margin-bottom: 15px;
+  }
+  .field-title {
+    display: flex;
+    align-items: flex-end;
+
+    label {
+      font-family: Poppins, Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+    }
   }
 
-  .fields-container {
+  .slide-container {
     box-sizing: border-box;
+    display: grid;
+    width: 100%;
+    grid-template-rows: auto 1fr;
+  }
+
+  .doble-field {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .field-line {
-    margin-bottom: 20px;
+    gap: 10px;
   }
 
   .buttons-container {
     display: flex;
-    grid-area: right;
+    justify-content: flex-end;
+    padding: 10px;
     gap: 15px;
 
     button {
@@ -221,13 +282,6 @@ const Wrapper = styled.div`
         background-color: #a4a4a494;
       }
     }
-  }
-
-  .foo-modal {
-    display: grid;
-    grid-template: "left right" 25px/1fr;
-    padding: 5px;
-    height: 40px;
   }
 `;
 
