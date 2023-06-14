@@ -3,6 +3,7 @@ import { TableIncome } from "../types/models";
 import moment from "moment";
 import "moment/locale/es";
 
+
 export function generateConcept({ type, ...income }: TableIncome) {
   return type === incomeTypeID.tithe
     ? `Diezmo: ${income.tithing?.name}`
