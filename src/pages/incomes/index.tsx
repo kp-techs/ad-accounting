@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Table from "./components/table";
 import React, { useState } from "react";
 import IncomesModal from "./components/incomeModal";
-import { FaPlus, FaFilter, FaSearch } from "react-icons/fa";
+import { FaPlus, FaFilter } from "react-icons/fa";
 import FilterSeccion from "./components/incomesFilter";
 import { filterInitialValues } from "./constants";
 
@@ -35,24 +35,6 @@ function Incomes() {
           >
             <FaFilter size={20} />
             {activeAction === "FILTER" && <span>Filtrar</span>}
-          </div>
-        )}
-        {(activeAction === "SEARCH" || !activeAction) && (
-          <div
-            onClick={() => {
-              activeAction === "SEARCH"
-                ? setActiveAction(undefined)
-                : setActiveAction("SEARCH");
-            }}
-            className={"button"}
-          >
-            <FaSearch size={20} />
-            {activeAction === "SEARCH" && (
-              <select>
-                <option value="Consulta frecuente"></option>
-                <option value="Consulta frecuente">Consulta frecuente</option>
-              </select>
-            )}
           </div>
         )}
       </nav>

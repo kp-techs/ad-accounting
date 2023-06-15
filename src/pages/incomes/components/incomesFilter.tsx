@@ -191,7 +191,6 @@ const FilterSeccion: FC<Props> = ({
 
 const Wrapper = styled.div`
   box-sizing: border-box;
-  padding: 20px 10px;
   font-family: Poppins, Arial, Helvetica, sans-serif;
   font-size: 14px;
 
@@ -201,17 +200,6 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     gap: 30px;
     box-sizing: border-box;
-  }
-
-  .separation {
-    display: flex;
-
-    padding-top: 20px;
-    height: 50px;
-    .separate-line {
-      border: 1px solid black;
-      height: 50px;
-    }
   }
 
   input {
