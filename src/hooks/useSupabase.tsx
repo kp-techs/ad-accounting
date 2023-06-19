@@ -42,11 +42,11 @@ export async function fetchIncomes(
     .range(from, to);
 
   const mappedFilters = generateFilterString(filters);
-  if (mappedFilters) {
-    mappedFilters.forEach((filter) => {
+  mappedFilters.forEach((filter) => {
+    if (filter) {
       query = query.or(filter);
-    });
-  }
+    }
+  });
 
   const { data, count } = await query.returns<TableIncome[]>();
 

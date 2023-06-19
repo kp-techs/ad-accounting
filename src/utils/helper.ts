@@ -61,10 +61,30 @@ export function formatRelativeDate(date: string | null) {
 }
 
 export function generateFilterString({ ...filters }: Filters) {
-  if (!filters) return null;
+  if (!filters) return [];
+  if (filters.tithingID?.length) {
+    if (filters.type?.includes(incomeTypeID.tithe)) {
+      filters.type = (filters.type || []).filter(
+        (type) => type !== incomeTypeID.tithe
+      );
+    } else {
+      filters.tithingID = null;
+    }
+  }
+  if (filters.ministryID?.length || filters.eventName?.length) {
+    if (filters.type?.includes(incomeTypeID.event)) {
+      filters.type = (filters.type || []).filter(
+        (type) => type !== incomeTypeID.event
+      );
+    } else {
+      filters.ministryID = null;
+      filters.eventName = null;
+    }
+  }
   const entries = Object.entries(filters).filter(([_, value]) =>
     Boolean(value)
   );
+  let typesStr = "";
   const mappedFilters = entries.map(([key, value]) => {
     switch (key) {
       case "eventName":
@@ -81,15 +101,18 @@ export function generateFilterString({ ...filters }: Filters) {
       case "type":
       case "tithingID":
       case "ministryID":
-        console.log(value);
         if (Array.isArray(value)) {
-          return value.map((id: number) => `${key}.eq.${id}`).join(",");
+          typesStr +=
+            (typesStr && value.length ? "," : "") +
+            value.map((id: number) => `${key}.eq.${id}`).join(",");
         }
         return "";
       default:
         return "";
     }
   });
+
+  if (typesStr) mappedFilters.push(typesStr);
 
   return mappedFilters;
 }

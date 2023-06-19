@@ -30,11 +30,11 @@ export const filterInitialValues: Filters = {
   tithingID: null,
   ministryID: null,
   eventName: "",
-  comment: null,
-  startDate: null,
-  endDate: null,
+  comment: "",
+  startDate: "",
+  endDate: "",
   startAmount: 0,
-  endAmount: null,
+  endAmount: 0,
 };
 
 export const ValidationIncomeForm = Yup.object().shape({

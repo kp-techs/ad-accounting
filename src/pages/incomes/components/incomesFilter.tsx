@@ -1,8 +1,9 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import SelectOptions from "../../../components/selectOptions";
 import { FastField, Field, Form, Formik } from "formik";
 import { filterInitialValues, incomeTypeID } from "../constants";
+import { GrFormClose } from "react-icons/gr";
 
 type Props = {
   isActive: boolean;
@@ -17,25 +18,23 @@ const FilterSeccion: FC<Props> = ({
   onClose,
   setFilters,
 }) => {
-  const [isSubmiting, setSubmiting] = useState(true);
-
   return (
     <Wrapper>
       {isActive ? (
         <Formik
           initialValues={filters}
-          onSubmit={async (values, { resetForm }) => {
-            if (isSubmiting) {
-              setFilters(values);
-            } else {
-              setFilters(filterInitialValues);
-              resetForm();
-              onClose();
-            }
+          onReset={() => {
+            setFilters(filterInitialValues);
           }}
+          onSubmit={setFilters}
         >
           {({ values }) => (
             <Form>
+              <div className="close">
+                <button onClick={onClose}>
+                  <GrFormClose size={20} />
+                </button>
+              </div>
               <section className="container">
                 <div className="slide-container">
                   <div className="field-title">
@@ -152,6 +151,7 @@ const FilterSeccion: FC<Props> = ({
                         name="endAmount"
                         type="number"
                         className="field"
+                        value={values.endAmount || ""}
                       />
                     </div>
                   </div>
@@ -165,21 +165,8 @@ const FilterSeccion: FC<Props> = ({
                 </div>
               </section>
               <div className="buttons-container">
-                <button
-                  type="submit"
-                  onClick={() => {
-                    setSubmiting(true);
-                  }}
-                >
-                  Aplicar
-                </button>
-                <button
-                  onClick={() => {
-                    setSubmiting(false);
-                  }}
-                >
-                  Limpiar
-                </button>
+                <button type="submit">Aplicar</button>
+                <button type="reset">Limpiar</button>
               </div>
             </Form>
           )}
@@ -194,6 +181,16 @@ const Wrapper = styled.div`
   font-family: Poppins, Arial, Helvetica, sans-serif;
   font-size: 14px;
 
+  .close {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      background-color: transparent;
+      border: 0px;
+      align-self: flex-end;
+      cursor: pointer;
+    }
+  }
   .container {
     display: flex;
     justify-content: center;

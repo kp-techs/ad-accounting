@@ -34,7 +34,7 @@ function Incomes() {
             }`}
           >
             <FaFilter size={20} />
-            {activeAction === "FILTER" && <span>Filtrar</span>}
+            {activeAction === "FILTER" && <span>Filtrar </span>}
           </div>
         )}
       </nav>
