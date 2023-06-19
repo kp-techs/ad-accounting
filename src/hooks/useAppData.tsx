@@ -1,6 +1,7 @@
 import AppContext from "../contexts/app";
 import { useContext } from "react";
 import { fetchIncomes } from "../hooks/useSupabase";
+import { filterInitialValues } from "../pages/incomes/constants";
 
 function useAppData() {
   const context = useContext(AppContext);
@@ -8,8 +9,12 @@ function useAppData() {
     throw new Error(`useAppData must be used inside a AppProvider`);
   }
   const [incomes, setIncomes] = context;
-  async function loadIncomes(page: number = 1, size: number = 18) {
-    const data = await fetchIncomes(page, size);
+  async function loadIncomes(
+    page: number = 1,
+    size: number = 18,
+    filters: Filters = filterInitialValues
+  ) {
+    const data = await fetchIncomes(page, size, filters);
     setIncomes(data);
   }
 

@@ -1,17 +1,19 @@
 import { FieldProps } from "formik";
-
 import { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { useSupabase } from "../hooks/useSupabase";
+import Select from "react-select";
 
 type Props = FieldProps<any> & {
   table: string;
+  isCreatable?: boolean;
 };
+
 type Option = {
   label: string;
   value: number | string;
 };
-function SelectOptions({ form, field, table }: Props) {
+function SelectOptions({ form, field, table, isCreatable = true }: Props) {
   const { supabase } = useSupabase();
 
   const [options, setOptions] = useState<Option[]>([]);
@@ -38,7 +40,7 @@ function SelectOptions({ form, field, table }: Props) {
     form.setFieldValue(field.name, newValue?.value);
   }
 
-  return (
+  return isCreatable ? (
     <CreatableSelect
       isClearable
       onChange={(value) => {
@@ -47,6 +49,21 @@ function SelectOptions({ form, field, table }: Props) {
       onCreateOption={handleCreate}
       options={options}
       value={options.find((t) => t.value === field.value)}
+    />
+  ) : (
+    <Select
+      isMulti
+      onChange={(value) => {
+        form.setFieldValue(
+          field.name,
+          value.map(({ value }) => value)
+        );
+      }}
+      value={options.filter((op) => field.value?.includes(op.value))}
+      options={options}
+      className=""
+      placeholder="Seleccionar..."
+      classNamePrefix="select"
     />
   );
 }

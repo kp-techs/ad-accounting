@@ -60,3 +60,60 @@ export function formatRelativeDate(date: string | null) {
   moment.locale("es-do");
   return moment(date).fromNow();
 }
+
+export function generateFilterString({ ...filters }: Filters) {
+  if (!filters) return [];
+  if (filters.tithingID?.length) {
+    if (filters.type?.includes(incomeTypeID.tithe)) {
+      filters.type = (filters.type || []).filter(
+        (type) => type !== incomeTypeID.tithe
+      );
+    } else {
+      filters.tithingID = null;
+    }
+  }
+  if (filters.ministryID?.length || filters.eventName?.length) {
+    if (filters.type?.includes(incomeTypeID.event)) {
+      filters.type = (filters.type || []).filter(
+        (type) => type !== incomeTypeID.event
+      );
+    } else {
+      filters.ministryID = null;
+      filters.eventName = null;
+    }
+  }
+  const entries = Object.entries(filters).filter(([_, value]) =>
+    Boolean(value)
+  );
+  let typesStr = "";
+  const mappedFilters = entries.map(([key, value]) => {
+    switch (key) {
+      case "eventName":
+      case "comment":
+        return `${key}.ilike.%${value}%`;
+      case "startAmount":
+        return `amount.gte.${value}`;
+      case "startDate":
+        return `date.gte.${value}`;
+      case "endDate":
+        return `date.lt.${value}`;
+      case "endAmount":
+        return `amount.lt.${value}`;
+      case "type":
+      case "tithingID":
+      case "ministryID":
+        if (Array.isArray(value)) {
+          typesStr +=
+            (typesStr && value.length ? "," : "") +
+            value.map((id: number) => `${key}.eq.${id}`).join(",");
+        }
+        return "";
+      default:
+        return "";
+    }
+  });
+
+  if (typesStr) mappedFilters.push(typesStr);
+
+  return mappedFilters;
+}

@@ -2,13 +2,15 @@ import styled from "styled-components";
 import Table from "./components/table";
 import React, { useState } from "react";
 import IncomesModal from "./components/incomeModal";
-import { FaPlus, FaFilter, FaSearch } from "react-icons/fa";
-import FilterModal from "./components/filterModal";
+import { FaPlus, FaFilter } from "react-icons/fa";
+import FilterSeccion from "./components/incomesFilter";
+import { filterInitialValues } from "./constants";
 
 type Action = "ADD" | "FILTER" | "SEARCH";
 
 function Incomes() {
   const [activeAction, setActiveAction] = useState<Action>();
+  const [filters, setFilters] = useState<Filters>(filterInitialValues);
 
   return (
     <Wrapper>
@@ -32,25 +34,7 @@ function Incomes() {
             }`}
           >
             <FaFilter size={20} />
-            {activeAction === "FILTER" && <span>Filtrar</span>}
-          </div>
-        )}
-        {(activeAction === "SEARCH" || !activeAction) && (
-          <div
-            onClick={() => {
-              activeAction === "SEARCH"
-                ? setActiveAction(undefined)
-                : setActiveAction("SEARCH");
-            }}
-            className={"button"}
-          >
-            <FaSearch size={20} />
-            {activeAction === "SEARCH" && (
-              <select>
-                <option value="Consulta frecuente"></option>
-                <option value="Consulta frecuente">Consulta frecuente</option>
-              </select>
-            )}
+            {activeAction === "FILTER" && <span>Filtrar </span>}
           </div>
         )}
       </nav>
@@ -59,12 +43,14 @@ function Incomes() {
         isOpen={activeAction === "ADD"}
         onClose={() => setActiveAction(undefined)}
       />
-      <FilterModal
-        isOpen={activeAction === "FILTER"}
+      <FilterSeccion
+        isActive={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
+        filters={filters}
+        setFilters={setFilters}
       />
 
-      <Table />
+      <Table filters={filters} />
     </Wrapper>
   );
 }

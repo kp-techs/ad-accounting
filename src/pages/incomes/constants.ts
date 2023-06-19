@@ -25,6 +25,18 @@ export const initialIncome: CreateIncome = {
   concept: null,
 };
 
+export const filterInitialValues: Filters = {
+  type: null,
+  tithingID: null,
+  ministryID: null,
+  eventName: "",
+  comment: "",
+  startDate: "",
+  endDate: "",
+  startAmount: 0,
+  endAmount: 0,
+};
+
 export const ValidationIncomeForm = Yup.object().shape({
   date: Yup.date().required("Favor especificar la fecha"),
   amount: Yup.number().min(1).required("Favor especificar el monto"),
