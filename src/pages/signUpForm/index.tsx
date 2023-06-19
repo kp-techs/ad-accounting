@@ -1,18 +1,19 @@
-import { useState } from 'react'
+import { useState } from "react";
 import styled from "styled-components";
-import { useFormik } from 'formik';
-import { supabase } from "../../hooks/useSupabase";
+import { useFormik } from "formik";
+import { useSupabase } from "../../hooks/useSupabase";
 
 const SignUpForm = () => {
+  const { supabase } = useSupabase();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
-  const handleLogin = async (event: { preventDefault: () => void; }) => {
+  const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     setLoading(true);
     const { error } = await supabase.auth.signInWithOtp({ email });
-  }
+  };
 
   return (
     <div>
@@ -24,16 +25,21 @@ const SignUpForm = () => {
             placeholder="Correo Electronico"
             value={email}
             required={true}
-            onChange={(e) => setEmail(e.target.value)} />
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div>
           <button disabled={loading}>
-            {loading ? <span>Loading</span> : <span>Enviar enlace de registro</span>}
+            {loading ? (
+              <span>Loading</span>
+            ) : (
+              <span>Enviar enlace de registro</span>
+            )}
           </button>
         </div>
       </form>
     </div>
   );
-}
+};
 
 export default SignUpForm;
