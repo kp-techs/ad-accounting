@@ -1,33 +1,32 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "./nav";
-// import { MdSettings } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
+import { FiMenu } from "react-icons/fi";
+import useToggle from "../hooks/useToggle";
+import UserOptionsModal from "./userOptionsModal";
+
 function Header() {
+  const [isModalOpen, toggleModal] = useToggle();
+
   return (
     <Wrapper>
       <nav>
-        <div className="logo">
+        <div className="logo button">
           <img
             alt="logo de las Asambleas de Dios"
             src="assets/images/AD-logo.png"
           />
         </div>
         <div className="links">
-          {/* <Link to={`/`}>Inicio</Link> */}
-          {/* <Link to={`/configuration`}>
+          <div className="log-container" onClick={toggleModal}>
             <div className="button">
-              <MdSettings size={30} />
+              <FiMenu size={30} />
             </div>
-          </Link> */}
-          <div className="log-container">
-            <Link to={`/login`}>
-              <div className="button">
-                <FaUserCircle size={30} color="green" />
-              </div>
-            </Link>
-            <div className="button logout">Salir</div>
+            <div className="button">
+              <FaUserCircle size={30} color="green" />
+            </div>
           </div>
+          <UserOptionsModal isOpen={isModalOpen} onClose={toggleModal} />
         </div>
       </nav>
       <Nav />
@@ -45,12 +44,12 @@ const Wrapper = styled.header`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 15px 30px 0;
   background: linear-gradient(
     180.78deg,
     #ffffff 25%,
     rgba(255, 255, 255, 0) 75%
   );
+
   .button {
     display: flex;
     cursor: pointer;
@@ -66,6 +65,9 @@ const Wrapper = styled.header`
     display: flex;
     width: 100%;
     justify-content: space-between;
+    padding: 15px 15px 0;
+    box-sizing: border-box;
+
     img {
       width: 60px;
     }
@@ -85,6 +87,10 @@ const Wrapper = styled.header`
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    border: 1px solid #47474759;
+    padding: 3px 10px;
+    border-radius: 20px;
   }
 `;
 

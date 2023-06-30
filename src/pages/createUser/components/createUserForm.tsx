@@ -1,41 +1,61 @@
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
-import styled from "styled-components";
+import { Field, Form, Formik } from "formik";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSupabase } from "../../hooks/useSupabase";
-import { customVariables } from "./constants";
+import styled from "styled-components";
+import { useSupabase } from "../../../hooks/useSupabase";
+import { initialUser } from "../utils/constants";
 
-function Login() {
-  const { session, supabase } = useSupabase();
+type Props = {
+  isActive: boolean;
+  userInfo: UserData;
+  setUserInfo: (userInfo: UserData) => void;
+};
+const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
+  // TO DO: estilizar ventana de cambiar contraseña
+  // TO DO: agregar validacion en cambiar contrasena antes de ingresar al sistema
+  const { supabase } = useSupabase();
   const navigate = useNavigate();
-  if (session) navigate("/");
-
-  // TO DO: acceder a la informacion de si se trata de un usuario normal o admin para limitar al usuario.
 
   return (
     <Wrapper>
       <div className="logo-container">
         <img className="AD-logo" src="assets/images/LOGO.png" alt="Logo" />
       </div>
-      <div className="log-container">
-        <div className="log">
-          <h1>INICIO</h1>
-          <Auth
-            supabaseClient={supabase}
-            providers={[]}
-            localization={{
-              variables: customVariables,
-            }}
-            appearance={{
-              theme: ThemeSupa,
-              className: { button: "button", input: "input" },
-            }}
-          />
-        </div>
-      </div>
+
+      {isActive ? (
+        <Formik
+          initialValues={userInfo}
+          onReset={() => setUserInfo(initialUser)}
+          onSubmit={(values) => {
+            supabase.auth.updateUser({
+              password: values.password,
+              data: { name: values.name },
+            });
+            navigate("/");
+          }}
+        >
+          {({ values }) => (
+            <Form>
+              <div className="log-container">
+                <div className="log">
+                  <h1>NUEVO USUARIO</h1>
+                  <Field type="text" placeholder="Nombre" name="name" />
+                  <Field type="text" placeholder="Contraseña" name="password" />
+                  <Field
+                    type="text"
+                    placeholder="Repetir contraseña"
+                    name="password2"
+                  />
+                  <button>Guardar</button>
+                </div>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      ) : null}
     </Wrapper>
   );
-}
+};
 
 const Wrapper = styled.div`
   display: flex;
@@ -81,14 +101,14 @@ const Wrapper = styled.div`
   h1 {
     font-family: "Poppins-Bold", "Poppins";
     font-style: normal;
-    font-size: 32px;
+    font-size: 20px;
     line-height: 48px;
     letter-spacing: 0.175em;
     color: #ffffff;
-    margin-top: 65px;
+    margin-top: 35px;
     margin-bottom: 0px;
   }
-  .input {
+  input {
     width: 255px;
     height: 50px;
     padding: 10px;
@@ -98,7 +118,7 @@ const Wrapper = styled.div`
   form div {
     align-items: center;
   }
-  .button {
+  button {
     background-color: #4e8fff;
     border-color: #4e8fff;
     border-radius: 10px;
@@ -136,4 +156,4 @@ const Wrapper = styled.div`
   }
 `;
 
-export default Login;
+export default CreateUserForm;

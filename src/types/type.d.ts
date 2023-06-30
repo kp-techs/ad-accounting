@@ -9,3 +9,14 @@ type Filters = {
   startAmount: number | null;
   endAmount: number | null;
 };
+
+type UserData = {
+  name: string | null;
+  lastName: string | null;
+  password: string;
+  email: string | null;
+  rol: string | null;
+  invitationText: string | null;
+};
+
+type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | "NONE";

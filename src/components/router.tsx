@@ -8,7 +8,9 @@ import Login from "../pages/login";
 import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
 import { createGlobalStyle } from "styled-components";
-import SignUpForm from "../pages/signUpForm";
+
+import CreateUser from "../pages/createUser";
+import Home from "../pages/home";
 
 const router = createBrowserRouter([
   {
@@ -18,8 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Incomes />,
-        // element: <Home />,
+        element: <Home />,
       },
       {
         path: "/incomes",
@@ -37,13 +38,10 @@ const router = createBrowserRouter([
         path: "/configuration",
         element: <Configuration />,
       },
-      {
-        path: "/signUpForm",
-        element: <SignUpForm />,
-      },
     ],
   },
   { path: "/login", element: <Login /> },
+  { path: "/create-new_user", element: <CreateUser /> },
 ]);
 
 function Router() {

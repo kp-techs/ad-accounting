@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Content from "./components/content";
 import Header from "./components/header";
 import { AppProvider } from "./contexts/app";
+import { useSupabase } from "./hooks/useSupabase";
 
 function App() {
+  const navigate = useNavigate();
+  const { supabase } = useSupabase();
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate("/login");
+      } else {
+        navigate("/");
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <AppProvider>
       <Wrapper>

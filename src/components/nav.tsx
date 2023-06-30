@@ -1,13 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 function Nav() {
+  //TO DO: arreglar triangulo que se ve separado de las opciones.
+  const location = useLocation();
+
+  useEffect(() => {}, [location]);
   return (
     <Wrapper>
       <div className="link-container">
         <Link to={`/incomes`}>Ingresos</Link>
+
         <svg
           width="48"
           height="32"
@@ -17,23 +22,21 @@ function Nav() {
         >
           <path
             d="M0.5 32L25 0L47.5 32H0.5Z"
-            fill="#7D7D7D"
+            fill={`${location.pathname === "/incomes" ? "#7D7D7D" : "none"}`}
             fill-opacity="0.2"
           />
         </svg>
       </div>
-      {/* <div className="separation">
+      <div className="separation">
         <div className="separate-line"></div>
-      </div> */}
+      </div>
       <div className="link-container">
-        {/* <Link to={`/outgoings`} className="unavailable">
-          Egresos
-        </Link> */}
+        <Link to={`/outgoings`}>Egresos</Link>
         <svg
           width="48"
           height="32"
           viewBox="0 0 48 32"
-          fill="none"
+          fill={`${location.pathname === "/outgoings" ? "#7D7D7D" : "none"}`}
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -43,16 +46,39 @@ function Nav() {
           />
         </svg>
       </div>
-      {/* <div className="separation">
+
+      <div className="separation">
         <div className="separate-line"></div>
-      </div> */}
+      </div>
       <div className="link-container">
-        {/* <Link to={`/reportes`}>Reportes</Link> */}
+        <Link to={`/reportes`}>Reportes</Link>
         <svg
           width="48"
           height="32"
           viewBox="0 0 48 32"
           fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.5 32L25 0L47.5 32H0.5Z"
+            fill={`${location.pathname === "/reportes" ? "#7D7D7D" : "none"}`}
+            fill-opacity="0.2"
+          />
+        </svg>
+      </div>
+      <div className="separation">
+        <div className="separate-line"></div>
+      </div>
+      {/* TO DO: recibir info de si esta logeado como Admin o no y en base a eso, mostrar o no la opcion de configuracion. */}
+      <div className="link-container">
+        <Link to={`/configuration`}>Configuración</Link>
+        <svg
+          width="48"
+          height="32"
+          viewBox="0 0 48 32"
+          fill={`${
+            location.pathname === "/configuration" ? "#7D7D7D" : "none"
+          }`}
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -66,8 +92,6 @@ function Nav() {
   );
 }
 
-//TODO: agregar clase active
-
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -80,12 +104,6 @@ const Wrapper = styled.div`
 
   a {
     font-size: 24px;
-    &.active {
-      color: #ffffff;
-      background-color: #273b6c;
-      backdrop-filter: blur(40px);
-      border-radius: 20px;
-    }
     &:active {
       color: #ffffff;
       background-color: #273b6c55;

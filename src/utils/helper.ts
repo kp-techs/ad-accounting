@@ -3,7 +3,6 @@ import { TableIncome } from "../types/models";
 import moment from "moment";
 import "moment/locale/es";
 
-
 export function generateConcept({ type, ...income }: TableIncome) {
   return type === incomeTypeID.tithe
     ? `Diezmo: ${income.tithing?.name}`
@@ -23,6 +22,7 @@ export function formatMoney(amount: number | null) {
 }
 
 export function captalize(str: string) {
+  if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -58,7 +58,7 @@ export function formatLongDate(date: string | null) {
 
 export function formatRelativeDate(date: string | null) {
   moment.locale("es-do");
-  return moment(date).fromNow();
+  return captalize(moment(date).fromNow());
 }
 
 export function generateFilterString({ ...filters }: Filters) {
@@ -117,3 +117,7 @@ export function generateFilterString({ ...filters }: Filters) {
 
   return mappedFilters;
 }
+
+export function getName() {}
+
+export function getRole() {}

@@ -8,9 +8,10 @@ import { TableIncome } from "../../../types/models";
 import IncomesModal from "./incomeModal";
 import Pagination from "../../../components/pagination";
 import { MdDelete } from "react-icons/md";
-import { ImPencil, ImSad } from "react-icons/im";
+import { ImPencil } from "react-icons/im";
 import DetailsModal from "./detailsModal";
 import useToggle from "../../../hooks/useToggle";
+import NoInfo from "../../../components/noInfo";
 
 type Props = {
   filters: Filters;
@@ -124,12 +125,7 @@ function Table({ filters }: Props) {
           </table>
         </div>
       ) : (
-        <div className="noInfo">
-          <div>
-            <p>No hay registros disponibles</p>
-            <ImSad size={25} />
-          </div>
-        </div>
+        <NoInfo />
       )}
 
       <div className="pagination-container">
@@ -146,7 +142,7 @@ function Table({ filters }: Props) {
 }
 
 const Wrapper = styled.section`
-  /* font-style: Poppins; */
+  font-style: Poppins;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -177,7 +173,7 @@ const Wrapper = styled.section`
   thead {
     tr {
       display: grid;
-      grid-template-columns: 300px 1fr 350px;
+      grid-template-columns: 1fr 2fr 1fr;
       align-items: center;
       th {
         font-style: italic;
@@ -204,7 +200,7 @@ const Wrapper = styled.section`
       background-color: rgba(33, 80, 119, 0.109);
       position: relative;
       display: grid;
-      grid-template-columns: 300px 1fr 350px;
+      grid-template-columns: 1fr 2fr 1fr;
       align-items: center;
       height: 100%;
       td {
