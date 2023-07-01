@@ -1,40 +1,21 @@
-import { useSupabase } from "../../../hooks/useSupabase";
 import Modal from "react-modal";
-import { customStyles } from "../../incomes/constants";
+import { FC, useState } from "react";
 import styled from "styled-components";
-import { useId, useState } from "react";
+import { customStyles } from "../../incomes/constants";
+import { useSupabase } from "../../../hooks/useSupabase";
 import useAppData from "../../../hooks/useAppData";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
-const UserInvitationModal = ({ isOpen, onClose }: Props) => {
-  const { profile } = useAppData();
-  const invitedBy = profile ? profile.name : "Origen";
 
-  // TO DO: customizar mensaje de invitacion para nuevo usuario.
-  //TO DO: cuando se actuliza la informacion, se manda "Admin" no "Administrador"
+const EditProfileModal: FC<Props> = ({ isOpen, onClose }) => {
+  const { profile } = useAppData();
   const { supabase } = useSupabase();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("Usuario");
-  const [message, setMessage] = useState("");
-  if (message) console.log(message);
-
-  const password = useId().repeat(5);
-
-  const handleInvitation = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: "http://localhost:3000/create-new_user",
-        data: { role, invitedBy },
-      },
-    });
-  };
 
   return (
     <Modal
@@ -45,42 +26,41 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
     >
       <Wrapper>
         <div>
-          <form className="form-widget" onSubmit={handleInvitation}>
+          <form
+            className="form-widget"
+            onSubmit={async () => {
+              email && (await supabase.auth.updateUser({ email }));
+              name &&
+                (await supabase.auth.updateUser({ data: { name: name } }));
+            }}
+          >
             <div className="head-modal">
-              <h3>Invitar usuario</h3>
+              <h3>Modificar usuario</h3>
             </div>
             <section className="body-modal">
+              <div className="form-field">
+                <label htmlFor="name">Nombre</label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder={profile?.name || name}
+                  onFocus={(e) => (e.target.value = "")}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
               <div className="form-field">
                 <label htmlFor="email">Correo</label>
                 <input
                   id="email"
                   type="email"
-                  placeholder="Correo Electronico"
-                  required={true}
+                  placeholder={profile?.email || email}
+                  onFocus={(e) => (e.target.value = "")}
                   onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="form-field">
-                <label>Rol</label>
-                <select
-                  onChange={(e) => {
-                    setRole(e.target.value);
-                  }}
-                >
-                  <option value="Usuario">Usuario</option>
-                  <option value="Administrador">Administrador</option>
-                </select>
-              </div>
-              <div className="form-field">
-                <label>Mensaje</label>
-                <textarea
-                  placeholder="Personalizar mensaje de invitación"
-                  onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
             </section>
             <div className="foo-modal">
-              <button>Enviar</button>
+              <button type="submit">Enviar</button>
               <button>Cancelar</button>
             </div>
           </form>
@@ -156,4 +136,5 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default UserInvitationModal;
+
+export default EditProfileModal;

@@ -9,7 +9,6 @@ import { User } from "../../../types/models";
 import colsSchema from "../const/columns";
 
 function UsersTable() {
-  //TO DO: estilizar esta tabla, ya que la informacion se muestra distorcionada y fea
   const { users, loadUsers } = useAppData();
   const columns = useMemo(() => colsSchema, []);
 
@@ -76,7 +75,6 @@ function UsersTable() {
 }
 
 const Wrapper = styled.section`
-  /* height: calc(100% - 65px); */
   height: 100%;
   width: 100%;
   font-style: Poppins;
@@ -109,7 +107,7 @@ const Wrapper = styled.section`
   thead {
     tr {
       display: grid;
-      grid-template-columns: 1fr 1fr auto 1fr;
+      grid-template-columns: 1fr 2fr 1fr 1.5fr;
       align-items: center;
       th {
         font-style: italic;
@@ -136,7 +134,7 @@ const Wrapper = styled.section`
       background-color: rgba(33, 80, 119, 0.109);
       position: relative;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 2fr 1fr 1.5fr;
       align-items: center;
       height: 100%;
       td {

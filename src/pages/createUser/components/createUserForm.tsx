@@ -11,6 +11,7 @@ type Props = {
   setUserInfo: (userInfo: UserData) => void;
 };
 const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
+  //TO DO: Crear ventana para recuperar contraseña
   // TO DO: estilizar ventana de cambiar contraseña
   // TO DO: agregar validacion en cambiar contrasena antes de ingresar al sistema
   const { supabase } = useSupabase();

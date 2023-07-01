@@ -13,6 +13,8 @@ type AppContextType = {
   setIncomes: React.Dispatch<React.SetStateAction<IncomesData>>;
   users: User[];
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  profile: User | null;
+  setProfile: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 type Props = {
@@ -22,8 +24,9 @@ type Props = {
 export const AppProvider: FC<Props> = ({ children }) => {
   const [incomes, setIncomes] = useState<IncomesData>({ data: [], count: 0 });
   const [users, setUsers] = useState<User[]>([]);
+  const [profile, setProfile] = useState<User | null>(null);
 
-  const value = { incomes, setIncomes, users, setUsers };
+  const value = { incomes, setIncomes, users, setUsers, profile, setProfile };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

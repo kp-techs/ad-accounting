@@ -2,12 +2,15 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import useAppData from "../hooks/useAppData";
 
 function Nav() {
-  //TO DO: arreglar triangulo que se ve separado de las opciones.
   const location = useLocation();
 
+  const { profile } = useAppData();
+
   useEffect(() => {}, [location]);
+
   return (
     <Wrapper>
       <div className="link-container">
@@ -66,28 +69,31 @@ function Nav() {
           />
         </svg>
       </div>
-      <div className="separation">
-        <div className="separate-line"></div>
-      </div>
-      {/* TO DO: recibir info de si esta logeado como Admin o no y en base a eso, mostrar o no la opcion de configuracion. */}
-      <div className="link-container">
-        <Link to={`/configuration`}>Configuración</Link>
-        <svg
-          width="48"
-          height="32"
-          viewBox="0 0 48 32"
-          fill={`${
-            location.pathname === "/configuration" ? "#7D7D7D" : "none"
-          }`}
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0.5 32L25 0L47.5 32H0.5Z"
-            fill="#7d7d7d0"
-            fill-opacity="0.2"
-          />
-        </svg>
-      </div>
+      {profile?.role === "Administrador" ? (
+        <>
+          <div className="separation">
+            <div className="separate-line"></div>
+          </div>
+          <div className="link-container">
+            <Link to={`/configuration`}>Configuración</Link>
+            <svg
+              width="48"
+              height="32"
+              viewBox="0 0 48 32"
+              fill={`${
+                location.pathname === "/configuration" ? "#7D7D7D" : "none"
+              }`}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.5 32L25 0L47.5 32H0.5Z"
+                fill="#7d7d7d0"
+                fill-opacity="0.2"
+              />
+            </svg>
+          </div>
+        </>
+      ) : null}
     </Wrapper>
   );
 }
@@ -99,8 +105,9 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   gap: 80px;
   flex-direction: row;
-  height: 100px;
+  height: 100%;
   width: 100%;
+  margin: 0;
 
   a {
     font-size: 24px;

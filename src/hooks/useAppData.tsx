@@ -1,6 +1,11 @@
 import AppContext from "../contexts/app";
-import { useContext } from "react";
-import { fetchIncomes, fetchUsers } from "../hooks/useSupabase";
+import { useContext, useEffect, useCallback } from "react";
+import {
+  fetchIncomes,
+  fetchProfile,
+  fetchUsers,
+  useSupabase,
+} from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
 
 function useAppData() {
@@ -8,7 +13,22 @@ function useAppData() {
   if (!context) {
     throw new Error(`useAppData must be used inside a AppProvider`);
   }
-  const { incomes, setIncomes, users, setUsers } = context;
+
+  const { session } = useSupabase();
+  const { incomes, setIncomes, users, setUsers, profile, setProfile } = context;
+
+  const loadProfile = useCallback(async () => {
+    if (session) {
+      const data = await fetchProfile(session.user.id);
+      setProfile(data);
+    } else {
+      setProfile(null);
+    }
+  }, [session, setProfile]);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
 
   async function loadIncomes(
     page: number = 1,
@@ -24,7 +44,13 @@ function useAppData() {
     setUsers(data || []);
   }
 
-  return { incomes, loadIncomes, users, loadUsers };
+  return {
+    incomes,
+    loadIncomes,
+    users,
+    loadUsers,
+    profile,
+  };
 }
 
 export default useAppData;

@@ -1,32 +1,61 @@
+import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import styled from "styled-components";
 import Nav from "./nav";
 import { FaUserCircle } from "react-icons/fa";
-import { FiMenu } from "react-icons/fi";
+import { FiEdit, FiMenu } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import useAppData from "../hooks/useAppData";
+import { useSupabase } from "../hooks/useSupabase";
+import EditProfileModal from "../pages/configuration/components/userOptionsModal";
 import useToggle from "../hooks/useToggle";
-import UserOptionsModal from "./userOptionsModal";
+import "@szhsin/react-menu/dist/index.css";
+import UserInformation from "../pages/configuration/components/userInformation";
+import { MdLogout } from "react-icons/md";
 
 function Header() {
+  const navigate = useNavigate();
+  const { profile } = useAppData();
+  const { supabase } = useSupabase();
   const [isModalOpen, toggleModal] = useToggle();
 
   return (
     <Wrapper>
+      <EditProfileModal isOpen={isModalOpen} onClose={toggleModal} />
       <nav>
-        <div className="logo button">
+        <div className="logo button" onClick={() => navigate("/")}>
           <img
             alt="logo de las Asambleas de Dios"
             src="assets/images/AD-logo.png"
           />
         </div>
         <div className="links">
-          <div className="log-container" onClick={toggleModal}>
-            <div className="button">
-              <FiMenu size={30} />
+          <Menu
+            menuButton={
+              <button type="button" className="profile-menu">
+                <div className="button">
+                  <FiMenu size={30} />
+                </div>
+                <div className="button">
+                  <FaUserCircle size={30} color="green" />
+                </div>
+              </button>
+            }
+          >
+            <div className="profile-info">
+              <UserInformation />
             </div>
-            <div className="button">
-              <FaUserCircle size={30} color="green" />
-            </div>
-          </div>
-          <UserOptionsModal isOpen={isModalOpen} onClose={toggleModal} />
+            <MenuItem className="menu-item" onClick={toggleModal}>
+              <FiEdit />
+              <div>Editar perfil </div>
+            </MenuItem>
+            <MenuItem
+              className="menu-item"
+              onClick={() => supabase.auth.signOut()}
+            >
+              <MdLogout />
+              <div> Cerrar sesión</div>
+            </MenuItem>
+          </Menu>
         </div>
       </nav>
       <Nav />
@@ -35,7 +64,7 @@ function Header() {
 }
 
 const Wrapper = styled.header`
-  font-size: 20px;
+  font-size: 16px;
   font-family: Poppins;
   grid-area: header;
   margin: 0;
@@ -55,12 +84,6 @@ const Wrapper = styled.header`
     cursor: pointer;
   }
 
-  .logout {
-    padding: 0px 20px;
-    background-color: #273b6c;
-    color: #ffffff;
-    border-radius: 20px;
-  }
   nav {
     display: flex;
     width: 100%;
@@ -83,7 +106,7 @@ const Wrapper = styled.header`
     font-family: "Poppins";
     color: #000000;
   }
-  .log-container {
+  .profile-menu {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -91,6 +114,22 @@ const Wrapper = styled.header`
     border: 1px solid #47474759;
     padding: 3px 10px;
     border-radius: 20px;
+    background-color: transparent;
+
+    &:hover,
+    &:active {
+      box-shadow: "7px 13px 23px -2px rgba(0, 0, 0, 0.25)";
+      border: 1px solid #47474776;
+      transition: all;
+    }
+  }
+
+  .profile-info {
+    margin-bottom: 1px solid #00000060;
+  }
+  .menu-item {
+    display: flex;
+    gap: 5px;
   }
 `;
 

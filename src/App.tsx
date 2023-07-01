@@ -9,6 +9,8 @@ import { useSupabase } from "./hooks/useSupabase";
 function App() {
   const navigate = useNavigate();
   const { supabase } = useSupabase();
+  //TO DO: Actualizar ultima conexion cada vez que la session cambie
+
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {

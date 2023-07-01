@@ -18,10 +18,8 @@ type Props = {
 };
 
 function Table({ filters }: Props) {
-  const { incomes, loadIncomes } = useAppData();
+  const { incomes, loadIncomes, profile } = useAppData();
 
-  //TO DO: recibir info de si esta logeado como Admin o no.
-  const [isAdmin] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeIncome, setActiveIncome] = useState<TableIncome>();
 
@@ -93,7 +91,7 @@ function Table({ filters }: Props) {
                         <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                       ))}
 
-                      {isAdmin && (
+                      {profile?.role === "Administrador" && (
                         <div id="modifyButtons-container">
                           <div
                             className="button"

@@ -10,8 +10,6 @@ function Login() {
   const navigate = useNavigate();
   if (session) navigate("/");
 
-  // TO DO: acceder a la informacion de si se trata de un usuario normal o admin para limitar al usuario.
-
   return (
     <Wrapper>
       <div className="logo-container">

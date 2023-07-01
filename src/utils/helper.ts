@@ -21,7 +21,7 @@ export function formatMoney(amount: number | null) {
   }
 }
 
-export function captalize(str: string) {
+export function captalize(str: string | null) {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
