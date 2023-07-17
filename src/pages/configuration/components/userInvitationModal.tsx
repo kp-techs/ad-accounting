@@ -12,17 +12,13 @@ type Props = {
 const UserInvitationModal = ({ isOpen, onClose }: Props) => {
   const { profile } = useAppData();
   const invitedBy = profile ? profile.name : "Origen";
-
-  // TO DO: customizar mensaje de invitacion para nuevo usuario.
-  //TO DO: cuando se actuliza la informacion, se manda "Admin" no "Administrador"
   const { supabase } = useSupabase();
 
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("Usuario");
-  const [message, setMessage] = useState("");
-  if (message) console.log(message);
-
-  const password = useId().repeat(5);
+  const [message, setMessage] = useState(`
+  Hola, ¡Dios te bendiga!
+  Te invitamos a colaborar en el sistema de contabilidad de la Iglesia Casa de Oración.`);
 
   const handleInvitation = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -30,7 +26,7 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
       email,
       {
         redirectTo: "http://localhost:3000/create-new_user",
-        data: { role, invitedBy },
+        data: { role, invitedBy, message },
     });
   };
 
