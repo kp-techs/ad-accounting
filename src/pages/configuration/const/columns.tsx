@@ -23,7 +23,7 @@ const colsSchema: Column<User>[] = [
     Header: "Última sesión",
     accessor: "last_sign_in_at",
     // @ts-ignore
-    Cell: ({ row }) => formatRelativeDate(row.original),
+    Cell: ({ row }) => formatRelativeDate(row.original.last_sign_in_at),
   },
 ];
 

@@ -26,13 +26,11 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
 
   const handleInvitation = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    await supabase.auth.signUp({
+    await supabase.auth.admin.inviteUserByEmail(
       email,
-      password,
-      options: {
-        emailRedirectTo: "http://localhost:3000/create-new_user",
+      {
+        redirectTo: "http://localhost:3000/create-new_user",
         data: { role, invitedBy },
-      },
     });
   };
 
