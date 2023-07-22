@@ -4,13 +4,12 @@ import Outgoings from "../pages/outgoings";
 import ErrorPage from "../pages/error";
 import App from "../App";
 import Login from "../pages/login";
-// import Home from "../pages/home";
+import Home from "../pages/home";
 import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
-import { createGlobalStyle } from "styled-components";
-
 import CreateUser from "../pages/createUser";
-import Home from "../pages/home";
+import RecoverPassword from "../pages/recoverPassword";
+import { createGlobalStyle } from "styled-components";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +41,7 @@ const router = createBrowserRouter([
   },
   { path: "/login", element: <Login /> },
   { path: "/create-new_user", element: <CreateUser /> },
+  {path:"/recover_password", element: <RecoverPassword /> },
 ]);
 
 function Router() {

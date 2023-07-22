@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from "formik";
-import { FC, useEffect, useState } from "react";
+import { FC} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSupabase } from "../../../hooks/useSupabase";
@@ -13,6 +13,7 @@ type Props = {
 };
 const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 	//TO DO: Crear ventana para recuperar contraseña
+	
 
 	const { supabase } = useSupabase();
 	const navigate = useNavigate();
@@ -36,18 +37,25 @@ const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 						navigate("/");
 					}}
 				>
-					{({ values, errors, touched }) => (
+					{({ errors, touched }) => (
 						<Form>
 							<div className="log-container">
 								<div className="log">
 									<h1>NUEVO USUARIO</h1>
 									<div className="field-container">
+										<div className="img-container">
+										<img src="assets/images/user-icon.svg" className="input-icon" />
+										</div>
 										<Field required type="text" placeholder="Nombre" name="name" className="user-icon" />
 									</div>
 
 									<div className="field-container">
+									<div className="img-container">
+										<img src="assets/images/pass-icon.svg" className="input-icon" />
+										</div>
 										<Field
 											required
+											autocomplete="new-password"
 											type="password"
 											placeholder="Contraseña"
 											name="password"
@@ -56,6 +64,9 @@ const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 									</div>
 
 									<div className="field-container">
+									<div className="img-container">
+										<img src="assets/images/pass-icon.svg" className="input-icon" />
+										</div>
 										<Field
 											required
 											type="password"
@@ -68,6 +79,7 @@ const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 									<div className="button-container">
 										<div className="button">Guardar</div>
 									</div>
+									
 									<div className="errors">
 										{errors.name && touched.name && <p>{errors.name}</p>}
 										{errors.password && touched.password && <p>{errors.password}</p>}
@@ -104,10 +116,6 @@ const Wrapper = styled.div`
 		font-family: "Poppins";
 	}
 
-	img {
-		border-radius: 10px;
-	}
-
 	.log-container {
 		width: 330px;
 		height: 472.875px;
@@ -124,7 +132,10 @@ const Wrapper = styled.div`
 		border-radius: 40px;
 		backdrop-filter: blur(5.5px);
 		width: 100%;
-		height: 100%;
+		height: 472px;
+		padding: 30px;
+		padding-top: 0;
+		box-sizing: border-box;
 	}
 
 	h1 {
@@ -134,41 +145,54 @@ const Wrapper = styled.div`
 		line-height: 48px;
 		letter-spacing: 0.175em;
 		color: #ffffff;
-		margin-top: 45px;
-		margin-bottom: 0px;
+		margin-top: 40px;
+		margin-bottom: 15px;
 	}
 	.field-container {
 		position: relative;
-		background-color: rgba(255, 255, 255, 0.52);
 		border-radius: 20px;
 		margin-bottom: 20px;
+		width: 100%;
+		box-sizing: border-box;
+		margin-bottom: 20px;
+
+		.img-container{
+			height: 100%;
+			padding: 0 10px;
+			position: absolute;
+      display: flex;
+      align-items: center;
+		}
+
+		.input-icon {
+      height: 20px;
+		}
 	}
 
 	input {
 		font-family: Poppins;
-		width: 225px;
+		width: 210px;
 		height: 50px;
 		font-style: italic;
 		font-size: 16px;
 		line-height: 36px;
 		letter-spacing: -0.005em;
-		color: #ffffff;
 		outline: 0;
 		border: 0;
-
-		&::placeholder {
-			color: #dadada;
-		}
+		padding-right: 10px;
+		padding-left: 50px;
+		border-radius: 20px;
 	}
 
 	form div {
 		align-items: center;
 	}
+
 	.button-container {
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-
+		margin-top: 10px;
 	}
 
 	.button {
@@ -182,7 +206,7 @@ const Wrapper = styled.div`
 		line-height: 30px;
 		letter-spacing: 0.175em;
 		color: #ffffff;
-		margin: 10px 25px 20px;
+		margin: 0px 25px 20px;
 		display: flex;
 		justify-content: center;
 		padding: 8px;
@@ -192,16 +216,6 @@ const Wrapper = styled.div`
 			cursor: pointer;
 		}
 	}
-
-	.user-icon {
-		background: url(assets/images/user-icon.svg) no-repeat 10px 10px;
-		padding-left: 43px;
-	}
-	.password-icon {
-		background: url(assets/images/pass-icon.svg) no-repeat 10px 13px;
-		padding-left: 40px;
-	}
-
 	.errors {
 		display:flex;
 		text-align: center;
@@ -211,7 +225,6 @@ const Wrapper = styled.div`
 	p {
 		color: #e39292;
 		font-size: 14px;
-		// margin-bottom: 5px;
 		margin:0;
 	}
 `;

@@ -1,25 +1,33 @@
-import { Auth } from "@supabase/auth-ui-react";
+import { Auth, ForgottenPassword } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSupabase } from "../../hooks/useSupabase";
 import { customVariables } from "./constants";
+import RecoverPassword from "../recoverPassword";
+import { useState } from "react";
 
 function Login() {
   const { session, supabase } = useSupabase();
   const navigate = useNavigate();
   if (session) navigate("/");
+  const [forgottenPassword, setForgottenPassword] = useState(false);
 
   return (
     <Wrapper>
+      //TO DO: agregar iconos de user and pass svg.
       <div className="logo-container">
         <img className="AD-logo" src="assets/images/LOGO.png" alt="Logo" />
       </div>
       <div className="log-container">
         <div className="log">
-          <h1>INICIO</h1>
+          {forgottenPassword ? 
+            <RecoverPassword /> :
+            <>
+             <h1>INICIO</h1>
           <Auth
             supabaseClient={supabase}
+            showLinks={false}
             providers={[]}
             localization={{
               variables: customVariables,
@@ -28,7 +36,12 @@ function Login() {
               theme: ThemeSupa,
               className: { button: "button", input: "input" },
             }}
-          />
+              />
+              <p className="link" onClick={()=> setForgottenPassword(true)}>¿Olvidó su contraseña?</p>
+                </>
+        
+        }
+         
         </div>
       </div>
     </Wrapper>
