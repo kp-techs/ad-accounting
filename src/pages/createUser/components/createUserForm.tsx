@@ -12,7 +12,6 @@ type Props = {
 	setUserInfo: (userInfo: UserData) => void;
 };
 const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
-
 	const { supabase } = useSupabase();
 	const navigate = useNavigate();
 
@@ -75,7 +74,7 @@ const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 									</div>
 
 									<div className="button-container">
-										<div className="button">Guardar</div>
+										<button type='submit' className="button">Guardar</button>
 									</div>
 									
 									<div className="errors">
@@ -197,6 +196,7 @@ const Wrapper = styled.div`
 		background-color: #4e8fff;
 		border-color: #4e8fff;
 		border-radius: 10px;
+		border: 0;
 		width: 190px;
 		font-family: Poppins;
 		font-style: normal;

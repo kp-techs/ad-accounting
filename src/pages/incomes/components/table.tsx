@@ -88,6 +88,7 @@ function Table({ filters }: Props) {
                       }}
                     >
                       {income.cells.map((cell) => (
+                        
                         <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                       ))}
 

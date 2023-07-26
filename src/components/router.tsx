@@ -19,7 +19,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        // element: <Home />,
+        element:<Configuration/>
       },
       {
         path: "/incomes",

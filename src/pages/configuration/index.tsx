@@ -5,8 +5,6 @@ import UsersTable from "./components/usersTable";
 import { SlUserFollow } from "react-icons/sl";
 
 function Configuration() {
-    //TO DO: crear un superadmin que no pueda ser eliminado.
-  //TO DO: funcionalidad para eliminar usuarios.
   const [isModalOpen, toggleModal] = useToggle();
   return (
     <Wrapper>

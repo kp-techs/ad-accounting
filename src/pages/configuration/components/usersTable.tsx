@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { SlUserUnfollow } from "react-icons/sl";
-import { LuChevronDown } from "react-icons/lu";
+import { LuChevronDown, LuChevronUp } from "react-icons/lu";
+import { BsCheck } from "react-icons/bs";
 import { useTable } from "react-table";
 import styled from "styled-components";
 import NoInfo from "../../../components/noInfo";
@@ -9,12 +10,17 @@ import { User } from "../../../types/models";
 import colsSchema from "../const/columns";
 import DeleteUserModal from "./DeleteUserModal";
 import useToggle from "../../../hooks/useToggle";
+import { Menu, MenuItem } from "@szhsin/react-menu";
+import RolModal from "./rolModal";
 
 function UsersTable() {
 	const { users, loadUsers } = useAppData();
 	const columns = useMemo(() => colsSchema, []);
 	const [isModalOpen, toggleModal] = useToggle();
+	const [isRolModalOpen, toggleRolModal] = useToggle();
 	const [currentUser, setCurrentUser] = useState<User>();
+	const [newValue, setNewValue] = useState("");
+
 	useEffect(() => {
 		loadUsers();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,6 +32,7 @@ function UsersTable() {
 	return (
 		<Wrapper>
 			<DeleteUserModal isOpen={isModalOpen} onClose={toggleModal} user={currentUser} />
+			<RolModal isOpen={isRolModalOpen} onClose={toggleRolModal} user={currentUser} newValue={newValue} />
 			{users ? (
 				<div className="table-container">
 					<table {...getTableProps()}>
@@ -48,17 +55,53 @@ function UsersTable() {
 									<div className="row-body">
 										<tr {...user.getRowProps()} className="row">
 											{user.cells.map((cell) => {
-												
 												return (
-													<td {...cell.getCellProps()}>
-														{cell.render("Cell")}
+													<div className="cell">
+														<td {...cell.getCellProps()}>{cell.render("Cell")}</td>
 														{cell.column.Header === "Rol" ? (
-                              <>
-                                {/* TO DO: posicionar este simbolo alineado con el texto */}
-																<LuChevronDown id="modifyRol" size={20} />
-															</>
+															<Menu
+																menuButton={(props) => {
+																	return (
+                                    <div className="modifyRol">
+                                      {props.open ? 
+                                        <LuChevronUp id="modifyRol" size={20} />
+                                        :
+                                      <LuChevronDown id="modifyRol" size={20} />
+                                    }
+																			
+																		</div>
+																	);
+																}}
+															>
+																<MenuItem className="menu-item">
+																	<div
+																		onClick={() => {
+																			if (cell.value === "Usuario") {
+																				setNewValue("Administrador");
+																				setCurrentUser(user.original);
+																				toggleRolModal();
+																			}
+																		}}
+																	>
+																		Administrador
+																		{cell.value === "Administrador" ? <BsCheck /> : null}
+																	</div>
+																</MenuItem>
+																<MenuItem
+																	className="menu-item"
+																	onClick={() => {
+																		if (cell.value === "Administrador") {
+																			setNewValue("Usuario");
+																			setCurrentUser(user.original);
+																			toggleRolModal();
+																		}
+																	}}
+																>
+																	<div>Usuario {cell.value === "Usuario" ? <BsCheck /> : null}</div>
+																</MenuItem>
+															</Menu>
 														) : null}
-													</td>
+													</div>
 												);
 											})}
 											<div id="modifyButtons-container">
@@ -211,6 +254,18 @@ const Wrapper = styled.section`
 
 	#modifyRol {
 		display: none;
+		cursor: pointer;
+	}
+
+	.cell {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.modifyRol {
+		display: flex;
+		width: 100%;
+		align-items: center;
 	}
 `;
 

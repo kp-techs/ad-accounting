@@ -4,19 +4,23 @@ import {  User } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
 import styled from "styled-components";
 import { customStyles } from "../../incomes/constants";
+import useAppData from "../../../hooks/useAppData";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   user?: User;
+  newValue?: string;
 };
 
-const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
+const RolModal: FC<Props> = ({ isOpen, onClose, user, newValue }) => {
   const { supabase } = useSupabase();
+  const { loadUsers } = useAppData();
 
-  async function deleteUser() {
+  async function switchRol() {
     if (user) {
-      await supabase.from("users").update({ active: false }).eq("id", user.id);
+      await supabase.from("users").update({ role: newValue }).eq("id", user.id);
+      loadUsers();
       onClose();
     }
   }
@@ -29,16 +33,15 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
       style={customStyles}
     >
       <Wrapper>
-        <h3>¿Seguro que desea eliminar a { user?.name || 'este usuario'}?</h3>
+        <h4>¿Seguro que desea convertir a {user?.name || 'esta persona'} en { newValue}?</h4>
         <p>
-          Este usuario se eliminará permanentemente. Esta acción no se puede
-          deshacer.
+          El cambio de roles implica cambiar las restrincciones de acceso que esta persona posee.
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
             Cancelar
           </button>
-          <button onClick={deleteUser}>Confirmar</button>
+          <button onClick={switchRol}>Confirmar</button>
         </div>
       </Wrapper>
     </Modal>
@@ -46,16 +49,18 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
 };
 
 const Wrapper = styled.div`
-  width: 450px;
+  width: 350px;
   text-align: center;
   margin: 10px;
 
-  h3 {
+  h4 {
     margin: 5px;
+
   }
   p {
     margin: 0;
     margin-bottom: 20px;
+    font-size: 13px;
   }
 
   .buttons-container {
@@ -89,4 +94,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default DeleteUserModal;
+export default RolModal;
