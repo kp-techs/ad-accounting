@@ -14,7 +14,6 @@ function Configuration() {
       <footer>
         <div className="add-button" onClick={toggleModal}>
           <span> Nuevo usuario</span>
-
           <SlUserFollow />
         </div>
         <UserInvitationModal isOpen={isModalOpen} onClose={toggleModal} />

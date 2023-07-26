@@ -30,7 +30,7 @@ function Nav() {
           />
         </svg>
       </div>
-      <div className="separation">
+      {/* <div className="separation">
         <div className="separate-line"></div>
       </div>
       <div className="link-container">
@@ -68,7 +68,7 @@ function Nav() {
             fill-opacity="0.2"
           />
         </svg>
-      </div>
+      </div> */}
       {profile?.role === "Administrador" ? (
         <>
           <div className="separation">

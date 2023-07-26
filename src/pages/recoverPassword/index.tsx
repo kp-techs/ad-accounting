@@ -5,12 +5,8 @@ import { useState } from "react";
 import { useSupabase } from "../../hooks/useSupabase";
 
 const RecoverPassword = () => {
-
-	
 	const navigate = useNavigate();
 	const { supabase } = useSupabase();
-
-
 	const [isLoading, setLoading] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
 
@@ -20,7 +16,7 @@ const RecoverPassword = () => {
 				initialValues={{ email: "" }}
 				onSubmit={async (values) => {
 					const res = await supabase.auth.resetPasswordForEmail(values.email, {
-						redirectTo: "http://localhost:3000/recover_password"
+						redirectTo: "https://ad-accounting.vercel.app/recover_password"
 					});
 
 					setLoading(true);

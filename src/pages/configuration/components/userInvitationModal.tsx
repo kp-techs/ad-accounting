@@ -25,7 +25,7 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
     await supabase.auth.admin.inviteUserByEmail(
       email,
       {
-        redirectTo: "http://localhost:3000/create-new_user",
+        redirectTo: "https://ad-accounting.vercel.app/create-new_user",
         data: { role, invitedBy, message },
     });
   };
