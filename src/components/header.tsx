@@ -1,10 +1,9 @@
-import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
+import { Menu, MenuItem } from "@szhsin/react-menu";
 import styled from "styled-components";
 import Nav from "./nav";
 import { FaUserCircle } from "react-icons/fa";
 import { FiEdit, FiMenu } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import useAppData from "../hooks/useAppData";
 import { useSupabase } from "../hooks/useSupabase";
 import EditProfileModal from "../pages/configuration/components/userOptionsModal";
 import useToggle from "../hooks/useToggle";
@@ -14,7 +13,6 @@ import { MdLogout } from "react-icons/md";
 
 function Header() {
   const navigate = useNavigate();
-  const { profile } = useAppData();
   const { supabase } = useSupabase();
   const [isModalOpen, toggleModal] = useToggle();
 

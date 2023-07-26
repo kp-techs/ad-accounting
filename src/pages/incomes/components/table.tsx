@@ -110,7 +110,7 @@ function Table({ filters }: Props) {
                             }}
                           >
                             <div className="button">
-                              <MdDelete size={16} />
+                              <MdDelete size={20} />
                             </div>
                           </div>
                         </div>

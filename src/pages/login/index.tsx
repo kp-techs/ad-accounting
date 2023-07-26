@@ -8,14 +8,15 @@ import RecoverPassword from "../recoverPassword";
 import { useState } from "react";
 
 function Login() {
+
   const { session, supabase } = useSupabase();
   const navigate = useNavigate();
-  if (session) navigate("/");
+
+if (session) navigate("/");
   const [forgottenPassword, setForgottenPassword] = useState(false);
 
   return (
     <Wrapper>
-      //TO DO: agregar iconos de user and pass svg.
       <div className="logo-container">
         <img className="AD-logo" src="assets/images/LOGO.png" alt="Logo" />
       </div>
@@ -66,10 +67,6 @@ const Wrapper = styled.div`
     font-family: "Poppins";
   }
 
-  img {
-    border-radius: 10px;
-  }
-
   .log-container {
     width: 330px;
     height: 472.875px;
@@ -84,9 +81,9 @@ const Wrapper = styled.div`
     align-items: center;
     background: rgba(0, 0, 0, 0.14);
     border-radius: 40px;
-    backdrop-filter: blur(5.5px);
-    width: 100%;
-    height: 100%;
+    backdrop-filter: blur(5.5px); 
+    height: 472.88px;
+		width: 330px;
   }
 
   h1 {
@@ -144,6 +141,12 @@ const Wrapper = styled.div`
   .password-icon {
     background: url(assets/images/pass-icon.svg) no-repeat 10px 10px;
     padding-left: 40px;
+  }
+
+  .link {
+    cursor: pointer;
+   color: #ffffff;
+
   }
 `;
 

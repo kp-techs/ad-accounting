@@ -5,9 +5,11 @@ import { useState } from "react";
 import { useSupabase } from "../../hooks/useSupabase";
 
 const RecoverPassword = () => {
-	//TO DO: Crear ventana para recuperar contraseña
+
+	
 	const navigate = useNavigate();
 	const { supabase } = useSupabase();
+
 
 	const [isLoading, setLoading] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
@@ -16,27 +18,29 @@ const RecoverPassword = () => {
 		<Wrapper>
 			<Formik
 				initialValues={{ email: "" }}
-				onSubmit={(values) => {
-					supabase.auth.resetPasswordForEmail(values.email, {
+				onSubmit={async (values) => {
+					const res = await supabase.auth.resetPasswordForEmail(values.email, {
 						redirectTo: "http://localhost:3000/recover_password"
 					});
 
 					setLoading(true);
 					setTimeout(() => {
+						
 						setLoading(false);
-						setSubmitted(true);
+
+						if (!res.error) setSubmitted(true);
 					}, 600);
 				}}
 			>
 				<Form>
 					<div className="log">
-						<h1>¿Olvidó su contraseña?</h1>
+						<h1 className="title">¿Olvidó su contraseña?</h1>
 						<div className="text-container">
 							<p>
 								{submitted
 									? `El correo de reestablecer contraseña ya ha sido enviado. 
                     Si aún no ha recibido ningún correo, revise en Spam o verifique el correo introducido, y envíe de nuevo.`
-									: `No se preocupe, suele pasar. Por favor, ingrese su dirección correo electrónico. 
+									: `No se preocupe, suele pasar. Por favor, ingrese su dirección de correo electrónico. 
                     A la mayor brevedad, le enviaremos un correo para que pueda reestablecer su contraseña.`}
 							</p>
 						</div>
@@ -46,7 +50,7 @@ const RecoverPassword = () => {
 								<img src="assets/images/email.svg" className="input-icon" />
 							</div>
 
-							<Field type="email" placeholder="Correo electrónico" name="email" />
+							<Field required type="email" placeholder="Correo electrónico" name="email" />
 						</div>
 
 						<div className="button-container">
@@ -59,9 +63,9 @@ const RecoverPassword = () => {
 									"Enviar enlace"
 								)}
 							</button>
-							<div className="button" onClick={() => navigate("/")}>
+							<button className="button" onClick={() => navigate("/")}>
 								Cancelar
-							</div>
+							</button>
 						</div>
 					</div>
 				</Form>
@@ -85,11 +89,11 @@ const Wrapper = styled.div`
 		box-sizing: border-box;
 	}
 
-	h1 {
+	.title {
 		font-family: "Poppins-Bold", "Poppins";
 		font-style: normal;
 		color: #ffffff;
-		font-size: 15px;
+		font-size: 18px;
 		margin: 20px 0 0 0;
 	}
 
@@ -138,13 +142,8 @@ const Wrapper = styled.div`
 
 	.button-container {
 		width: 100%;
-	}
 
-	button {
-		border: 0;
-		/* width: 270px; */
-	}
-	.button {
+		.button {
 		width: 270px;
 		background-color: #4e8fff;
 		border-color: #4e8fff;
@@ -165,6 +164,13 @@ const Wrapper = styled.div`
 			cursor: pointer;
 		}
 	}
+	}
+
+	button {
+		border: 0;
+	
+	}
+
 
 	.loading {
 		height: 30px;

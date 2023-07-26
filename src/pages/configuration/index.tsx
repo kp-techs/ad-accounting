@@ -2,8 +2,11 @@ import styled from "styled-components";
 import useToggle from "../../hooks/useToggle";
 import UserInvitationModal from "./components/userInvitationModal";
 import UsersTable from "./components/usersTable";
+import { SlUserFollow } from "react-icons/sl";
 
 function Configuration() {
+    //TO DO: crear un superadmin que no pueda ser eliminado.
+  //TO DO: funcionalidad para eliminar usuarios.
   const [isModalOpen, toggleModal] = useToggle();
   return (
     <Wrapper>
@@ -12,7 +15,9 @@ function Configuration() {
       </main>
       <footer>
         <div className="add-button" onClick={toggleModal}>
-          Nuevo usuario
+          <span> Nuevo usuario</span>
+
+          <SlUserFollow />
         </div>
         <UserInvitationModal isOpen={isModalOpen} onClose={toggleModal} />
       </footer>
@@ -42,6 +47,7 @@ const Wrapper = styled.section`
     align-items: center;
     font-family: Poppins;
     cursor: pointer;
+    gap: 10px;
   }
   footer {
     display: flex;
