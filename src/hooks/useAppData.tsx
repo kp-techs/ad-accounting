@@ -14,7 +14,7 @@ function useAppData() {
   if (!context) {
     throw new Error(`useAppData must be used inside a AppProvider`);
   }
-
+ 
   const { session } = useSupabase();
   const { users, setUsers, profile, setProfile, incomes, setIncomes, outgoings, setOuts } = context;
 
