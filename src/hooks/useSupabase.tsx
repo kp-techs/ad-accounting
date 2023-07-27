@@ -52,3 +52,17 @@ export async function fetchIncomes(
 
   return { data: data || [], count: count || 0 };
 }
+
+export async function fetchUsers() {
+  const { data } = await supabase.from("users").select("*");
+  return data;
+}
+
+export async function fetchProfile(id: string) {
+  const { data } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", id)
+    .single();
+  return data;
+}

@@ -4,11 +4,12 @@ import Outgoings from "../pages/outgoings";
 import ErrorPage from "../pages/error";
 import App from "../App";
 import Login from "../pages/login";
-// import Home from "../pages/home";
+import Home from "../pages/home";
 import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
+import CreateUser from "../pages/createUser";
+import RecoverPassword from "../pages/recoverPassword";
 import { createGlobalStyle } from "styled-components";
-import SignUpForm from "../pages/signUpForm";
 
 const router = createBrowserRouter([
   {
@@ -18,32 +19,30 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Incomes />,
         // element: <Home />,
+        element:<Incomes/>
       },
       {
         path: "/incomes",
         element: <Incomes />,
       },
-      {
-        path: "/outgoings",
-        element: <Outgoings />,
-      },
-      {
-        path: "/reportes",
-        element: <Reporte />,
-      },
+      // {
+      //   path: "/outgoings",
+      //   element: <Outgoings />,
+      // },
+      // {
+      //   path: "/reportes",
+      //   element: <Reporte />,
+      // },
       {
         path: "/configuration",
         element: <Configuration />,
       },
-      {
-        path: "/signUpForm",
-        element: <SignUpForm />,
-      },
     ],
   },
   { path: "/login", element: <Login /> },
+  { path: "/create-new_user", element: <CreateUser /> },
+  {path:"/recover_password", element: <RecoverPassword /> },
 ]);
 
 function Router() {
