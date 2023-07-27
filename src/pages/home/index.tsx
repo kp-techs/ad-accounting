@@ -13,7 +13,6 @@ const Wrapper = styled.section`
   display: grid;
   margin: 20px;
   border-radius: 8px;
-  /* border: 1px solid #e8eaed5c; */
   background-color: #ffffffc0;
 `;
 

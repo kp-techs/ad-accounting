@@ -3,11 +3,9 @@ import { Database } from "./supabase";
 export type Tables = Database["public"]["Tables"];
 
 export type Income = Tables["incomes"]["Row"];
+export type CreateIncome = Tables["incomes"]["Insert"];
 
-type Create<B> = Omit<B, "id"> & { id?: number | null };
-
-export type CreateIncome = Create<Income>;
-
+export type User = Tables["users"]["Row"];
 export type IncomeType = Tables["incomeTypes"]["Row"];
 export type Tithing = Tables["tithing"]["Row"];
 export type Ministries = Tables["ministries"]["Row"];

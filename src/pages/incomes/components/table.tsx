@@ -8,19 +8,18 @@ import { TableIncome } from "../../../types/models";
 import IncomesModal from "./incomeModal";
 import Pagination from "../../../components/pagination";
 import { MdDelete } from "react-icons/md";
-import { ImPencil, ImSad } from "react-icons/im";
+import { ImPencil } from "react-icons/im";
 import DetailsModal from "./detailsModal";
 import useToggle from "../../../hooks/useToggle";
+import NoInfo from "../../../components/noInfo";
 
 type Props = {
   filters: Filters;
 };
 
 function Table({ filters }: Props) {
-  const { incomes, loadIncomes } = useAppData();
+  const { incomes, loadIncomes, profile } = useAppData();
 
-  //TO DO: recibir info de si esta logeado como Admin o no.
-  const [isAdmin] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeIncome, setActiveIncome] = useState<TableIncome>();
 
@@ -89,10 +88,11 @@ function Table({ filters }: Props) {
                       }}
                     >
                       {income.cells.map((cell) => (
+                        
                         <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                       ))}
 
-                      {isAdmin && (
+                      {profile?.role === "Administrador" && (
                         <div id="modifyButtons-container">
                           <div
                             className="button"
@@ -111,7 +111,7 @@ function Table({ filters }: Props) {
                             }}
                           >
                             <div className="button">
-                              <MdDelete size={16} />
+                              <MdDelete size={20} />
                             </div>
                           </div>
                         </div>
@@ -124,12 +124,7 @@ function Table({ filters }: Props) {
           </table>
         </div>
       ) : (
-        <div className="noInfo">
-          <div>
-            <p>No hay registros disponibles</p>
-            <ImSad size={25} />
-          </div>
-        </div>
+        <NoInfo />
       )}
 
       <div className="pagination-container">
@@ -146,7 +141,7 @@ function Table({ filters }: Props) {
 }
 
 const Wrapper = styled.section`
-  /* font-style: Poppins; */
+  font-style: Poppins;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -177,7 +172,7 @@ const Wrapper = styled.section`
   thead {
     tr {
       display: grid;
-      grid-template-columns: 300px 1fr 350px;
+      grid-template-columns: 1fr 2fr 1fr;
       align-items: center;
       th {
         font-style: italic;
@@ -204,7 +199,7 @@ const Wrapper = styled.section`
       background-color: rgba(33, 80, 119, 0.109);
       position: relative;
       display: grid;
-      grid-template-columns: 300px 1fr 350px;
+      grid-template-columns: 1fr 2fr 1fr;
       align-items: center;
       height: 100%;
       td {

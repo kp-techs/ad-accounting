@@ -15,6 +15,7 @@ import {
   ValidationIncomeForm,
 } from "../constants";
 import Textarea from "../../../components/textarea";
+import moment from "moment";
 
 type Props = {
   isOpen: boolean;
@@ -23,7 +24,7 @@ type Props = {
 };
 
 const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
-  const { loadIncomes } = useAppData();
+  const { loadIncomes, profile } = useAppData();
   const [on, setOn] = React.useState(false);
   const { supabase } = useSupabase();
 
@@ -41,6 +42,8 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
           initialValues={income ?? initialIncome}
           onSubmit={async (values, { resetForm }) => {
             if (income) {
+              values.updatedBy = profile?.name;
+              values.updatedDate = moment().format();
               // @ts-ignore
               delete values.incomeTypes;
               // @ts-ignore
@@ -53,6 +56,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                 .eq("id", income.id);
               onClose();
             } else {
+              values.createdBy = profile?.name;
               await supabase
                 .from("incomes")
                 .insert([values as any])

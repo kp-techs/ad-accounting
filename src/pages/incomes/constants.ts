@@ -1,19 +1,19 @@
 import { CreateIncome } from "../../types/models";
 import * as Yup from "yup";
+import { object, string, date, number, ref } from "yup";
 import moment from "moment";
 
 export const incomeTypeID = {
   tithe: 2,
   event: 13,
 };
-//TO DO: recibir el nombre del usuario que esta logeado.
-const userName = "Jocelin Sanchez";
+
 const today = moment().format();
 
 export const initialIncome: CreateIncome = {
   date: "",
   amount: 0,
-  createdBy: userName,
+  createdBy: "",
   createdDate: today,
   updatedBy: "",
   updatedDate: null,
@@ -37,28 +37,34 @@ export const filterInitialValues: Filters = {
   endAmount: 0,
 };
 
-export const ValidationIncomeForm = Yup.object().shape({
-  date: Yup.date().required("Favor especificar la fecha"),
-  amount: Yup.number().min(1).required("Favor especificar el monto"),
-  type: Yup.number().required("Favor especificar el tipo de ingreso"),
-  tithingID: Yup.number()
+export const ValidationIncomeForm = object({
+  date: date().required("Favor especificar la fecha"),
+  amount: number().min(1).required("Favor especificar el monto"),
+  type: number().required("Favor especificar el tipo de ingreso"),
+  tithingID: number()
     .nullable()
     .when("type", {
       is: incomeTypeID.tithe,
       then: () =>
-        Yup.number().required("Favor especificar el nombre del diezmante"),
+        number().required("Favor especificar el nombre del diezmante"),
     }),
-  ministryID: Yup.number()
+  ministryID: number()
     .nullable()
     .when("type", {
       is: incomeTypeID.event,
       then: () =>
-        Yup.number().required("Favor especificar el nombre del ministerio"),
+        number().required("Favor especificar el nombre del ministerio"),
     }),
-  eventName: Yup.string().when("type", {
+  eventName: string().when("type", {
     is: incomeTypeID.event,
-    then: () => Yup.string().required("Favor especificar el nombre del evento"),
+    then: () => string().required("Favor especificar el nombre del evento"),
   }),
+});
+
+export const validationNewUserForm = object({
+  name:string().required("Favor introducir nombre de usuario."),
+  password:string().required("Favor introducir contraseña."),
+  confirmPassword:string().required("Favor reescribir su contraseña.").oneOf([ref("password")],'La contraseñas introducidas no coinciden'),
 });
 
 export const customStyles = {
