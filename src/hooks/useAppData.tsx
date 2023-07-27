@@ -59,6 +59,6 @@ function useAppData() {
     outgoings,
     loadOuts
   };
-}
+} 
 
 export default useAppData;
