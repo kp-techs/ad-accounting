@@ -5,11 +5,12 @@ import { FastField, Field, Form, Formik } from "formik";
 import { filterInitialValues, incomeTypeID } from "../constants";
 import { GrFormClose } from "react-icons/gr";
 
+
 type Props = {
   isActive: boolean;
   onClose: () => void;
-  filters: Filters;
-  setFilters: (filters: Filters) => void;
+  filters: IncomesFilters;
+  setFilters: (filters: IncomesFilters) => void;
 };
 
 const FilterSeccion: FC<Props> = ({

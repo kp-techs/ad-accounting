@@ -14,7 +14,7 @@ import useToggle from "../../../hooks/useToggle";
 import NoInfo from "../../../components/noInfo";
 
 type Props = {
-  filters: Filters;
+  filters: IncomesFilters;
 };
 
 function Table({ filters }: Props) {
