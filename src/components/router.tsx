@@ -5,7 +5,7 @@ import ErrorPage from "../pages/error";
 import App from "../App";
 import Login from "../pages/login";
 import Home from "../pages/home";
-import Reporte from "../pages/reportes";
+// import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
 import CreateUser from "../pages/createUser";
 import RecoverPassword from "../pages/recoverPassword";
@@ -20,16 +20,16 @@ const router = createBrowserRouter([
       {
         path: "/",
         // element: <Home />,
-        element:<Incomes/>
+        element:<Outgoings/>
       },
       {
         path: "/incomes",
         element: <Incomes />,
       },
-      // {
-      //   path: "/outgoings",
-      //   element: <Outgoings />,
-      // },
+      {
+        path: "/outgoings",
+        element: <Outgoings />,
+      },
       // {
       //   path: "/reportes",
       //   element: <Reporte />,

@@ -9,6 +9,7 @@ import {
 } from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
 
+
 function useAppData() {
   const context = useContext(AppContext);
   if (!context) {
@@ -34,7 +35,7 @@ function useAppData() {
   async function loadIncomes(
     page: number = 1,
     size: number = 15,
-    filters: Filters = filterInitialValues
+    filters: IncomesFilters = filterInitialValues
   ) {
     const data = await fetchIncomes(page, size, filters);
     setIncomes(data);

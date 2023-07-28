@@ -30,7 +30,7 @@ function Nav() {
           />
         </svg>
       </div>
-      {/* <div className="separation">
+      <div className="separation">
         <div className="separate-line"></div>
       </div>
       <div className="link-container">
@@ -50,7 +50,7 @@ function Nav() {
         </svg>
       </div>
 
-      <div className="separation">
+      {/* <div className="separation">
         <div className="separate-line"></div>
       </div>
       <div className="link-container">
