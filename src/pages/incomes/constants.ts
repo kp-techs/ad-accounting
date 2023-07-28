@@ -1,5 +1,4 @@
 import { CreateIncome } from "../../types/models";
-import * as Yup from "yup";
 import { object, string, date, number, ref } from "yup";
 import moment from "moment";
 
@@ -25,7 +24,7 @@ export const initialIncome: CreateIncome = {
   concept: null,
 };
 
-export const filterInitialValues: Filters = {
+export const filterInitialValues: IncomesFilters = {
   type: null,
   tithingID: null,
   ministryID: null,

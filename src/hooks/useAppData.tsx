@@ -8,6 +8,7 @@ import {
 } from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
 
+
 function useAppData() {
   const context = useContext(AppContext);
   if (!context) {
@@ -32,8 +33,13 @@ function useAppData() {
 
   async function loadIncomes(
     page: number = 1,
+<<<<<<< HEAD
     size: number = 18,
     filters: Filters = filterInitialValues
+=======
+    size: number = 15,
+    filters: IncomesFilters = filterInitialValues
+>>>>>>> 8d13315 (adding prototipe of components in outgoings page)
   ) {
     const data = await fetchIncomes(page, size, filters);
     setIncomes(data);

@@ -62,7 +62,7 @@ export function formatRelativeDate(date: string | null) {
 	return captalize(moment(date).fromNow());
 }
 
-export function generateFilterString({ ...filters }: Filters) {
+export function generateFilterString({ ...filters }: IncomesFilters) {
 	if (!filters) return [];
 	if (filters.tithingID?.length) {
 		if (filters.type?.includes(incomeTypeID.tithe)) {
