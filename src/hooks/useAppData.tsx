@@ -2,6 +2,7 @@ import AppContext from "../contexts/app";
 import { useContext, useEffect, useCallback } from "react";
 import {
   fetchIncomes,
+  fetchOuts,
   fetchProfile,
   fetchUsers,
   useSupabase,
@@ -16,7 +17,7 @@ function useAppData() {
   }
 
   const { session } = useSupabase();
-  const { incomes, setIncomes, users, setUsers, profile, setProfile } = context;
+  const { incomes, setIncomes, users, setUsers, profile, setProfile, setOuts, outgoings } = context;
 
   const loadProfile = useCallback(async () => {
     if (session) {
@@ -45,12 +46,19 @@ function useAppData() {
     setUsers(data || []);
   }
 
+  async function loadOuts(page: number = 1, size: number = 15) {
+    const data = await fetchOuts(page, size);
+    setOuts(data)
+  }
+
   return {
     incomes,
     loadIncomes,
     users,
     loadUsers,
     profile,
+    outgoings,
+    setOuts
   };
 }
 
