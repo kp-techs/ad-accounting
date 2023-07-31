@@ -9,11 +9,14 @@ import { MdDelete } from "react-icons/md";
 import useColumns from "../const/columns";
 import { useTable } from "react-table";
 import { ImPencil } from "react-icons/im";
+import DeleteModal from "./deleteModal";
 
 function Table() {
 	const { outgoings, loadOuts, profile } = useAppData();
 
-	const [isOutModalOpen, toggleOutsModal] = useToggle();
+  const [isOutModalOpen, toggleOutsModal] = useToggle();
+  const [isDeleteModalOpen, toggleDeleteModal] = useToggle();
+  const [isModifyModalOpen, toggleModifyModal] = useToggle();
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [activeOuts, setActiveOuts] = useState<TableOutgoing>();
@@ -31,7 +34,8 @@ function Table() {
 	return (
 		<Wrapper>
       <OutsModal isOpen={isOutModalOpen} onClose={toggleOutsModal} outgoing={activeOuts} />
-      {/* TO DO: incluir deleteModal y detailsModal. */}
+      <DeleteModal isOpen={isDeleteModalOpen} onClose={toggleDeleteModal} outgoing={activeOuts} />
+      
       {outgoings.count ? (
         <div className="table-container">
           <table {...getTableProps()}>
@@ -73,20 +77,20 @@ function Table() {
                             className="button"
                             onClick={() => {
                               setActiveOuts(outgoing.original);
-                              // TO DO: toggleModifyModal();
+                              toggleOutsModal();
                             }}
                           >
-                            <ImPencil size={18} />
+                            <ImPencil size={17} />
                           </div>
                           <div
                             className="button"
                             onClick={() => {
                               setActiveOuts(outgoing.original);
-                              // TO DO: toggleDeleteModal();
+                              toggleDeleteModal();
                             }}
                           >
                             <div className="button">
-                              <MdDelete size={20} />
+                              <MdDelete size={22} />
                             </div>
                           </div>
                         </div>

@@ -113,11 +113,12 @@ export function generateFilterString({ ...filters }: IncomesFilters) {
 	return mappedFilters;
 }
 
-export function getBeneficiary({...outs}:TableOutgoing){
-	if (outs) return `${outs.beneficiaries.name}`
+export function getBeneficiary({ beneficiaryID, ...outgoing }: TableOutgoing) {
+	if (outgoing.beneficiaries) return `${outgoing.beneficiaries.name}`
+	return '-'
 }
 
-export function generateDescription({ ...outs }: TableOutgoing) {
-	if (outs) return `${outs.outgoingTypes.name}: ${outs.description}`;
+export function generateDescription({ ...outgoing }: TableOutgoing) {
+	if (outgoing.outgoingTypes) return `${outgoing.outgoingTypes?.name}${outgoing.description ?`: ${outgoing.description}`: ''}`;
 	return "-";
 }
