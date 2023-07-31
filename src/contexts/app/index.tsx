@@ -13,11 +13,6 @@ type OutgoingsData = {
 	count: number;
 };
 
-type OutgoingsData = {
-  data: TableOutgoing[];
-  count: number;
-}
-
 type AppContextType = {
   users: User[];
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;

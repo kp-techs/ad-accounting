@@ -9,6 +9,7 @@ import {
 } from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
 
+
 function useAppData() {
 	const context = useContext(AppContext);
 	if (!context) {

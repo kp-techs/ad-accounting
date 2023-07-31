@@ -84,18 +84,3 @@ export async function fetchOuts(page: number, size: number) {
 	return { data: data || [], count: count || 0 };
 }
 
-export async function fetchOuts(page: number, size: number) {
-  // TO DO: poner filtros
-  const from = (page - 1) * size;
-  const to = from + size;
-
-  let query = supabase
-    .from("outgoings")
-    .select(`*, outgoingTypes(*), beneficiaries(*), loans(*), creditors(*)`, { count: "exact" })
-    .range(from, to);
-  
-    const { data, count } = await query.returns<TableOutgoing[]>();
-
-  return { data: data || [], count: count || 0 };
-  
-}
