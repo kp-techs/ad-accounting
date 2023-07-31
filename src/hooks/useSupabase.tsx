@@ -75,13 +75,19 @@ export async function fetchOuts(page: number, size: number) {
 
 	let query = supabase
 		.from("outgoings")
-		.select(`*, outgoingTypes(*), beneficiaries(*), loans(*), creditors(*)`, {
+		.select(`*, outgoingTypes(*), beneficiaries(*)`, {
 			count: "exact"
 		})
 		.range(from, to);
 
 	const { data, count } = await query.returns<TableOutgoing[]>();
-
+	
 	return { data: data || [], count: count || 0 };
 }
+
+export async function fetchLoans() {
+	const { data } = await supabase.from('loans').select('*')
+	return data
+}
+
 

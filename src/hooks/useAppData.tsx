@@ -58,6 +58,8 @@ function useAppData() {
 	async function loadOuts(page: number = 1, size: number = 15) {
 		const data = await fetchOuts(page, size);
 		setOuts(data);
+		
+
 	}
 
 	return {
