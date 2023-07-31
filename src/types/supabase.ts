@@ -9,6 +9,36 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      beneficiaries: {
+        Row: {
+          id: number
+          name: string | null
+        }
+        Insert: {
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          id?: number
+          name?: string | null
+        }
+        Relationships: []
+      }
+      creditors: {
+        Row: {
+          id: number
+          name: string | null
+        }
+        Insert: {
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          id?: number
+          name?: string | null
+        }
+        Relationships: []
+      }
       incomes: {
         Row: {
           amount: number | null
@@ -76,21 +106,6 @@ export interface Database {
           }
         ]
       }
-      incomeType: {
-        Row: {
-          id: number | null
-          type: string
-        }
-        Insert: {
-          id?: number | null
-          type?: string
-        }
-        Update: {
-          id?: number | null
-          type?: string
-        }
-        Relationships: []
-      }
       incomeTypes: {
         Row: {
           id: number
@@ -106,6 +121,40 @@ export interface Database {
         }
         Relationships: []
       }
+      loans: {
+        Row: {
+          creditorID: number | null
+          currentLoanAmount: number | null
+          description: string | null
+          id: number
+          initialLoanAmount: number | null
+          paidAmount: number | null
+        }
+        Insert: {
+          creditorID?: number | null
+          currentLoanAmount?: number | null
+          description?: string | null
+          id?: number
+          initialLoanAmount?: number | null
+          paidAmount?: number | null
+        }
+        Update: {
+          creditorID?: number | null
+          currentLoanAmount?: number | null
+          description?: string | null
+          id?: number
+          initialLoanAmount?: number | null
+          paidAmount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loans_creditorID_fkey"
+            columns: ["creditorID"]
+            referencedRelation: "creditors"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       ministries: {
         Row: {
           id: number
@@ -118,6 +167,76 @@ export interface Database {
         Update: {
           id?: number
           name?: string
+        }
+        Relationships: []
+      }
+      outgoings: {
+        Row: {
+          amount: number | null
+          beneficiaryID: number | null
+          checkNumber: string | null
+          createdBy: string | null
+          createdDate: string | null
+          date: string | null
+          description: string | null
+          id: number
+          modifiedAt: string | null
+          modifiedBy: string | null
+          type: number | null
+        }
+        Insert: {
+          amount?: number | null
+          beneficiaryID?: number | null
+          checkNumber?: string | null
+          createdBy?: string | null
+          createdDate?: string | null
+          date?: string | null
+          description?: string | null
+          id?: number
+          modifiedAt?: string | null
+          modifiedBy?: string | null
+          type?: number | null
+        }
+        Update: {
+          amount?: number | null
+          beneficiaryID?: number | null
+          checkNumber?: string | null
+          createdBy?: string | null
+          createdDate?: string | null
+          date?: string | null
+          description?: string | null
+          id?: number
+          modifiedAt?: string | null
+          modifiedBy?: string | null
+          type?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outgoings_beneficiaryID_fkey"
+            columns: ["beneficiaryID"]
+            referencedRelation: "beneficiaries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outgoings_type_fkey"
+            columns: ["type"]
+            referencedRelation: "outgoingTypes"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      outgoingTypes: {
+        Row: {
+          id: number
+          name: string | null
+        }
+        Insert: {
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          id?: number
+          name?: string | null
         }
         Relationships: []
       }
@@ -144,7 +263,7 @@ export interface Database {
           email_change: string | null
           email_change_sent_at: string | null
           id: string
-          invitedby: string | null
+          invited_by: string | null
           last_sign_in_at: string | null
           name: string | null
           recovery_sent_at: string | null
@@ -158,7 +277,7 @@ export interface Database {
           email_change?: string | null
           email_change_sent_at?: string | null
           id: string
-          invitedby?: string | null
+          invited_by?: string | null
           last_sign_in_at?: string | null
           name?: string | null
           recovery_sent_at?: string | null
@@ -172,7 +291,7 @@ export interface Database {
           email_change?: string | null
           email_change_sent_at?: string | null
           id?: string
-          invitedby?: string | null
+          invited_by?: string | null
           last_sign_in_at?: string | null
           name?: string | null
           recovery_sent_at?: string | null
