@@ -6,11 +6,12 @@ import { FaPlus, FaFilter } from "react-icons/fa";
 import FilterSeccion from "./components/incomesFilter";
 import { filterInitialValues } from "./constants";
 
+
 type Action = "ADD" | "FILTER" | "SEARCH";
 
 function Incomes() {
   const [activeAction, setActiveAction] = useState<Action>();
-  const [filters, setFilters] = useState<Filters>(filterInitialValues);
+  const [filters, setFilters] = useState<IncomesFilters>(filterInitialValues);
 
   return (
     <Wrapper>

@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import styled from "styled-components";
-import React, { FC } from "react";
+import { FC, useState } from "react";
 import { Formik, Field, Form, FastField } from "formik";
 import SwitchButton from "../../../components/switchButton";
 import { useSupabase } from "../../../hooks/useSupabase";
@@ -25,7 +25,7 @@ type Props = {
 
 const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
   const { loadIncomes, profile } = useAppData();
-  const [on, setOn] = React.useState(false);
+  const [on, setOn] = useState(false);
   const { supabase } = useSupabase();
 
   return (
@@ -86,16 +86,17 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                         <SelectOptions {...props} table={"incomeTypes"} />
                       )}
                     />
+                    {/* TO DO: arreglar como se ve este error label */}
                     {errors.type && touched.type && (
                       <div style={{ color: "red" }}>{errors.type}</div>
                     )}
                   </div>
                   {values.type === incomeTypeID.tithe ? (
                     <section className="field-line">
-                      <label htmlFor="diezmante-nombre">Diezmante</label>
+                      <label htmlFor="tithingName">Diezmante</label>
                       <FastField
                         name="tithingID"
-                        id="diezmante-name"
+                        id="tithingName"
                         component={(props: any) => (
                           <SelectOptions {...props} table={"tithing"} />
                         )}
@@ -166,7 +167,9 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                       component={Textarea}
                     />
                   </div>
+
                 </div>
+
                 <div className="foo-modal">
                   {!income && values.type === incomeTypeID.tithe ? (
                     <div className="toggle">

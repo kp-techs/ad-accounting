@@ -4,6 +4,7 @@ import { TableIncome, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
 import { generateFilterString } from "../utils/helper";
 
+
 export const supabase = createClient<Database>(
   process.env.REACT_APP_SUPABASE_URL || "",
   process.env.REACT_APP_SUPABASE_KEY || ""
@@ -31,7 +32,7 @@ export const useSupabase = () => {
 export async function fetchIncomes(
   page: number,
   size: number,
-  filters: Filters
+  filters: IncomesFilters
 ) {
   const from = (page - 1) * size;
   const to = from + size;
