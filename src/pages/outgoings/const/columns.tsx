@@ -4,6 +4,8 @@ import { TableOutgoing } from "../../../types/models";
 import {
   formatTableDate,
   captalize,
+  generateDescription,
+  getBeneficiary,
 } from "../../../utils/helper";
 
 function useColumns() {
@@ -22,17 +24,14 @@ function useColumns() {
         Header: "Beneficiario",
         accessor: "beneficiaryID",
         // @ts-ignore
-        //TO DO: Crear funcion de getBeneficiary para pasarle el ID 
-        //y que devuelta el nombre capitalizado.
-        // Cell: ({ row }) => getBeneficiary(row.original),
+        Cell: ({ row }) => getBeneficiary(row.original),
 
       },
       {
         Header: "Descripción",
         accessor: "description",
         // @ts-ignore
-        //TO DO: Crear funcion para generar descripcion
-        // Cell: ({ row }) => generateDescription(row.original),
+        Cell: ({ row }) => generateDescription(row.original),
       },
     ],
     []

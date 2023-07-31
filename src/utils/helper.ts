@@ -1,8 +1,9 @@
 import { supabase, useSupabase } from "./../hooks/useSupabase";
 import { incomeTypeID } from "../pages/incomes/constants";
-import { TableIncome } from "../types/models";
+import { TableIncome, TableOutgoing } from "../types/models";
 import moment from "moment";
 import "moment/locale/es";
+
 
 export function generateConcept({ type, ...income }: TableIncome) {
 	return type === incomeTypeID.tithe
@@ -112,7 +113,11 @@ export function generateFilterString({ ...filters }: IncomesFilters) {
 	return mappedFilters;
 }
 
-export function getName() {}
+export function getBeneficiary({...outs}:TableOutgoing){
+	if (outs) return `${outs.beneficiaries.name}`
+}
 
-export function getRole() {}
-
+export function generateDescription({ ...outs }: TableOutgoing) {
+	if (outs) return `${outs.outgoingTypes.name}: ${outs.description}`;
+	return "-";
+}
