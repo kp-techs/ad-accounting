@@ -1,8 +1,9 @@
 import { createClient, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { TableIncome } from "../types/models";
+import { TableIncome, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
 import { generateFilterString } from "../utils/helper";
+
 
 export const supabase = createClient<Database>(
   process.env.REACT_APP_SUPABASE_URL || "",
@@ -31,7 +32,7 @@ export const useSupabase = () => {
 export async function fetchIncomes(
   page: number,
   size: number,
-  filters: Filters
+  filters: IncomesFilters
 ) {
   const from = (page - 1) * size;
   const to = from + size;
@@ -65,4 +66,20 @@ export async function fetchProfile(id: string) {
     .eq("id", id)
     .single();
   return data;
+}
+
+export async function fetchOuts(page: number, size: number) {
+  // TO DO: poner filtros
+  const from = (page - 1) * size;
+  const to = from + size;
+
+  let query = supabase
+    .from("outgoings")
+    .select(`*, outgoingTypes(*), beneficiaries(*), loans(*), creditors(*)`, { count: "exact" })
+    .range(from, to);
+  
+    const { data, count } = await query.returns<TableOutgoing[]>();
+
+  return { data: data || [], count: count || 0 };
+  
 }

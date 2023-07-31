@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-function Home() {
+function Table() {
   return (
     <Wrapper>
       <h1>Esta es la página de ejemplo de la aplicación.</h1>
@@ -16,4 +16,4 @@ const Wrapper = styled.section`
   background-color: #ffffffc0;
 `;
 
-export default Home;
+export default Table;

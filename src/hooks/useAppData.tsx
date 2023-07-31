@@ -2,11 +2,13 @@ import AppContext from "../contexts/app";
 import { useContext, useEffect, useCallback } from "react";
 import {
   fetchIncomes,
+  fetchOuts,
   fetchProfile,
   fetchUsers,
   useSupabase,
 } from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
+
 
 function useAppData() {
   const context = useContext(AppContext);
@@ -15,7 +17,7 @@ function useAppData() {
   }
 
   const { session } = useSupabase();
-  const { incomes, setIncomes, users, setUsers, profile, setProfile } = context;
+  const { users, setUsers, profile, setProfile, incomes, setIncomes, outgoings, setOuts } = context;
 
   const loadProfile = useCallback(async () => {
     if (session) {
@@ -32,8 +34,8 @@ function useAppData() {
 
   async function loadIncomes(
     page: number = 1,
-    size: number = 18,
-    filters: Filters = filterInitialValues
+    size: number = 15,
+    filters: IncomesFilters = filterInitialValues
   ) {
     const data = await fetchIncomes(page, size, filters);
     setIncomes(data);
@@ -44,13 +46,20 @@ function useAppData() {
     setUsers(data || []);
   }
 
+  async function loadOuts(page: number = 1, size: number = 15) {
+    const data = await fetchOuts(page, size);
+    setOuts(data)
+  }
+
   return {
-    incomes,
-    loadIncomes,
     users,
     loadUsers,
     profile,
+    incomes,
+    loadIncomes,
+    outgoings,
+    loadOuts
   };
-}
+} 
 
 export default useAppData;
