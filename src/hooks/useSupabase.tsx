@@ -4,6 +4,7 @@ import { TableIncome, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
 import { generateFilterString } from "../utils/helper";
 
+
 export const supabase = createClient<Database>(
 	process.env.REACT_APP_SUPABASE_URL || "",
 	process.env.REACT_APP_SUPABASE_KEY || ""
