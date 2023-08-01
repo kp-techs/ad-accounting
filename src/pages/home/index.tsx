@@ -4,7 +4,22 @@ function Home() {
   return (
     <Wrapper>
       <section className="resumen">
-
+        <div>
+          <p className="title">INGRESOS</p>  
+          <p></p>
+        </div>
+        <div>
+          <p className="title">EGRESOS</p>  
+          <p></p>
+        </div>
+        <div>
+          <p className="title">PRESTAMOS</p>  
+          <p></p>
+        </div>
+        <div>
+          <p className="title">BALANCE</p>  
+          <p></p>
+        </div>
       </section>
     </Wrapper>
   );
