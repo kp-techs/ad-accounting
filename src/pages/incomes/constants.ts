@@ -38,7 +38,7 @@ export const filterInitialValues: IncomesFilters = {
 
 export const ValidationIncomeForm = object({
   date: date().required("Favor especificar la fecha"),
-  amount: number().min(1).required("Favor especificar el monto"),
+  amount: number().min(1,"Favor especificar el monto").required("Favor especificar el monto"),
   type: number().required("Favor especificar el tipo de ingreso"),
   tithingID: number()
     .nullable()

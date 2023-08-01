@@ -86,7 +86,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
                         <SelectOptions {...props} table={"incomeTypes"} />
                       )}
                     />
-                    {/* TO DO: arreglar como se ve este error label */}
+                     <div></div>
                     {errors.type && touched.type && (
                       <div style={{ color: "red" }}>{errors.type}</div>
                     )}
