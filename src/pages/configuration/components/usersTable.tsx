@@ -259,9 +259,8 @@ const Wrapper = styled.section`
 
 	.cell {
 		display: flex;
-		justify-content: center;
-		align-items: center;
 	}
+	
 	.modifyRol {
 		display: flex;
 		width: 100%;

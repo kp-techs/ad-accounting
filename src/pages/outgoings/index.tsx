@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaPlus, FaFilter } from "react-icons/fa";
 import { outgoingsInitialValues } from "./constants";
 import OutsModal from "./components/outsModal";
+import Table from "./components/table";
 
 
 type Action = "ADD" | "FILTER" | "SEARCH";
@@ -56,8 +57,9 @@ function Outgoings() {
       setFilters={setFilters}
     />
 
-    TO DO: crear tabla para visualizar gastos
+    TO DO: descomentar esto cuando cree los filters.
     <Table filters={filters} /> */}
+      <Table/>
   </Wrapper>
   );
 }
