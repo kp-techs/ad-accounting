@@ -38,7 +38,6 @@ function SelectOptions({ form, field, table, isCreatable = true }: Props) {
     const newValue = { label: data?.name, value: data?.id };
     setOptions((prev) => [...prev, newValue]);
     form.setFieldValue(field.name, newValue?.value);
-    console.log(data)
   }
 
   return isCreatable ? (
