@@ -4,14 +4,14 @@ import { TableIncome, TableOutgoing, User } from "../../types/models";
 const AppContext = createContext<AppContextType | null>(null);
 
 type IncomesData = {
-  data: TableIncome[];
-  count: number;
+	data: TableIncome[];
+	count: number;
 };
 
 type OutgoingsData = {
-  data: TableOutgoing[];
-  count: number;
-}
+	data: TableOutgoing[];
+	count: number;
+};
 
 type AppContextType = {
   users: User[];
@@ -28,7 +28,7 @@ type AppContextType = {
 };
 
 type Props = {
-  children: JSX.Element;
+	children: JSX.Element;
 };
 
 export const AppProvider: FC<Props> = ({ children }) => {

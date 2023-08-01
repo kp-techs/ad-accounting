@@ -31,18 +31,22 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 			<Wrapper>
 				<Formik
 					initialValues={outgoing ?? initialOutgoing}
-					onSubmit={async (values, { resetForm }) => {
+          onSubmit={async (values, { resetForm }) => {
 						if (outgoing) {
 							values.modifiedBy = profile?.name;
 							values.modifiedAt = moment().format();
-							//revisar porque en la version de Income se eliminan valores y si es necesario aqui tambien
+               // @ts-ignore
+              delete values.beneficiaries
+              // @ts-ignore
+              delete values.outgoingTypes
+              
 							await supabase
 								.from("outgoings")
 								.update({ ...values, id: outgoing.id })
 								.eq("id", outgoing.id);
 							onClose();
 						} else {
-							values.createdBy = profile?.name;
+              values.createdBy = profile?.name;
 							await supabase
 								.from("outgoings")
 								.insert([values as any])
@@ -68,20 +72,6 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
                     {/* PONER AQUI INFORMACION DEL ERROR */}
                     
 									</div>
-									{values.type === outgoingTypeID.loan ? (
-										<section className="field-line">
-											<label htmlFor="creditor">Acreedor</label>
-											<FastField
-												name="creditorID"
-												id="creditor"
-												component={(props: any) => <SelectOptions {...props} table={"creditors"} />}
-                      />
-                      	beneficiaryID: null,
-
-                    </section>
-            				// PONER AQUI INFORMACION DEL ERROR 
-                  ) : null}
-
                   <div className="fields-container field-line">
                     <div>
                       <label>No. Cheque</label>
@@ -89,7 +79,7 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
                       // PONER AQUI INFORMACION DEL ERROR 
                     </div>
                     <div>
-                      <label>Beneficiario</label>
+                      <label>{values.type === outgoingTypeID.loan ?"Acreedor":"Beneficiario"}</label>
                       <FastField
                         name="beneficiaryID"
                         type='text'
