@@ -37,8 +37,10 @@ function Table({ filters }: Props) {
     table;
 
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle();
-  const [isDetailsModalOpen, toggleDetailsModal] = useToggle();
   const [isModifyModalOpen, toggleModifyModal] = useToggle();
+  const [isDetailsModalOpen, toggleDetailsModal] = useToggle();
+
+
 
   return (
     <Wrapper>
@@ -84,7 +86,7 @@ function Table({ filters }: Props) {
                       className="row"
                       onClick={() => {
                         setActiveIncome(income.original);
-                        toggleDetailsModal();
+                        toggleDetailsModal()
                       }}
                     >
                       {income.cells.map((cell) => (
@@ -96,7 +98,8 @@ function Table({ filters }: Props) {
                         <div id="modifyButtons-container">
                           <div
                             className="button"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setActiveIncome(income.original);
                               toggleModifyModal();
                             }}
@@ -105,7 +108,8 @@ function Table({ filters }: Props) {
                           </div>
                           <div
                             className="button"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setActiveIncome(income.original);
                               toggleDeleteModal();
                             }}

@@ -10,10 +10,11 @@ export type CreateIncome = Tables["incomes"]["Insert"];
 export type IncomeType = Tables["incomeTypes"]["Row"];
 export type Tithing = Tables["tithing"]["Row"];
 export type Ministries = Tables["ministries"]["Row"];
+
 export type TableIncome = Income & {
-  tithing: Tithing;
-  ministries: Ministries;
-  incomeTypes: IncomeType;
+	tithing: Tithing;
+	ministries: Ministries;
+	incomeTypes: IncomeType;
 };
 
 export type Outgoing = Tables["outgoings"]["Row"];
@@ -28,6 +29,4 @@ export type TableOutgoing = Outgoing & {
   outgoingTypes: OutgoingTypes;
   loans: Loans;
   creditors: Creditors;
-
-
 }

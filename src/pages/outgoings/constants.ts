@@ -27,7 +27,7 @@ export const initialOutgoing: CreateOutgoing = {
 	createdDate: today,
 	date: '',
 	description: '',
-	modifiedAt: '',
+	modifiedAt: null,
 	modifiedBy: '',
 	type: null,
 }
