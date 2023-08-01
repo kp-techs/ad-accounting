@@ -8,7 +8,7 @@ import {
   formatLongDate,
   formatMoney,
   generateConcept,
-  generateDescription,
+  getOutgoingDescription,
 } from "../../../utils/helper";
 import { TableOutgoing } from "../../../types/models";
 import { customStyles, outgoingTypeID } from "../constants";
@@ -22,7 +22,7 @@ type Props = {
 const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
   let description = "";
   if (outgoing) {
-    description = generateDescription(outgoing);
+    description = getOutgoingDescription(outgoing);
   }
 
   return (

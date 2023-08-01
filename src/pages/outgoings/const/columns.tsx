@@ -4,8 +4,8 @@ import { TableOutgoing } from "../../../types/models";
 import {
   formatTableDate,
   captalize,
-  generateDescription,
-  getBeneficiary,
+  getOutgoingDescription,
+  getBeneficiaryName,
 } from "../../../utils/helper";
 
 function useColumns() {
@@ -24,14 +24,14 @@ function useColumns() {
         Header: "Beneficiario",
         accessor: "beneficiaryID",
         // @ts-ignore
-        Cell: ({ row }) => getBeneficiary(row.original),
+        Cell: ({ row }) => getBeneficiaryName(row.original),
 
       },
       {
         Header: "Descripción",
         accessor: "description",
         // @ts-ignore
-        Cell: ({ row }) => generateDescription(row.original),
+        Cell: ({ row }) => getOutgoingDescription(row.original),
       },
     ],
     []

@@ -4,7 +4,6 @@ import { TableIncome, TableOutgoing } from "../types/models";
 import moment from "moment";
 import "moment/locale/es";
 
-
 export function generateConcept({ type, ...income }: TableIncome) {
 	return type === incomeTypeID.tithe
 		? `Diezmo: ${income.tithing?.name}`
@@ -113,12 +112,12 @@ export function generateFilterString({ ...filters }: IncomesFilters) {
 	return mappedFilters;
 }
 
-export function getBeneficiary({ beneficiaryID, ...outgoing }: TableOutgoing) {
-	if (outgoing.beneficiaries) return `${outgoing.beneficiaries.name}`
-	return '-'
+export function getBeneficiaryName(outgoing: TableOutgoing) {
+	return outgoing.beneficiaries?.name ?? "-";
 }
 
-export function generateDescription({ ...outgoing }: TableOutgoing) {
-	if (outgoing.outgoingTypes) return `${outgoing.outgoingTypes?.name}${outgoing.description ?`: ${outgoing.description}`: ''}`;
+export function getOutgoingDescription(outgoing: TableOutgoing) {
+	if (outgoing.outgoingTypes)
+		return `${outgoing.outgoingTypes.name}${outgoing.description ? `: ${outgoing.description}` : ""}`;
 	return "-";
 }
