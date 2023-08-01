@@ -10,13 +10,14 @@ import useColumns from "../const/columns";
 import { useTable } from "react-table";
 import { ImPencil } from "react-icons/im";
 import DeleteModal from "./deleteModal";
+import DetailsModal from "./detailsModal";
 
 function Table() {
 	const { outgoings, loadOuts, profile } = useAppData();
 
   const [isOutModalOpen, toggleOutsModal] = useToggle();
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle();
-  const [isModifyModalOpen, toggleModifyModal] = useToggle();
+  const [isDetailsModalOpen, toggleDetailsModal] = useToggle();
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [activeOuts, setActiveOuts] = useState<TableOutgoing>();
@@ -35,6 +36,7 @@ function Table() {
 		<Wrapper>
       <OutsModal isOpen={isOutModalOpen} onClose={toggleOutsModal} outgoing={activeOuts} />
       <DeleteModal isOpen={isDeleteModalOpen} onClose={toggleDeleteModal} outgoing={activeOuts} />
+      <DetailsModal isOpen={isDetailsModalOpen} onClose={toggleDetailsModal} outgoing={activeOuts} />
       
       {outgoings.count ? (
         <div className="table-container">
@@ -63,7 +65,7 @@ function Table() {
                       className="row"
                       onClick={() => {
                         setActiveOuts(outgoing.original);
-                        // TO DO: toggleDetailsModal();
+                        toggleDetailsModal();
                       }}
                     >
                       {outgoing.cells.map((cell) => (
@@ -75,7 +77,8 @@ function Table() {
                         <div id="modifyButtons-container">
                           <div
                             className="button"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setActiveOuts(outgoing.original);
                               toggleOutsModal();
                             }}
@@ -84,7 +87,8 @@ function Table() {
                           </div>
                           <div
                             className="button"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setActiveOuts(outgoing.original);
                               toggleDeleteModal();
                             }}
