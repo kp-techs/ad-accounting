@@ -3,7 +3,9 @@ import styled from "styled-components";
 function Home() {
   return (
     <Wrapper>
-      <h1>Esta es la página de ejemplo de la aplicación.</h1>
+      <section className="resumen">
+
+      </section>
     </Wrapper>
   );
 }

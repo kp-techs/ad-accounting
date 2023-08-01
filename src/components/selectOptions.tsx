@@ -30,7 +30,6 @@ function SelectOptions({ form, field, table, isCreatable = true }: Props) {
   }
 
   async function handleCreate(name: string) {
-    console.log(name);
     const { data }: any = await supabase
       .from(table)
       .insert({ name })
