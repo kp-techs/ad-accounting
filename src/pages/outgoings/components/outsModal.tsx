@@ -4,7 +4,7 @@ import { Outgoing } from "../../../types/models";
 import { FC } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { useSupabase } from "../../../hooks/useSupabase";
-import { customStyles, initialOutgoing, outgoingTypeID } from "../constants";
+import { ValidationOutgoingForm, customStyles, initialOutgoing, outgoingTypeID } from "../constants";
 import { FastField, Field, Form, Formik } from "formik";
 import moment from "moment";
 import SelectOptions from "../../../components/selectOptions";
@@ -31,22 +31,23 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 			<Wrapper>
 				<Formik
 					initialValues={outgoing ?? initialOutgoing}
-          onSubmit={async (values, { resetForm }) => {
+					validationSchema={ValidationOutgoingForm}
+					onSubmit={async (values, { resetForm }) => {
 						if (outgoing) {
 							values.modifiedBy = profile?.name;
 							values.modifiedAt = moment().format();
-               // @ts-ignore
-              delete values.beneficiaries
-              // @ts-ignore
-              delete values.outgoingTypes
-              
+							// @ts-ignore
+							delete values.beneficiaries;
+							// @ts-ignore
+							delete values.outgoingTypes;
+
 							await supabase
 								.from("outgoings")
 								.update({ ...values, id: outgoing.id })
 								.eq("id", outgoing.id);
 							onClose();
 						} else {
-              values.createdBy = profile?.name;
+							values.createdBy = profile?.name;
 							await supabase
 								.from("outgoings")
 								.insert([values as any])
@@ -56,7 +57,7 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 						loadOuts();
 					}}
 				>
-					{({ values }) => (
+					{({ values, errors, touched }) => (
 						<Form>
 							<section className="form-content">
 								<div className="top-modal">
@@ -67,70 +68,75 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 										<FastField
 											id="selectOutgoingType"
 											name="type"
-											component={(props: any) => <SelectOptions {...props} table={"outgoingTypes"} />}
+                      component={(props: any) => (
+                        <SelectOptions {...props} table={"outgoingTypes"} />
+                      )}
 										/>
-                    {/* PONER AQUI INFORMACION DEL ERROR */}
-                    
-									</div>
-                  <div className="fields-container field-line">
-                    <div>
-                      <label>No. Cheque</label>
-                      <Field name="checkNumber" type="text" className="field" />
-                      // PONER AQUI INFORMACION DEL ERROR 
-                    </div>
-                    <div>
-                      <label>{values.type === outgoingTypeID.loan ?"Acreedor":"Beneficiario"}</label>
-                      <FastField
-                        name="beneficiaryID"
-                        type='text'
+									 <div></div>{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}	
+                  </div>
+                 
+									<div className="fields-container field-line">
+										<div>
+											<label>No. Cheque</label>
+											<Field name="checkNumber" type="text" className="field" />
+											{errors.checkNumber && touched.checkNumber && (
+												<div style={{ color: "red" }}>{errors.checkNumber}</div>
+											)}
+										</div>
+										<div>
+											<label>{values.type === outgoingTypeID.loan ? "Acreedor" : "Beneficiario"}</label>
+											<FastField
+												name="beneficiaryID"
+												type="text"
 												id="beneficiary"
 												component={(props: any) => <SelectOptions {...props} table={"beneficiaries"} />}
-                      />
-                      // PONER AQUI INFORMACION DEL ERROR
-                    </div>
-                  </div>
-                  
-                  <div className="fields-container field-line">
-                    <div>
-                      <label>Fecha</label>
-                      <Field name="date" type="date" className="field" />
-                      // PONER AQUI INFORMACION DEL ERROR 
-                    </div>
-                    <div>
-                      <label>Monto</label>
-                      <Field className="field" name="amount" type="number" />
-                      // PONER AQUI INFORMACION DEL ERROR 
-                    </div>
-                  </div>
+											/>
+											{errors.beneficiaryID && touched.beneficiaryID && (
+												<div style={{ color: "red" }}>{errors.beneficiaryID}</div>
+											)}
+										</div>
+									</div>
 
-                  <div className="field-line field-description">
-                    <label htmlFor="description">Descripción</label>
-                    <FastField
-                      id="description"
-                      className="description"
-                      name="description"
-                      component={Textarea}
-                    />
-                  </div>
+									<div className="fields-container field-line">
+										<div>
+											<label>Fecha</label>
+											<Field name="date" type="date" className="field" />
+											{errors.date && touched.date && <div style={{ color: "red" }}>{errors.date}</div>}{" "}
+										</div>
+										<div>
+											<label>Monto</label>
+											<Field className="field" name="amount" type="number" />
+											{errors.amount && touched.amount && (
+                      <div style={{ color: "red" }}>{errors.amount}</div>
+                    )}
+										</div>
+									</div>
 
-                </div>
+									<div className="field-line field-description">
+										<label htmlFor="description">Descripción</label>
+										<FastField
+											id="description"
+											className="description"
+											name="description"
+											component={Textarea}
+										/>
+									</div>
+								</div>
 
-                <div className="foo-modal">
-                <div className="buttons-container">
-                    <button
-                      onClick={() => {
-                        onClose();
-                        initialOutgoing.type = null;
-                      }}
-                    >
-                      {outgoing ? "Cancelar" : "Cerrar"}
-                    </button>
-                    <button type="submit">
-                      {outgoing ? "Actualizar" : "Guardar"}
-                    </button>
-                  </div>
-                </div>
-						</section>
+								<div className="foo-modal">
+									<div className="buttons-container">
+										<button
+											onClick={() => {
+												onClose();
+												initialOutgoing.type = null;
+											}}
+										>
+											{outgoing ? "Cancelar" : "Cerrar"}
+										</button>
+										<button type="submit">{outgoing ? "Actualizar" : "Guardar"}</button>
+									</div>
+								</div>
+							</section>
 						</Form>
 					)}
 				</Formik>
@@ -140,114 +146,114 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 };
 
 const Wrapper = styled.section`
-display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  gap: 15px;
-  width: 700px;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	gap: 15px;
+	width: 700px;
 
-  label {
-    color: #ffffff;
-    font-family: Poppins;
-    font-weight: 400;
-    font-size: 18px;
-  }
-  .form-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+	label {
+		color: #ffffff;
+		font-family: Poppins;
+		font-weight: 400;
+		font-size: 18px;
+	}
+	.form-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 
-  .selectOutgoingType {
-    display: grid;
-    grid-template-columns: 90px 1fr;
-    align-items: center;
-  }
+	.selectOutgoingType {
+		display: grid;
+		grid-template-columns: 90px 1fr;
+		align-items: center;
+	}
 
-  .outgoingTypeLabel-container {
-    display: flex;
-    align-items: center;
-  }
+	.outgoingTypeLabel-container {
+		display: flex;
+		align-items: center;
+	}
 
-  input,
-  .description {
-    font-family: Poppins, Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    width: 100%;
-    background-color: hsl(0, 0%, 100%);
-    border-radius: 4px;
-    border: 1px;
-    border-color: hsl(0, 0%, 80%);
-    border-style: solid;
-    outline: 0;
-    padding: 2px 8px;
-    box-sizing: border-box;
-    color: #2f2f2f;
-  }
+	input,
+	.description {
+		font-family: Poppins, Arial, Helvetica, sans-serif;
+		font-size: 14px;
+		width: 100%;
+		background-color: hsl(0, 0%, 100%);
+		border-radius: 4px;
+		border: 1px;
+		border-color: hsl(0, 0%, 80%);
+		border-style: solid;
+		outline: 0;
+		padding: 2px 8px;
+		box-sizing: border-box;
+		color: #2f2f2f;
+	}
 
-  .field {
-    height: 38px;
-  }
-  .field-description {
-    display: flex;
-    flex-direction: column;
-    .description {
-      padding: 5px 8px;
-    }
-  }
+	.field {
+		height: 38px;
+	}
+	.field-description {
+		display: flex;
+		flex-direction: column;
+		.description {
+			padding: 5px 8px;
+		}
+	}
 
-  .selectType-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template: 1fr 1fr;
-    border-bottom: 1px gray solid;
-    width: 100%;
-    margin: 5px;
-    padding: 10px;
-    gap: 10px;
-  }
+	.selectType-container {
+		box-sizing: border-box;
+		display: grid;
+		grid-template: 1fr 1fr;
+		border-bottom: 1px gray solid;
+		width: 100%;
+		margin: 5px;
+		padding: 10px;
+		gap: 10px;
+	}
 
-  .fields-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    justify-content: space-between;
-    width: 100%;
-  }
+	.fields-container {
+		box-sizing: border-box;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		justify-content: space-between;
+		width: 100%;
+	}
 
-  .field-line {
-    margin: 10px 0;
-  }
-  .buttons-container {
-    display: flex;
-    grid-area: right;
-    gap: 15px;
+	.field-line {
+		margin: 10px 0;
+	}
+	.buttons-container {
+		display: flex;
+		grid-area: right;
+		gap: 15px;
 
-    button {
-      width: 93px;
-      height: 30px;
-      text-align: center;
-      justify-content: center;
-      font-size: 16px;
-      box-sizing: border-box;
-      background-color: #eeeeee;
-      border-radius: 5px;
-      font-family: Poppins, Arial, Helvetica, sans-serif;
-      border: 0;
-      cursor: pointer;
-      &:active {
-        background-color: #a4a4a494;
-      }
-    }
-  }
+		button {
+			width: 93px;
+			height: 30px;
+			text-align: center;
+			justify-content: center;
+			font-size: 16px;
+			box-sizing: border-box;
+			background-color: #eeeeee;
+			border-radius: 5px;
+			font-family: Poppins, Arial, Helvetica, sans-serif;
+			border: 0;
+			cursor: pointer;
+			&:active {
+				background-color: #a4a4a494;
+			}
+		}
+	}
 
-  .foo-modal {
-    display: grid;
-    grid-template: "left right" 25px/1fr;
-    padding: 5px;
-    height: 40px;
-  }
+	.foo-modal {
+		display: grid;
+		grid-template: "left right" 25px/1fr;
+		padding: 5px;
+		height: 40px;
+	}
 `;
 
 export default OutsModal;

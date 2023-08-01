@@ -32,7 +32,6 @@ type OutgoingsFilters = {
   description: string | null;
   startAmount: number | null;
   endAmount: number | null;
-  creditors:number[] | null;
 }
 
 type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | "NONE";

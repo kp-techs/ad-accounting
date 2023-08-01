@@ -8,6 +8,7 @@ import {
 	useSupabase
 } from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
+import { outgoingsInitialValues } from "../pages/outgoings/constants";
 
 
 function useAppData() {
@@ -55,8 +56,8 @@ function useAppData() {
 		setUsers(data || []);
 	}
 
-	async function loadOuts(page: number = 1, size: number = 15) {
-		const data = await fetchOuts(page, size);
+	async function loadOuts(page: number = 1, size: number = 15, filters:OutgoingsFilters=outgoingsInitialValues) {
+		const data = await fetchOuts(page, size,filters);
 		setOuts(data);
 		
 

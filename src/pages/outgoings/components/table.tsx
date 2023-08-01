@@ -11,8 +11,13 @@ import { useTable } from "react-table";
 import { ImPencil } from "react-icons/im";
 import DeleteModal from "./deleteModal";
 import DetailsModal from "./detailsModal";
+import Pagination from "../../../components/pagination";
 
-function Table() {
+type Props = {
+  filters: OutgoingsFilters;
+}
+
+function Table({filters}:Props) {
 	const { outgoings, loadOuts, profile } = useAppData();
 
   const [isOutModalOpen, toggleOutsModal] = useToggle();
@@ -28,9 +33,8 @@ function Table() {
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
   table;
   useEffect(() => {
-		loadOuts(currentPage, pageSize);
-		// TODO: incluir FILTERS
-	}, [currentPage]);
+		loadOuts(currentPage, pageSize, filters);
+	}, [currentPage, filters]);
 
 	return (
 		<Wrapper>
@@ -105,7 +109,17 @@ function Table() {
               })}
             </tbody>
           </table>
-        </div>):(<NoInfo/>)}
+        </div>) : (<NoInfo />)}
+      
+        <div className="pagination-container">
+        <Pagination
+          className="pagination-bar"
+          currentPage={currentPage}
+          totalCount={outgoings.count}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+        />
+      </div>
 		</Wrapper>
 	);
 }

@@ -4,6 +4,7 @@ import { FaPlus, FaFilter } from "react-icons/fa";
 import { outgoingsInitialValues } from "./constants";
 import OutsModal from "./components/outsModal";
 import Table from "./components/table";
+import FilterSeccion from "./components/filterSeccion";
 
 
 type Action = "ADD" | "FILTER" | "SEARCH";
@@ -44,12 +45,6 @@ function Outgoings() {
       onClose={() => setActiveAction(undefined)}
       />
 
-      {/*
-    
-    TO DO: crear modal para agregar gastos
-  
-
-    //TO DO: crear seccion para filtrar los gastos
     <FilterSeccion
       isActive={activeAction === "FILTER"}
       onClose={() => setActiveAction(undefined)}
@@ -57,9 +52,7 @@ function Outgoings() {
       setFilters={setFilters}
     />
 
-    TO DO: descomentar esto cuando cree los filters.
-    <Table filters={filters} /> */}
-      <Table/>
+    <Table filters={filters}/>
   </Wrapper>
   );
 }
