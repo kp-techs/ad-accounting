@@ -62,7 +62,7 @@ export function formatRelativeDate(date: string | null) {
 	return captalize(moment(date).fromNow());
 }
 
-export function generateFilterString({ ...filters }: IncomesFilters) {
+export function getIncomeFilterString({ ...filters }: IncomesFilters) {
 	if (!filters) return [];
 	if (filters.tithingID?.length) {
 		if (filters.type?.includes(incomeTypeID.tithe)) {
@@ -120,4 +120,38 @@ export function getOutgoingDescription(outgoing: TableOutgoing) {
 	if (outgoing.outgoingTypes)
 		return `${outgoing.outgoingTypes.name}${outgoing.description ? `: ${outgoing.description}` : ""}`;
 	return "-";
+}
+
+export function getOutgoingFilterString({ ...filters }: OutgoingsFilters) {	
+	if (!filters) return [];
+	const entries = Object.entries(filters).filter(([_, value]) => Boolean(value));
+	let typesStr = "";
+	const mappedFilters = entries.map(([key, value]) => {
+		switch (key) {
+			case "description":
+			case "checkNumber":
+				return `${key}.ilike.%${value}%`;
+			case "startAmount":
+				return `amount.gte.${value}`;
+			case "startDate":
+				return `date.gte.${value}`;
+			case "endDate":
+				return `date.lt.${value}`;
+			case "endAmount":
+				return `amount.lt.${value}`;
+			case "type":
+			case "beneficiaryID":
+				if (Array.isArray(value)) {
+					typesStr +=
+						(typesStr && value.length ? "," : "") + value.map((id: number) => `${key}.eq.${id}`).join(",");
+				}
+				return "";
+			default:
+				return "";
+		}
+	});
+
+	if (typesStr) mappedFilters.push(typesStr);
+
+	return mappedFilters;
 }

@@ -6,7 +6,6 @@ import { CreateOutgoing } from "../../types/models";
 export const outgoingsInitialValues: OutgoingsFilters = {
 	type: null,
 	beneficiaryID: null,
-	creditors: null,
 	checkNumber: "",
 	startDate: "",
 	endDate: "",

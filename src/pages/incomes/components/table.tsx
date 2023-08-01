@@ -138,7 +138,7 @@ function Table({ filters }: Props) {
           totalCount={incomes.count}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
-        />
+        />v
       </div>
     </Wrapper>
   );
