@@ -20,6 +20,7 @@ export function formatMoney(amount: number | null) {
 		}).format(amount);
 		return `RD$ ${number}`;
 	}
+	return '—'
 }
 
 export function captalize(str: string | null) {

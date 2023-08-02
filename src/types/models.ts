@@ -22,11 +22,10 @@ export type CreateOutgoing = Tables["outgoings"]["Insert"];
 export type Beneficiaries = Tables["beneficiaries"]["Row"];
 export type OutgoingTypes = Tables["outgoingTypes"]["Row"];
 export type Loans = Tables["loans"]["Row"];
-export type Creditors = Tables["creditors"]["Row"];
+
 
 export type TableOutgoing = Outgoing & {
   beneficiaries: Beneficiaries;
   outgoingTypes: OutgoingTypes;
   loans: Loans;
-  creditors: Creditors;
 }

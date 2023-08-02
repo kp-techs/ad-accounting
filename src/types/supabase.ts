@@ -24,21 +24,6 @@ export interface Database {
         }
         Relationships: []
       }
-      creditors: {
-        Row: {
-          id: number
-          name: string | null
-        }
-        Insert: {
-          id?: number
-          name?: string | null
-        }
-        Update: {
-          id?: number
-          name?: string | null
-        }
-        Relationships: []
-      }
       incomes: {
         Row: {
           amount: number | null
@@ -125,7 +110,6 @@ export interface Database {
         Row: {
           creditorID: number | null
           currentLoanAmount: number | null
-          description: string | null
           id: number
           initialLoanAmount: number | null
           paidAmount: number | null
@@ -133,7 +117,6 @@ export interface Database {
         Insert: {
           creditorID?: number | null
           currentLoanAmount?: number | null
-          description?: string | null
           id?: number
           initialLoanAmount?: number | null
           paidAmount?: number | null
@@ -141,7 +124,6 @@ export interface Database {
         Update: {
           creditorID?: number | null
           currentLoanAmount?: number | null
-          description?: string | null
           id?: number
           initialLoanAmount?: number | null
           paidAmount?: number | null
@@ -150,7 +132,7 @@ export interface Database {
           {
             foreignKeyName: "loans_creditorID_fkey"
             columns: ["creditorID"]
-            referencedRelation: "creditors"
+            referencedRelation: "beneficiaries"
             referencedColumns: ["id"]
           }
         ]
@@ -305,7 +287,28 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      echo: {
+        Args: {
+          say: string
+        }
+        Returns: string
+      }
+      total_amount: {
+        Args: {
+          table_name: string
+          column_name?: string
+          start_date?: string
+          end_date?: string
+        }
+        Returns: number
+      }
+      total_by_month: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          month: string
+          month_total: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
