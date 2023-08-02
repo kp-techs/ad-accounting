@@ -17,6 +17,7 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
   async function deleteUser() {
     if (user) {
       await supabase.from("users").update({ active: false }).eq("id", user.id);
+      await supabase.auth.admin.deleteUser(user.id);
       onClose();
     }
   }

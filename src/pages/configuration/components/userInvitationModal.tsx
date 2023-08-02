@@ -27,7 +27,8 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
       {
         redirectTo: "https://ad-accounting.vercel.app/create-new_user",
         data: { role, invitedBy, message },
-    });
+      });
+    onClose();
   };
 
   return (

@@ -29,6 +29,7 @@ export function captalize(str: string | null) {
 }
 
 export function formatTableDate(date: string | null) {
+	if (!date) return '—'
 	moment.locale("es-do");
 	const momentDate = moment(date);
 	const daysPassed = moment().diff(moment(date, "YYYYMMDD"), "days");
@@ -51,14 +52,17 @@ export function formatTableDate(date: string | null) {
 
 export function formatDate(date: string | null) {
 	if (date) return moment(date).format("DD [de] MMMM, YYYY");
+	 return '—'
 }
 
 export function formatLongDate(date: string | null) {
+	if (!date) return '—'
 	moment.locale("es");
 	return moment(date).format("DD [de] MMMM YYYY, hh:mm A");
 }
 
 export function formatRelativeDate(date: string | null) {
+	if (!date) return '—'
 	moment.locale("es-do");
 	return captalize(moment(date).fromNow());
 }
