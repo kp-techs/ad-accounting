@@ -3,9 +3,9 @@ import { Column } from "react-table";
 import { TableOutgoing } from "../../../types/models";
 import {
   formatTableDate,
-  captalize,
   getOutgoingDescription,
   getBeneficiaryName,
+  formatMoney,
 } from "../../../utils/helper";
 
 function useColumns() {
@@ -17,7 +17,7 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => formatTableDate(row.original.date),
       }, {
-        Header: "No. Cheque",
+        Header: "Cheque",
         accessor:"checkNumber",
       },
       {
@@ -26,6 +26,11 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => getBeneficiaryName(row.original),
 
+      },{
+        Header: "Monto",
+        accessor: "amount",
+        // @ts-ignore
+        Cell: ({ row }) => formatMoney(row.original.amount),
       },
       {
         Header: "Descripción",
@@ -33,6 +38,11 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => getOutgoingDescription(row.original),
       },
+      // {
+      //   Header: '',
+      //   // @ts-ignore
+      //   accessor:'',
+      // }
     ],
     []
   );

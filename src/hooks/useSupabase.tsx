@@ -2,7 +2,8 @@ import { createClient, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { TableIncome, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
-import { getIncomeFilterString, getOutgoingFilterString } from "../utils/helper";
+import { formatMoney, getIncomeFilterString, getOutgoingFilterString } from "../utils/helper";
+import moment from "moment";
 
 export const supabase = createClient<Database>(
 	process.env.REACT_APP_SUPABASE_URL || "",
@@ -11,6 +12,8 @@ export const supabase = createClient<Database>(
 
 export const useSupabase = () => {
 	const [session, setSession] = useState<Session | null>(null);
+
+
 
 	useEffect(() => {
 		supabase.auth.getSession().then((response) => {
@@ -86,3 +89,13 @@ export async function fetchLoans() {
 	const { data } = await supabase.from("loans").select("*");
 	return data;
 }
+
+
+
+
+export async function getTotalAmount(table: string, columnName: string = "amount", initialDate?: string, endDate?: string) {
+	const { data } = await supabase.rpc('total_amount', { table_name: table, column_name: columnName, start_date: initialDate, end_date: endDate });
+	return data
+}
+
+
