@@ -20,20 +20,6 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 	const { loans, loadOuts, profile } = useAppData();
 	const { supabase } = useSupabase();
 
-	const payLoan = async (outgoing: any) => {
-		const { data: loan } = await supabase.from("loans").select().eq("id", outgoing.loanId).single();
-
-		await supabase
-			.from("loans")
-			.update({
-				paidAmount: (loan?.paidAmount || 0) + outgoing.amount,
-				currentLoanAmount: (loan?.currentLoanAmount || 0) - outgoing.amount,
-				updateAt: moment().format(),
-				updateBy: profile?.name
-			})
-			.eq("id", outgoing.loanID);
-	};
-
 	return (
 		<Modal
 			ariaHideApp={false}
@@ -63,13 +49,16 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 							if (values.loanID) {
 								const { data: loan } = await supabase.from("loans").select().eq("id", values.loanID).single();
 								values.beneficiaryID = loan?.creditorID
+								let status ='Pendiente'
+								if ((loan?.currentLoanAmount||0) - (values.amount||0) <= 0) status = 'Saldado'
 								await supabase
 									.from("loans")
 									.update({
 										paidAmount: (loan?.paidAmount || 0) + (values.amount || 0),
 										currentLoanAmount: (loan?.currentLoanAmount || 0) - (values.amount || 0),
 										updateAt: moment().format(),
-										updateBy: profile?.name
+										updateBy: profile?.name,
+										status:status
 									})
 									.eq("id", values.loanID);
 								
