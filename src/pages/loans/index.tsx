@@ -57,9 +57,13 @@ const Wrapper = styled.section`
 			color: #5a5a5a;
 		}
 	}
-	.nav-button:active {
-		background-color: #ffffff;
-		border-radius: 5px;
+	.nav-button {
+		padding: 5px;
+
+		&:active {
+			background-color: #ffffff3a;
+			border-radius: 5px;
+		}
 	}
 	span {
 		font-family: "Poppins";

@@ -90,8 +90,10 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 							}
 						}
 						if (on) {
+							initialIncome.date = values.date;
 							initialIncome.type = incomeTypeID.tithe;
 						} else {
+							initialIncome.date = '';
 							initialIncome.type = null;
 						}
 						resetForm();
