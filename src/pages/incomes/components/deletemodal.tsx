@@ -19,6 +19,7 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
   async function deleteIncome() {
     if (income) {
       await supabase.from("incomes").delete().eq("id", income.id);
+      await supabase.from("loans").delete().eq("name", income.loanName)
       onClose();
       loadIncomes();
     }

@@ -6,6 +6,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { TableIncome } from "../../../types/models";
 import {
+  capitalize,
   formatDate,
   formatLongDate,
   formatMoney,
@@ -51,23 +52,23 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
         {income?.type === incomeTypeID.tithe ? (
           <section className="side">
             <p className="title">Diezmante</p>
-            <p>{income.tithing.name}</p>
+            <p>{capitalize(income.people.name||'')}</p>
           </section>
         ) : income?.type === incomeTypeID.event ? (
           <>
             <section className="side">
               <p className="title">Ministerio</p>
-              <p>{income.ministries.name}</p>
+              <p>{capitalize(income.ministries.name||'')}</p>
             </section>
             <section className="side">
               <p className="title">Actividad</p>
-              <p>{income?.eventName || "No especificado"}</p>
+              <p>{capitalize(income?.eventName || "No especificado")}</p>
             </section>
           </>
         ) : null}
         <section className="side">
           <p className="title">Comentario</p>
-          <p>{income?.comment}</p>
+          <p>{capitalize(income?.comment||'')}</p>
         </section>
 
         <section className="side">
@@ -75,7 +76,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           <div className="user-info">
             <FaRegUserCircle size={30} />
             <p>
-              {income?.createdBy}. {formatLongDate(income?.createdDate || null)}
+              {capitalize(income?.createdBy||'')}. {formatLongDate(income?.createdDate || null)}
             </p>
           </div>
         </section>
@@ -85,7 +86,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
             <div className="user-info">
               <FaRegUserCircle size={30} />
               <p>
-                {income?.updatedBy}.{" "}
+                {capitalize(income?.updatedBy||"")}.{" "}
                 {formatLongDate(income?.updatedDate || null)}
               </p>
             </div>

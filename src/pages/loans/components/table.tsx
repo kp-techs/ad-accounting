@@ -2,47 +2,39 @@ import styled from "styled-components";
 import useToggle from "../../../hooks/useToggle";
 import { useEffect, useState } from "react";
 import useAppData from "../../../hooks/useAppData";
-import { TableOutgoing } from "../../../types/models";
-import OutsModal from "./outsModal";
 import NoInfo from "../../../components/noInfo";
-import { MdDelete } from "react-icons/md";
 import useColumns from "../const/columns";
 import { useTable } from "react-table";
-import { ImPencil } from "react-icons/im";
-import DeleteModal from "./deleteModal";
-import DetailsModal from "./detailsModal";
 import Pagination from "../../../components/pagination";
+import { TableLoans } from "../../../types/models";
+import DetailsModal from "./detailsModal";
 
 type Props = {
-  filters: OutgoingsFilters;
+  filters: LoansFilters;
 }
 
-function Table({filters}:Props) {
-	const { outgoings, loadOuts, profile } = useAppData();
-
-  const [isOutModalOpen, toggleOutsModal] = useToggle();
-  const [isDeleteModalOpen, toggleDeleteModal] = useToggle();
-  const [isDetailsModalOpen, toggleDetailsModal] = useToggle();
+function
+  Table({ filters }: Props) {
+	const { loans, loadLoans, profile } = useAppData();
 
 	const [currentPage, setCurrentPage] = useState(1);
-	const [activeOuts, setActiveOuts] = useState<TableOutgoing>();
+  const [activeLoan, setActiveLoan] = useState<TableLoans>();
+  const [isDetailsModalOpen, toggleDetailsModal] = useToggle();
   const pageSize = 15;
   
   const columns = useColumns();
-  const table = useTable<TableOutgoing>({columns, data:outgoings.data})
+  const table = useTable<TableLoans>({columns, data:loans.data})
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
   table;
-  useEffect(() => { 
-		loadOuts(currentPage, pageSize, filters);
+  useEffect(() => {
+		loadLoans(currentPage, pageSize, filters);
 	}, [currentPage, filters]);
-
+//to do: modal de borrar prestamo o borrar pago.
+	//to do: version de modificar prestamo
 	return (
-		<Wrapper>
-      <OutsModal isOpen={isOutModalOpen} onClose={toggleOutsModal} outgoing={activeOuts} />
-      <DeleteModal isOpen={isDeleteModalOpen} onClose={toggleDeleteModal} outgoing={activeOuts} />
-      <DetailsModal isOpen={isDetailsModalOpen} onClose={toggleDetailsModal} outgoing={activeOuts} />
-      
-      {outgoings.count ? (
+    <Wrapper>
+      <DetailsModal isOpen={isDetailsModalOpen} onClose={toggleDetailsModal} loan={activeLoan} />
+      {loans.count ? (
         <div className="table-container">
           <table {...getTableProps()}>
             <thead>
@@ -59,50 +51,24 @@ function Table({filters}:Props) {
               </div>
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((outgoing) => {
-                prepareRow(outgoing);
+              {rows.map((loan) => {
+                prepareRow(loan);
 
                 return (
                   <div className="row-body">
                     <tr
-                      {...outgoing.getRowProps()}
+                      {...loan.getRowProps()}
                       className="row"
                       onClick={() => {
-                        setActiveOuts(outgoing.original);
+                        setActiveLoan(loan.original);
                         toggleDetailsModal();
                       }}
                     >
-                      {outgoing.cells.map((cell) => (
+                      {loan.cells.map((cell) => (
                         
                         <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                       ))}
 
-                      {profile?.role === "Administrador" && (
-                        <div id="modifyButtons-container">
-                          <div
-                            className="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveOuts(outgoing.original);
-                              toggleOutsModal();
-                            }}
-                          >
-                            <ImPencil size={17} />
-                          </div>
-                          <div
-                            className="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveOuts(outgoing.original);
-                              toggleDeleteModal();
-                            }}
-                          >
-                            <div className="button">
-                              <MdDelete size={22} />
-                            </div>
-                          </div>
-                        </div>
-                      )}
                     </tr>
                   </div>
                 );
@@ -115,7 +81,7 @@ function Table({filters}:Props) {
         <Pagination
           className="pagination-bar"
           currentPage={currentPage}
-          totalCount={outgoings.count}
+          totalCount={loans.count}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
         />
@@ -155,7 +121,7 @@ const Wrapper = styled.section`
   thead {
     tr {
       display: grid;
-      grid-template-columns: repeat(2, 2fr) 3fr 3fr 4fr 1fr;
+      grid-template-columns: repeat(7, 1fr);
       align-items: center;
       th {
         font-style: italic;
@@ -182,7 +148,7 @@ const Wrapper = styled.section`
       background-color: rgba(33, 80, 119, 0.109);
       position: relative;
       display: grid;
-      grid-template-columns:repeat(2, 2fr) 3fr 3fr 4fr 1fr;
+      grid-template-columns:repeat(7, 1fr);
       align-items: center;
       height: 100%;
       td {
@@ -193,23 +159,10 @@ const Wrapper = styled.section`
 
     tr:hover {
       background: #2626262b;
-      #modifyButtons-container {
-        display: flex;
-      }
     }
   }
 
-  #modifyButtons-container {
-    height: 100%;
-    box-sizing: border-box;
-    display: none;
-    justify-content: center;
-    gap: 15px;
-    position: absolute;
-    top: 0;
-    right: 10px;
-    z-index: 50;
-  }
+
   .button {
     display: flex;
     padding: 3px;

@@ -4,7 +4,7 @@ import { FaPlus, FaFilter } from "react-icons/fa";
 import { outgoingsInitialValues } from "./constants";
 import OutsModal from "./components/outsModal";
 import Table from "./components/table";
-import FilterSeccion from "./components/filterSeccion";
+import FilterSection from "./components/filterSeccion";
 
 
 type Action = "ADD" | "FILTER" | "SEARCH";
@@ -19,23 +19,19 @@ function Outgoings() {
       {(activeAction === "ADD" || !activeAction) && (
         <div
           onClick={() => setActiveAction("ADD")}
-          className={`button nav-button ${
-            activeAction === "ADD" ? "active" : ""
-          }`}
+          className={'button nav-button'}
         >
           <FaPlus size={20} />
-          {activeAction === "ADD" && <span>Agregar</span>}
+         <span>Agregar</span>
         </div>
       )}
       {(activeAction === "FILTER" || !activeAction) && (
         <div
           onClick={() => setActiveAction("FILTER")}
-          className={`button nav-button ${
-            activeAction === "FILTER" ? "active" : ""
-          }`}
+          className={'button nav-button'}
         >
           <FaFilter size={20} />
-          {activeAction === "FILTER" && <span>Filtrar </span>}
+          <span>Filtrar </span>
         </div>
       )}
     </nav>
@@ -45,7 +41,7 @@ function Outgoings() {
       onClose={() => setActiveAction(undefined)}
       />
 
-    <FilterSeccion
+    <FilterSection
       isActive={activeAction === "FILTER"}
       onClose={() => setActiveAction(undefined)}
       filters={filters}
@@ -88,10 +84,14 @@ const Wrapper = styled.section`
       color: #5a5a5a;
     }
   }
-  .nav-button:active {
-    background-color: #ffffff;
-    border-radius: 5px;
-  }
+	.nav-button {
+		padding: 5px;
+
+		&:active {
+			background-color: #ffffff3a;
+			border-radius: 5px;
+		}
+	}
   span {
     font-family: "Poppins";
     font-size: 18px;
