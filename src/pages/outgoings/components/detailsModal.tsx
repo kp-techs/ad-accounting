@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { FaRegUserCircle } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import {
+  capitalize,
   formatDate,
   formatLongDate,
   formatMoney,
-  generateConcept,
   getOutgoingDescription,
 } from "../../../utils/helper";
 import { TableOutgoing } from "../../../types/models";
@@ -46,26 +46,26 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           <p>{formatDate(outgoing?.date || null)}</p>
         </section>
         <section className="side">
-          <p className="title">Tipo de ingreso</p>
-          <p>{outgoing?.outgoingTypes.name}</p>
+          <p className="title">Tipo de egreso</p>
+          <p>{capitalize(outgoing?.outgoingTypes.name||'')}</p>
         </section>
         <section className="side">
           <p className="title">{outgoing?.type === outgoingTypeID.loan?'Acreedor':'Beneficiario'}</p>
-          <p>{outgoing?.beneficiaries.name}</p>
+          <p>{capitalize(outgoing?.people.name||'')}</p>
         </section>
         {outgoing?.type === outgoingTypeID.loan ? (
           <>
           <section className="side">
             <p className="title">Deuda inicial</p>
-              <p>{outgoing?.loans?.initialLoanAmount}</p>
+              <p>{formatMoney(outgoing?.loans?.initialLoanAmount||null)}</p>
           </section>
           <section className="side">
             <p className="title">Deuda restante</p>
-              <p>{outgoing?.loans?.currentLoanAmount}</p>
+              <p>{formatMoney(outgoing?.loans?.currentLoanAmount||null)}</p>
             </section>
             <section className="side">
             <p className="title">Total abonado</p>
-              <p>{outgoing?.loans?.paidAmount}</p>
+              <p>{formatMoney(outgoing?.loans?.paidAmount||null)}</p>
             </section>
           </>
         ):null}
@@ -75,7 +75,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           <div className="user-info">
             <FaRegUserCircle size={30} />
             <p>
-              {outgoing?.createdBy}. {formatLongDate(outgoing?.createdDate || null)}
+              {capitalize(outgoing?.createdBy||'')}. {formatLongDate(outgoing?.createdDate || null)}
             </p>
           </div>
         </section>
@@ -85,7 +85,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
             <div className="user-info">
               <FaRegUserCircle size={30} />
               <p>
-                {outgoing?.modifiedBy}.{" "}
+                {capitalize(outgoing?.modifiedBy||'')}.{" "}
                 {formatLongDate(outgoing?.modifiedAt || null)}
               </p>
             </div>

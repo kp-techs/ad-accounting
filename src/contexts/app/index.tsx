@@ -1,5 +1,5 @@
 import React, { createContext, FC, useState } from "react";
-import { TableIncome, TableOutgoing, User } from "../../types/models";
+import { TableIncome, TableLoans, TableOutgoing, User } from "../../types/models";
 
 const AppContext = createContext<AppContextType | null>(null);
 
@@ -13,6 +13,11 @@ type OutgoingsData = {
 	count: number;
 };
 
+type LoansData = {
+  data: TableLoans[];
+  count: number;
+}
+
 type AppContextType = {
   users: User[];
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
@@ -25,6 +30,9 @@ type AppContextType = {
 
   outgoings: OutgoingsData;
   setOuts: React.Dispatch<React.SetStateAction<OutgoingsData>>
+
+  loans: LoansData;
+  setLoans:React.Dispatch<React.SetStateAction<LoansData>>
 };
 
 type Props = {
@@ -36,9 +44,10 @@ export const AppProvider: FC<Props> = ({ children }) => {
   const [profile, setProfile] = useState<User | null>(null);
   const [incomes, setIncomes] = useState<IncomesData>({ data: [], count: 0 });
   const [outgoings, setOuts] = useState<OutgoingsData>({ data: [], count: 0 });
+  const [loans, setLoans] = useState<LoansData>({ data: [], count: 0 });
 
 
-  const value = { users, setUsers, profile, setProfile, incomes, setIncomes, outgoings, setOuts };
+  const value = { users, setUsers, profile, setProfile, incomes, setIncomes, outgoings, setOuts, loans, setLoans };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

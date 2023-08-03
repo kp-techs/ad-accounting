@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSupabase } from "../../../hooks/useSupabase";
 import { initialUser } from "../utils/constants";
-import { validationNewUserForm } from "../../incomes/constants";
+import { validationNewUserForm } from "../constant";
 
 type Props = {
 	isActive: boolean;

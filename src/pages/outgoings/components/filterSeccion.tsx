@@ -12,7 +12,7 @@ type Props = {
   setFilters: (filters: OutgoingsFilters) => void;
 };
 
-const FilterSeccion: FC<Props> = ({
+const FilterSection: FC<Props> = ({
   isActive,
   filters,
   onClose,
@@ -47,6 +47,7 @@ const FilterSeccion: FC<Props> = ({
                       component={(props: any) => (
                         <SelectOptions
                           {...props}
+                          isMulti={true}
                           table={"outgoingTypes"}
                           isCreatable={false}
                         />
@@ -60,7 +61,7 @@ const FilterSeccion: FC<Props> = ({
                     <label>Rango de fecha</label>
                   </div>
 
-                  <div className="fields-container doble-field">
+                  <div className="fields-container double-field">
                     <div className="field-container">
                       <Field
                         title="Fecha inicial"
@@ -84,7 +85,7 @@ const FilterSeccion: FC<Props> = ({
                   <div className="field-title">
                     <label>Rango de monto</label>
                   </div>
-                  <div className="fields-container doble-field">
+                  <div className="fields-container double-field">
                     <div className="field-container">
                       <Field
                         title="Monto inicial"
@@ -187,7 +188,7 @@ const Wrapper = styled.section`
     grid-template-rows: auto 1fr;
   }
 
-  .doble-field {
+  .double-field {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -218,4 +219,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default FilterSeccion;
+export default FilterSection;

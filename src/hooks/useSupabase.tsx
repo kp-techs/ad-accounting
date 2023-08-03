@@ -1,8 +1,8 @@
 import { createClient, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { TableIncome, TableOutgoing } from "../types/models";
+import { TableIncome, TableLoans, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
-import { formatMoney, getIncomeFilterString, getOutgoingFilterString } from "../utils/helper";
+import { getIncomeFilterString, getLoanFilterString, getOutgoingFilterString } from "../utils/helper";
 import moment from "moment";
 
 export const supabase = createClient<Database>(
@@ -12,8 +12,6 @@ export const supabase = createClient<Database>(
 
 export const useSupabase = () => {
 	const [session, setSession] = useState<Session | null>(null);
-
-
 
 	useEffect(() => {
 		supabase.auth.getSession().then((response) => {
@@ -37,7 +35,8 @@ export async function fetchIncomes(page: number, size: number, filters: IncomesF
 
 	let query = supabase
 		.from("incomes")
-		.select(`*, incomeTypes(*), ministries(*),  tithing(*)`, { count: "exact" })
+		.select(`*, incomeTypes(*), ministries(*),  people(*)`, { count: "exact" })
+		.order("date", { ascending: false })
 		.range(from, to);
 
 	const mappedFilters = getIncomeFilterString(filters);
@@ -53,7 +52,7 @@ export async function fetchIncomes(page: number, size: number, filters: IncomesF
 }
 
 export async function fetchUsers() {
-	const { data } = await supabase.from("users").select("*");
+	const { data } = await supabase.from("users").select("*").order("last_sign_in_at", { ascending: false });
 	return data;
 }
 
@@ -68,9 +67,10 @@ export async function fetchOuts(page: number, size: number, filters: OutgoingsFi
 
 	let query = supabase
 		.from("outgoings")
-		.select(`*, outgoingTypes(*), beneficiaries(*)`, {
+		.select(`*, outgoingTypes(*), people(*)`, {
 			count: "exact"
 		})
+		.order("date", { ascending: false })
 		.range(from, to);
 
 	const mappedFilters = getOutgoingFilterString(filters);
@@ -85,17 +85,41 @@ export async function fetchOuts(page: number, size: number, filters: OutgoingsFi
 	return { data: data || [], count: count || 0 };
 }
 
-export async function fetchLoans() {
-	const { data } = await supabase.from("loans").select("*");
+export async function fetchLoans(page: number, size: number, filters: LoansFilters) {
+	const from = (page - 1) * size;
+	const to = from + size;
+
+	let query = supabase
+		.from("loans")
+		.select(`*, people(*)`, {
+			count: "exact"
+		})
+		.order("date", { ascending: false })
+		.range(from, to);
+
+	const mappedFilters = getLoanFilterString(filters);
+	mappedFilters.forEach((filter) => {
+		if (filter) {
+			query = query.or(filter);
+		}
+	});
+
+	const { data, count } = await query.returns<TableLoans[]>();
+
+	return { data: data || [], count: count || 0 };
+}
+
+export async function getTotalAmount(
+	table: string,
+	columnName: string = "amount",
+	initialDate?: string,
+	endDate?: string
+) {
+	const { data } = await supabase.rpc("total_amount", {
+		table_name: table,
+		column_name: columnName,
+		start_date: initialDate,
+		end_date: endDate
+	});
 	return data;
 }
-
-
-
-
-export async function getTotalAmount(table: string, columnName: string = "amount", initialDate?: string, endDate?: string) {
-	const { data } = await supabase.rpc('total_amount', { table_name: table, column_name: columnName, start_date: initialDate, end_date: endDate });
-	return data
-}
-
-

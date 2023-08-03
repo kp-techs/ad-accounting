@@ -13,7 +13,7 @@ type Props = {
   setFilters: (filters: IncomesFilters) => void;
 };
 
-const FilterSeccion: FC<Props> = ({
+const FilterSection: FC<Props> = ({
   isActive,
   filters,
   onClose,
@@ -50,6 +50,7 @@ const FilterSeccion: FC<Props> = ({
                           {...props}
                           table={"incomeTypes"}
                           isCreatable={false}
+                          isMulti={true}
                         />
                       )}
                     />
@@ -64,7 +65,8 @@ const FilterSeccion: FC<Props> = ({
                           component={(props: any) => (
                             <SelectOptions
                               {...props}
-                              table={"tithing"}
+                              table={"people"}
+                              isMulti={true}
                               isCreatable={false}
                             />
                           )}
@@ -75,7 +77,7 @@ const FilterSeccion: FC<Props> = ({
                   {values.type?.includes(incomeTypeID.event) ? (
                     <section
                       id="typeEventFields-container"
-                      className="field-container doble-field"
+                      className="field-container double-field"
                     >
                       <div>
                         <label htmlFor="event-name">Nombre</label>
@@ -96,6 +98,7 @@ const FilterSeccion: FC<Props> = ({
                             name="ministryID"
                             component={(props: any) => (
                               <SelectOptions
+                              isMulti={true}
                                 {...props}
                                 table={"ministries"}
                                 isCreatable={false}
@@ -113,7 +116,7 @@ const FilterSeccion: FC<Props> = ({
                     <label>Rango de fecha</label>
                   </div>
 
-                  <div className="fields-container doble-field">
+                  <div className="fields-container double-field">
                     <div className="field-container">
                       <Field
                         title="Fecha inicial"
@@ -137,7 +140,7 @@ const FilterSeccion: FC<Props> = ({
                   <div className="field-title">
                     <label>Rango de monto</label>
                   </div>
-                  <div className="fields-container doble-field">
+                  <div className="fields-container double-field">
                     <div className="field-container">
                       <Field
                         title="Monto inicial"
@@ -240,7 +243,7 @@ const Wrapper = styled.div`
     grid-template-rows: auto 1fr;
   }
 
-  .doble-field {
+  .double-field {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -271,4 +274,4 @@ const Wrapper = styled.div`
   }
 `;
 
-export default FilterSeccion;
+export default FilterSection;

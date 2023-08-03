@@ -1,6 +1,3 @@
-import { Beneficiaries } from './../../types/models';
-//TO DO: crear validacion para subir formulario Formik
-
 import moment from "moment";
 import { CreateOutgoing } from "../../types/models";
 import { object, string, date, number, ref } from "yup";
@@ -17,56 +14,67 @@ export const outgoingsInitialValues: OutgoingsFilters = {
 };
 
 export const outgoingTypeID = {
-	loan:25,
-}
+	loan: 25
+};
 const today = moment().format();
 export const initialOutgoing: CreateOutgoing = {
-	amount:0,
+	amount: 0,
 	beneficiaryID: null,
-	checkNumber:'',
-	createdBy: '',
+	checkNumber: "",
+	createdBy: "",
 	createdDate: today,
-	date: '',
-	description: '',
+	date: "",
+	description: "",
 	modifiedAt: null,
-	modifiedBy: '',
+	modifiedBy: "",
 	type: null,
-}
-
-export const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    background: "#83a3bbc9",
-    boxShadow: "7px 13px 23px -2px rgba(0, 0, 0, 0.25)",
-    borderRadius: "20px",
-    fontFamily: "Poppins",
-  },
+	loanID: null
 };
 
+export const initialLoanVersion: CreateOutgoing = {
+	amount: 0,
+	beneficiaryID: null,
+	checkNumber: "",
+	createdBy: "",
+	createdDate: today,
+	date: "",
+	description: "",
+	modifiedAt: null,
+	modifiedBy: "",
+	type: outgoingTypeID.loan,
+	loanID: null
+};
+
+export const customStyles = {
+	content: {
+		top: "50%",
+		left: "50%",
+		right: "auto",
+		bottom: "auto",
+		marginRight: "-50%",
+		transform: "translate(-50%, -50%)",
+		background: "#83a3bbc9",
+		boxShadow: "7px 13px 23px -2px rgba(0, 0, 0, 0.25)",
+		borderRadius: "20px",
+		fontFamily: "Poppins"
+	}
+};
 
 export const ValidationOutgoingForm = object({
-  date: date().required("Favor especificar la fecha"),
-  amount: number().min(1,"Favor especificar el monto").required("Favor especificar el monto"),
-  type: number().required("Favor especificar el tipo de egreso"),
-  beneficiaryID: number()
-    .nullable()
-    .when("type", {
-      is: outgoingTypeID.loan,
-      then: () =>
-				number().required("Favor especificar el nombre del acreedor"),
-			otherwise:()=> number().required("Favor especificar el nombre del beneficiario")
-    }),
-    checkNumber: string().required("Favor especificar el número de cheque"),
+	date: date().required("Favor especificar la fecha"),
+	amount: number().min(1, "Favor especificar el monto").required("Favor especificar el monto"),
+	type: number().required("Favor especificar el tipo de egreso"),
+	beneficiaryID: number()
+		.nullable()
+		.when("type", {
+			is: !outgoingTypeID.loan,
+			then: () => number().required("Favor especificar el nombre del beneficiario")
+		}),
+	checkNumber: string().required("Favor especificar el número de cheque")
 });
 
-
-export const validationNewUserForm = object({
-  name:string().required("Favor introducir nombre de usuario."),
-  password:string().required("Favor introducir contraseña."),
-  confirmPassword:string().required("Favor reescribir su contraseña.").oneOf([ref("password")],'La contraseñas introducidas no coinciden'),
+export const ValidationLoanVersionForm = object({
+	date: date().required("Favor especificar la fecha"),
+	amount: number().min(1, "Favor especificar el monto").required("Favor especificar el monto"),
+	checkNumber: string().required("Favor especificar el número de cheque")
 });

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useTable } from "react-table";
+import { useSortBy, useTable } from "react-table";
 import useColumns from "../const/columns";
 import { useEffect, useState } from "react";
 import useAppData from "../../../hooks/useAppData";

@@ -4,7 +4,14 @@ import { Outgoing } from "../../../types/models";
 import { FC } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { useSupabase } from "../../../hooks/useSupabase";
-import { ValidationOutgoingForm, customStyles, initialOutgoing, outgoingTypeID } from "../constants";
+import {
+	ValidationLoanVersionForm,
+	ValidationOutgoingForm,
+	customStyles,
+	initialLoanVersion,
+	initialOutgoing,
+	outgoingTypeID
+} from "../constants";
 import { FastField, Field, Form, Formik } from "formik";
 import moment from "moment";
 import SelectOptions from "../../../components/selectOptions";
@@ -14,10 +21,11 @@ type Props = {
 	isOpen: boolean;
 	onClose: () => void;
 	outgoing?: Outgoing;
+	isLoanVersion?: boolean;
 };
 
-const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
-	const { loadOuts, profile } = useAppData();
+const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing, isLoanVersion = false }) => {
+	const { loans, loadOuts, profile, loadLoans } = useAppData();
 	const { supabase } = useSupabase();
 
 	return (
@@ -30,28 +38,42 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 		>
 			<Wrapper>
 				<Formik
-					initialValues={outgoing ?? initialOutgoing}
-					validationSchema={ValidationOutgoingForm}
+					initialValues={outgoing ?? (isLoanVersion ? initialLoanVersion : initialOutgoing)}
+					validationSchema={isLoanVersion ? ValidationLoanVersionForm : ValidationOutgoingForm}
 					onSubmit={async (values, { resetForm }) => {
 						if (outgoing) {
 							values.modifiedBy = profile?.name;
 							values.modifiedAt = moment().format();
 							// @ts-ignore
-							delete values.beneficiaries;
+							delete values.people;
 							// @ts-ignore
 							delete values.outgoingTypes;
-
 							await supabase
 								.from("outgoings")
 								.update({ ...values, id: outgoing.id })
 								.eq("id", outgoing.id);
 							onClose();
 						} else {
+							if (values.loanID) {
+								const { data: loan } = await supabase.from("loans").select().eq("id", values.loanID).single();
+								values.beneficiaryID = loan?.creditorID;
+								let status = "Pendiente";
+								if ((loan?.currentLoanAmount || 0) - (values.amount || 0) <= 0) status = "Saldado";
+								await supabase
+									.from("loans")
+									.update({
+										paidAmount: (loan?.paidAmount || 0) + (values.amount || 0),
+										currentLoanAmount: (loan?.currentLoanAmount || 0) - (values.amount || 0),
+										updateAt: moment().format(),
+										updateBy: profile?.name,
+										status: status
+									})
+									.eq("id", values.loanID);
+								loadLoans();
+							}
+
 							values.createdBy = profile?.name;
-							await supabase
-								.from("outgoings")
-								.insert([values as any])
-								.single();
+							await supabase.from("outgoings").insert([values as any]);
 						}
 						resetForm();
 						loadOuts();
@@ -61,20 +83,52 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 						<Form>
 							<section className="form-content">
 								<div className="top-modal">
-									<div className="selectType-container selectOutgoingType">
-										<div>
-											<label htmlFor="selectOutgoingType">Tipo</label>
+									{isLoanVersion ? (
+										<div className="underline">
+											<label>AGREGAR PAGO</label>
 										</div>
-										<FastField
-											id="selectOutgoingType"
-											name="type"
-                      component={(props: any) => (
-                        <SelectOptions {...props} table={"outgoingTypes"} />
-                      )}
-										/>
-									 <div></div>{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}	
-                  </div>
-                 
+									) : (
+										<div className="selectType-container selectOutgoingType underline">
+											<>
+												<div>
+													<label htmlFor="selectOutgoingType">Tipo</label>
+												</div>
+												<FastField
+													id="selectOutgoingType"
+													name="type"
+													component={(props: any) => <SelectOptions {...props} table={"outgoingTypes"} />}
+												/>
+												<div></div>
+											</>
+											{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}
+										</div>
+									)}
+									{values.type === outgoingTypeID.loan ? (
+										<div className=" field-line">
+											<div>
+												<label>Nombre</label>
+												<FastField
+													name="loanID"
+													component={(props: any) => (
+														<SelectOptions {...props} table={"loans"} isCreatable={false} isLoan={true} />
+													)}
+												/>
+											</div>
+										</div>
+									) : (
+										<section className="field-line">
+											<label htmlFor="beneficiary">Beneficiario</label>
+											<FastField
+												name="beneficiaryID"
+												id="beneficiary"
+												component={(props: any) => <SelectOptions {...props} table={"people"} />}
+											/>
+											{errors.beneficiaryID && touched.beneficiaryID && (
+												<div style={{ color: "red" }}>{errors.beneficiaryID}</div>
+											)}
+										</section>
+									)}
+
 									<div className="fields-container field-line">
 										<div>
 											<label>No. Cheque</label>
@@ -84,16 +138,8 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 											)}
 										</div>
 										<div>
-											<label>{values.type === outgoingTypeID.loan ? "Acreedor" : "Beneficiario"}</label>
-											<FastField
-												name="beneficiaryID"
-												type="text"
-												id="beneficiary"
-												component={(props: any) => <SelectOptions {...props} table={"beneficiaries"} />}
-											/>
-											{errors.beneficiaryID && touched.beneficiaryID && (
-												<div style={{ color: "red" }}>{errors.beneficiaryID}</div>
-											)}
+											<label htmlFor="description">Descripción</label>
+											<Field name="description" type="text" className="field" />
 										</div>
 									</div>
 
@@ -106,20 +152,8 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 										<div>
 											<label>Monto</label>
 											<Field className="field" name="amount" type="number" />
-											{errors.amount && touched.amount && (
-                      <div style={{ color: "red" }}>{errors.amount}</div>
-                    )}
+											{errors.amount && touched.amount && <div style={{ color: "red" }}>{errors.amount}</div>}
 										</div>
-									</div>
-
-									<div className="field-line field-description">
-										<label htmlFor="description">Descripción</label>
-										<FastField
-											id="description"
-											className="description"
-											name="description"
-											component={Textarea}
-										/>
 									</div>
 								</div>
 
@@ -206,11 +240,14 @@ const Wrapper = styled.section`
 		box-sizing: border-box;
 		display: grid;
 		grid-template: 1fr 1fr;
-		border-bottom: 1px gray solid;
 		width: 100%;
 		margin: 5px;
 		padding: 10px;
 		gap: 10px;
+	}
+
+	.underline {
+		border-bottom: 1px gray solid;
 	}
 
 	.fields-container {

@@ -38,11 +38,6 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => getOutgoingDescription(row.original),
       },
-      // {
-      //   Header: '',
-      //   // @ts-ignore
-      //   accessor:'',
-      // }
     ],
     []
   );
