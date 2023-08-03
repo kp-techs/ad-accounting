@@ -1,13 +1,13 @@
 import { Column } from "react-table";
 import { User } from "../../../types/models";
-import { captalize, formatRelativeDate } from "../../../utils/helper";
+import { capitalize, formatRelativeDate } from "../../../utils/helper";
 
 const colsSchema: Column<User>[] = [
   {
     Header: "Nombre",
     accessor: "name",
     // @ts-ignore
-    Cell: ({ row }) => captalize(row.original.name),
+    Cell: ({ row }) => capitalize(row.original.name),
   },
   {
     Header: "Correo",
@@ -17,7 +17,7 @@ const colsSchema: Column<User>[] = [
     Header: "Rol",
     accessor: "role",
     // @ts-ignore
-    Cell: ({ row }) => captalize(row.original.role),
+    Cell: ({ row }) => capitalize(row.original.role),
   },
   {
     Header: "Última sesión",

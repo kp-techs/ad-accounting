@@ -1,6 +1,3 @@
-import { Beneficiaries } from './../../types/models';
-//TO DO: crear validacion para subir formulario Formik
-
 import moment from "moment";
 import { CreateOutgoing } from "../../types/models";
 import { object, string, date, number, ref } from "yup";
@@ -62,11 +59,4 @@ export const ValidationOutgoingForm = object({
 			otherwise:()=> number().required("Favor especificar el nombre del beneficiario")
     }),
     checkNumber: string().required("Favor especificar el número de cheque"),
-});
-
-
-export const validationNewUserForm = object({
-  name:string().required("Favor introducir nombre de usuario."),
-  password:string().required("Favor introducir contraseña."),
-  confirmPassword:string().required("Favor reescribir su contraseña.").oneOf([ref("password")],'La contraseñas introducidas no coinciden'),
 });

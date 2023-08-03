@@ -34,4 +34,19 @@ type OutgoingsFilters = {
   endAmount: number | null;
 }
 
+type LoansFilters = {
+  startAmount_currentAmount: number | null;
+    endAmount_currentAmount: number | null;
+  startAmount_initialAmount: number | null;
+  endAmount_initialAmount: number | null;
+  startAmount_paidAmount: number | null;
+  endAmount_paidAmount: number | null;
+  loansNameID: number[] | null;
+  creditorID: number[] | null;
+  description: string | null;
+  startDate: string | null;
+  endDate: string | null;
+
+}
+
 type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | "NONE";

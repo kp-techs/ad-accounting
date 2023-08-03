@@ -37,7 +37,7 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 							values.modifiedBy = profile?.name;
 							values.modifiedAt = moment().format();
 							// @ts-ignore
-							delete values.beneficiaries;
+							delete values.people;
 							// @ts-ignore
 							delete values.outgoingTypes;
 
@@ -52,6 +52,11 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 								.from("outgoings")
 								.insert([values as any])
 								.single();
+							
+							if (values.type === outgoingTypeID.loan) {
+								await supabase.from('loans')
+								//TO DO: hacer que los pagos se sumen en paidAmount y se resten en currentLoanAmount hasta llegar a 0.
+							}
 						}
 						resetForm();
 						loadOuts();
@@ -68,13 +73,45 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 										<FastField
 											id="selectOutgoingType"
 											name="type"
-                      component={(props: any) => (
-                        <SelectOptions {...props} table={"outgoingTypes"} />
-                      )}
+											component={(props: any) => <SelectOptions {...props} table={"outgoingTypes"} />}
 										/>
-									 <div></div>{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}	
-                  </div>
-                 
+										<div></div>
+										{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}
+									</div>
+									{values.type === outgoingTypeID.loan ? (
+										<div className="fields-container field-line">
+											<div>
+												<label>Acreedor</label>
+												<FastField
+													name="beneficiaryID"
+													type="text"
+													id="beneficiary"
+													component={(props: any) => <SelectOptions {...props} table={"people"} />}
+												/>
+												{errors.beneficiaryID && touched.beneficiaryID && (
+													<div style={{ color: "red" }}>{errors.beneficiaryID}</div>
+												)}
+											</div>
+
+											<div>
+												<label>Nombre</label>
+												<Field name="loanName" type="text" className="field" />
+											</div>
+										</div>
+									) : (
+										<section className="field-line">
+											<label htmlFor="beneficiary">Beneficiario</label>
+											<FastField
+												name="beneficiary"
+												id="beneficiary"
+												component={(props: any) => <SelectOptions {...props} table={"people"} />}
+											/>
+											{errors.beneficiaryID && touched.beneficiaryID && (
+												<div style={{ color: "red" }}>{errors.beneficiaryID}</div>
+											)}
+										</section>
+									)}
+
 									<div className="fields-container field-line">
 										<div>
 											<label>No. Cheque</label>
@@ -84,16 +121,8 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 											)}
 										</div>
 										<div>
-											<label>{values.type === outgoingTypeID.loan ? "Acreedor" : "Beneficiario"}</label>
-											<FastField
-												name="beneficiaryID"
-												type="text"
-												id="beneficiary"
-												component={(props: any) => <SelectOptions {...props} table={"beneficiaries"} />}
-											/>
-											{errors.beneficiaryID && touched.beneficiaryID && (
-												<div style={{ color: "red" }}>{errors.beneficiaryID}</div>
-											)}
+											<label htmlFor="description">Descripción</label>
+											<Field name="description" type="text" className="field" />
 										</div>
 									</div>
 
@@ -106,20 +135,8 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 										<div>
 											<label>Monto</label>
 											<Field className="field" name="amount" type="number" />
-											{errors.amount && touched.amount && (
-                      <div style={{ color: "red" }}>{errors.amount}</div>
-                    )}
+											{errors.amount && touched.amount && <div style={{ color: "red" }}>{errors.amount}</div>}
 										</div>
-									</div>
-
-									<div className="field-line field-description">
-										<label htmlFor="description">Descripción</label>
-										<FastField
-											id="description"
-											className="description"
-											name="description"
-											component={Textarea}
-										/>
 									</div>
 								</div>
 

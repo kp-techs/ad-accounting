@@ -9,21 +9,6 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      beneficiaries: {
-        Row: {
-          id: number
-          name: string | null
-        }
-        Insert: {
-          id?: number
-          name?: string | null
-        }
-        Update: {
-          id?: number
-          name?: string | null
-        }
-        Relationships: []
-      }
       incomes: {
         Row: {
           amount: number | null
@@ -34,6 +19,7 @@ export interface Database {
           date: string
           eventName: string | null
           id: number
+          loanName: string | null
           ministryID: number | null
           tithingID: number | null
           type: number | null
@@ -49,6 +35,7 @@ export interface Database {
           date: string
           eventName?: string | null
           id?: number
+          loanName?: string | null
           ministryID?: number | null
           tithingID?: number | null
           type?: number | null
@@ -64,6 +51,7 @@ export interface Database {
           date?: string
           eventName?: string | null
           id?: number
+          loanName?: string | null
           ministryID?: number | null
           tithingID?: number | null
           type?: number | null
@@ -80,7 +68,7 @@ export interface Database {
           {
             foreignKeyName: "incomes_tithingID_fkey"
             columns: ["tithingID"]
-            referencedRelation: "tithing"
+            referencedRelation: "people"
             referencedColumns: ["id"]
           },
           {
@@ -108,31 +96,52 @@ export interface Database {
       }
       loans: {
         Row: {
+          createdAt: string | null
+          createdBy: string | null
           creditorID: number | null
           currentLoanAmount: number | null
+          date: string | null
+          description: string | null
           id: number
           initialLoanAmount: number | null
+          modifiedAt: string | null
+          modifiedBy: string | null
+          name: string | null
           paidAmount: number | null
         }
         Insert: {
+          createdAt?: string | null
+          createdBy?: string | null
           creditorID?: number | null
           currentLoanAmount?: number | null
+          date?: string | null
+          description?: string | null
           id?: number
           initialLoanAmount?: number | null
+          modifiedAt?: string | null
+          modifiedBy?: string | null
+          name?: string | null
           paidAmount?: number | null
         }
         Update: {
+          createdAt?: string | null
+          createdBy?: string | null
           creditorID?: number | null
           currentLoanAmount?: number | null
+          date?: string | null
+          description?: string | null
           id?: number
           initialLoanAmount?: number | null
+          modifiedAt?: string | null
+          modifiedBy?: string | null
+          name?: string | null
           paidAmount?: number | null
         }
         Relationships: [
           {
             foreignKeyName: "loans_creditorID_fkey"
             columns: ["creditorID"]
-            referencedRelation: "beneficiaries"
+            referencedRelation: "people"
             referencedColumns: ["id"]
           }
         ]
@@ -162,6 +171,7 @@ export interface Database {
           date: string | null
           description: string | null
           id: number
+          loanID: number | null
           modifiedAt: string | null
           modifiedBy: string | null
           type: number | null
@@ -175,6 +185,7 @@ export interface Database {
           date?: string | null
           description?: string | null
           id?: number
+          loanID?: number | null
           modifiedAt?: string | null
           modifiedBy?: string | null
           type?: number | null
@@ -188,6 +199,7 @@ export interface Database {
           date?: string | null
           description?: string | null
           id?: number
+          loanID?: number | null
           modifiedAt?: string | null
           modifiedBy?: string | null
           type?: number | null
@@ -196,7 +208,13 @@ export interface Database {
           {
             foreignKeyName: "outgoings_beneficiaryID_fkey"
             columns: ["beneficiaryID"]
-            referencedRelation: "beneficiaries"
+            referencedRelation: "people"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outgoings_loanID_fkey"
+            columns: ["loanID"]
+            referencedRelation: "loans"
             referencedColumns: ["id"]
           },
           {
@@ -222,7 +240,7 @@ export interface Database {
         }
         Relationships: []
       }
-      tithing: {
+      people: {
         Row: {
           id: number
           name: string
@@ -293,6 +311,14 @@ export interface Database {
         }
         Returns: string
       }
+      get_income_type: {
+        Args: {
+          p_pattern: string
+        }
+        Returns: {
+          type_name: string
+        }[]
+      }
       total_amount: {
         Args: {
           table_name: string
@@ -303,9 +329,11 @@ export interface Database {
         Returns: number
       }
       total_by_month: {
-        Args: Record<PropertyKey, never>
+        Args: {
+          table_name: string
+        }
         Returns: {
-          month: string
+          month_date: string
           month_total: number
         }[]
       }

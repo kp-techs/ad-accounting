@@ -11,6 +11,7 @@ function Home() {
   const navigate = useNavigate();
   const [incomesAmount, setIncomesAmount] = useState<any>(0);
   const [outgoingsAmount, setOutgoingsAmount] = useState<any>(0);
+  const [loansAmount, setLoansAmount] = useState<any>(0);
 
   const getValues = async () => {
     const totalIncomes = await getTotalAmount('incomes');
@@ -18,6 +19,9 @@ function Home() {
 
     const totalOutgoings = await getTotalAmount('outgoings');
     setOutgoingsAmount(totalOutgoings);
+
+    const totalLoans = await getTotalAmount('loans', 'currentLoanAmount')
+    setLoansAmount(totalLoans);
   }
 
   useEffect(() => {
@@ -27,7 +31,7 @@ function Home() {
   const totalValues = {
     income: formatMoney(incomesAmount),
     outgoing: formatMoney(outgoingsAmount),
-    loan: formatMoney(0),
+    loan: formatMoney(loansAmount),
     balance:formatMoney(incomesAmount - outgoingsAmount)
   }
 	return (
@@ -73,7 +77,7 @@ font-family: Poppins;
 }
 
 .separation-line{
-  border-bottom: 1px solid #00000097;
+  border-bottom: 1px solid #0000004f;
   margin:0;
   padding: 0;
 }

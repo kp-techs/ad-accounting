@@ -1,8 +1,8 @@
 import { createClient, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { TableIncome, TableOutgoing } from "../types/models";
+import { TableIncome, TableLoans, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
-import { formatMoney, getIncomeFilterString, getOutgoingFilterString } from "../utils/helper";
+import { getIncomeFilterString, getLoanFilterString, getOutgoingFilterString } from "../utils/helper";
 import moment from "moment";
 
 export const supabase = createClient<Database>(
@@ -37,7 +37,7 @@ export async function fetchIncomes(page: number, size: number, filters: IncomesF
 
 	let query = supabase
 		.from("incomes")
-		.select(`*, incomeTypes(*), ministries(*),  tithing(*)`, { count: "exact" })
+		.select(`*, incomeTypes(*), ministries(*),  people(*)`, { count: "exact" })
 		.range(from, to);
 
 	const mappedFilters = getIncomeFilterString(filters);
@@ -68,7 +68,7 @@ export async function fetchOuts(page: number, size: number, filters: OutgoingsFi
 
 	let query = supabase
 		.from("outgoings")
-		.select(`*, outgoingTypes(*), beneficiaries(*)`, {
+		.select(`*, outgoingTypes(*), people(*)`, {
 			count: "exact"
 		})
 		.range(from, to);
@@ -85,12 +85,30 @@ export async function fetchOuts(page: number, size: number, filters: OutgoingsFi
 	return { data: data || [], count: count || 0 };
 }
 
-export async function fetchLoans() {
-	const { data } = await supabase.from("loans").select("*");
-	return data;
+
+export async function fetchLoans(page: number, size: number, filters: LoansFilters) {
+	const from = (page - 1) * size;
+	const to = from + size;
+
+	let query = supabase
+		.from("loans")
+		.select(`*, people(*)`, {
+			count: "exact"
+		})
+		.range(from, to);
+
+	const mappedFilters = getLoanFilterString(filters);
+	mappedFilters.forEach((filter) => {
+		if (filter) {
+			query = query.or(filter);
+		}
+	});
+
+	const { data, count } = await query.returns<TableLoans[]>();
+
+	return { data: data || [], count: count || 0 };
 }
-
-
+ 
 
 
 export async function getTotalAmount(table: string, columnName: string = "amount", initialDate?: string, endDate?: string) {

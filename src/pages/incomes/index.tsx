@@ -3,7 +3,7 @@ import Table from "./components/table";
 import React, { useState } from "react";
 import IncomesModal from "./components/incomeModal";
 import { FaPlus, FaFilter } from "react-icons/fa";
-import FilterSeccion from "./components/incomesFilter";
+import FilterSection from "./components/incomesFilter";
 import { filterInitialValues } from "./constants";
 
 
@@ -44,7 +44,7 @@ function Incomes() {
         isOpen={activeAction === "ADD"}
         onClose={() => setActiveAction(undefined)}
       />
-      <FilterSeccion
+      <FilterSection
         isActive={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
         filters={filters}

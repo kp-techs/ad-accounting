@@ -2,6 +2,7 @@ import AppContext from "../contexts/app";
 import { useContext, useEffect, useCallback } from "react";
 import {
 	fetchIncomes,
+	fetchLoans,
 	fetchOuts,
 	fetchProfile,
 	fetchUsers,
@@ -9,6 +10,7 @@ import {
 } from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
 import { outgoingsInitialValues } from "../pages/outgoings/constants";
+import { loansInitialValues } from "../pages/loans/constant";
 
 
 function useAppData() {
@@ -26,7 +28,10 @@ function useAppData() {
 		incomes,
 		setIncomes,
 		outgoings,
-		setOuts
+		setOuts,
+		loans,
+		setLoans 
+
 	} = context;
 
 	const loadProfile = useCallback(async () => {
@@ -59,18 +64,23 @@ function useAppData() {
 	async function loadOuts(page: number = 1, size: number = 15, filters:OutgoingsFilters=outgoingsInitialValues) {
 		const data = await fetchOuts(page, size,filters);
 		setOuts(data);
-		
+	}
 
+	async function loadLoans(page: number = 1, size: number = 15, filters:LoansFilters=loansInitialValues) {
+		const data = await fetchLoans(page, size,filters);
+		setLoans(data);
 	}
 
 	return {
 		users,
 		loadUsers,
-		profile,
 		incomes,
 		loadIncomes,
 		outgoings,
-		loadOuts
+		loadOuts,
+		loans,
+		loadLoans, 
+		profile,
 	};
 }
 

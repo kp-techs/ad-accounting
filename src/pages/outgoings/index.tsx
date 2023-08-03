@@ -4,7 +4,7 @@ import { FaPlus, FaFilter } from "react-icons/fa";
 import { outgoingsInitialValues } from "./constants";
 import OutsModal from "./components/outsModal";
 import Table from "./components/table";
-import FilterSeccion from "./components/filterSeccion";
+import FilterSection from "./components/filterSeccion";
 
 
 type Action = "ADD" | "FILTER" | "SEARCH";
@@ -45,7 +45,7 @@ function Outgoings() {
       onClose={() => setActiveAction(undefined)}
       />
 
-    <FilterSeccion
+    <FilterSection
       isActive={activeAction === "FILTER"}
       onClose={() => setActiveAction(undefined)}
       filters={filters}

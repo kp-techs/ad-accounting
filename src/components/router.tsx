@@ -10,6 +10,7 @@ import Configuration from "../pages/configuration";
 import CreateUser from "../pages/createUser";
 import RecoverPassword from "../pages/recoverPassword";
 import { createGlobalStyle } from "styled-components";
+import Loans from "../pages/loans";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
         path: "/configuration",
         element: <Configuration />,
       },
+      {
+        path: "/loans",
+        element: <Loans />,
+      }
     ],
   },
   { path: "/login", element: <Login /> },
