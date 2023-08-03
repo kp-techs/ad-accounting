@@ -5,6 +5,7 @@ import { formatMoney } from "../../utils/helper";
 import useAppData from "../../hooks/useAppData";
 import { useNavigate } from "react-router-dom";
 import MyStockChart from "../../components/charts/lineChart";
+import moment from "moment";
 
 function Home() {
   const { profile } = useAppData();
@@ -14,10 +15,11 @@ function Home() {
   const [loansAmount, setLoansAmount] = useState<any>(0);
 
   const getValues = async () => {
-    const totalIncomes = await getTotalAmount('incomes');
+    const thisMonth = moment().startOf('month').format('YYYY-MM-DD')
+    const totalIncomes = await getTotalAmount('incomes','amount',thisMonth);
     setIncomesAmount(totalIncomes)
 
-    const totalOutgoings = await getTotalAmount('outgoings');
+    const totalOutgoings = await getTotalAmount('outgoings','amount',thisMonth);
     setOutgoingsAmount(totalOutgoings);
 
     const totalLoans = await getTotalAmount('loans', 'currentLoanAmount')
@@ -49,7 +51,7 @@ function Home() {
 					<p className="title">EGRESOS</p>
           <p>{ totalValues.outgoing}</p>
 				</div>
-				<div>
+				<div className="shortcut" onClick={() => navigate('/loans')}>
 					<p className="title">PRESTAMOS</p>
           <p>{totalValues.loan}</p>
 				</div>
@@ -83,22 +85,25 @@ font-family: Poppins;
 }
 
 .chart-container {
-  margin:20px 5px;
+  margin:20px 0;
   border-radius: 5px;
   box-shadow: 0px 1px 5px 0px #00000024;
   background-color: #ffffff;
   padding: 10px;
   display: flex;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 	.resumen {
-		display: flex;
-    justify-content: space-evenly;
+		display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    
 		
 		div {
 			background-color: #ffffffb2;
       padding: 10px 20px;
-      width: 20%;
       border-radius: 5px;
       box-shadow: 0px 1px 5px 0px #00000024;
 
