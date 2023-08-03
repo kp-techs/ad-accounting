@@ -43,7 +43,7 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 											<FastField
 												name="name"
 												component={(props: any) => (
-													<SelectOptions {...props} table={"loans"} isCreatable={false} />
+													<SelectOptions {...props} table={"loans"} isCreatable={false}isMulti={true} />
 												)}
 												/>
 											</div>
@@ -55,7 +55,7 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 											<FastField
 												name="creditorID"
 												component={(props: any) => (
-													<SelectOptions {...props} table={"people"} isCreatable={false} />
+													<SelectOptions {...props} table={"people"} isCreatable={false} isMulti={true}/>
 												)}
 												/>
 											</div>

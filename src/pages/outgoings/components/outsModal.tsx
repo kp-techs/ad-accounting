@@ -17,8 +17,22 @@ type Props = {
 };
 
 const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
-	const { loadOuts, profile } = useAppData();
+	const { loans, loadOuts, profile } = useAppData();
 	const { supabase } = useSupabase();
+
+	const payLoan = async (outgoing: any) => {
+		const { data: loan } = await supabase.from("loans").select().eq("id", outgoing.loanId).single();
+
+		await supabase
+			.from("loans")
+			.update({
+				paidAmount: (loan?.paidAmount || 0) + outgoing.amount,
+				currentLoanAmount: (loan?.currentLoanAmount || 0) - outgoing.amount,
+				updateAt: moment().format(),
+				updateBy: profile?.name
+			})
+			.eq("id", outgoing.loanID);
+	};
 
 	return (
 		<Modal
@@ -40,23 +54,29 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 							delete values.people;
 							// @ts-ignore
 							delete values.outgoingTypes;
-
 							await supabase
 								.from("outgoings")
 								.update({ ...values, id: outgoing.id })
 								.eq("id", outgoing.id);
 							onClose();
 						} else {
-							values.createdBy = profile?.name;
-							await supabase
-								.from("outgoings")
-								.insert([values as any])
-								.single();
-							
-							if (values.type === outgoingTypeID.loan) {
-								await supabase.from('loans')
-								//TO DO: hacer que los pagos se sumen en paidAmount y se resten en currentLoanAmount hasta llegar a 0.
+							if (values.loanID) {
+								const { data: loan } = await supabase.from("loans").select().eq("id", values.loanID).single();
+								values.beneficiaryID = loan?.creditorID
+								await supabase
+									.from("loans")
+									.update({
+										paidAmount: (loan?.paidAmount || 0) + (values.amount || 0),
+										currentLoanAmount: (loan?.currentLoanAmount || 0) - (values.amount || 0),
+										updateAt: moment().format(),
+										updateBy: profile?.name
+									})
+									.eq("id", values.loanID);
+								
 							}
+
+							values.createdBy = profile?.name;
+							await supabase.from("outgoings").insert([values as any]);
 						}
 						resetForm();
 						loadOuts();
@@ -79,30 +99,21 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 										{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}
 									</div>
 									{values.type === outgoingTypeID.loan ? (
-										<div className="fields-container field-line">
-											<div>
-												<label>Acreedor</label>
-												<FastField
-													name="beneficiaryID"
-													type="text"
-													id="beneficiary"
-													component={(props: any) => <SelectOptions {...props} table={"people"} />}
-												/>
-												{errors.beneficiaryID && touched.beneficiaryID && (
-													<div style={{ color: "red" }}>{errors.beneficiaryID}</div>
-												)}
-											</div>
-
+										<div className=" field-line">
 											<div>
 												<label>Nombre</label>
-												<Field name="loanName" type="text" className="field" />
+												<FastField
+													name="loanID"
+													component={(props: any) => <SelectOptions {...props} table={"loans"}
+														isCreatable={false} isLoan={true} />}
+												/>
 											</div>
 										</div>
 									) : (
 										<section className="field-line">
 											<label htmlFor="beneficiary">Beneficiario</label>
 											<FastField
-												name="beneficiary"
+												name="beneficiaryID"
 												id="beneficiary"
 												component={(props: any) => <SelectOptions {...props} table={"people"} />}
 											/>

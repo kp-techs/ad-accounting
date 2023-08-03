@@ -34,7 +34,7 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.initialLoanAmount),
       }, {
-        Header: "Monto Adeudado",
+        Header: "Restante",
         accessor: "currentLoanAmount",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.currentLoanAmount),
@@ -44,6 +44,12 @@ function useColumns() {
         accessor: "paidAmount",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.paidAmount),
+      },
+      {
+        Header: "Estado",
+        accessor: "status",
+        // @ts-ignore
+        Cell: ({ row }) => capitalize(row.original.status),
       },
     ],
     []

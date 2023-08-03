@@ -50,6 +50,7 @@ const FilterSection: FC<Props> = ({
                           {...props}
                           table={"incomeTypes"}
                           isCreatable={false}
+                          isMulti={true}
                         />
                       )}
                     />
@@ -65,6 +66,7 @@ const FilterSection: FC<Props> = ({
                             <SelectOptions
                               {...props}
                               table={"people"}
+                              isMulti={true}
                               isCreatable={false}
                             />
                           )}
@@ -96,6 +98,7 @@ const FilterSection: FC<Props> = ({
                             name="ministryID"
                             component={(props: any) => (
                               <SelectOptions
+                              isMulti={true}
                                 {...props}
                                 table={"ministries"}
                                 isCreatable={false}

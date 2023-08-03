@@ -52,7 +52,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 										date: values.date
 									})
 									.eq("name", income.loanName)
-									.select();
+								
 							}
 							// @ts-ignore
 							delete values.incomeTypes;
@@ -70,7 +70,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 							await supabase
 								.from("incomes")
 								.insert([values as any])
-								.single();
+								
 							if (values.type === incomeTypeID.loan) {
 								await supabase
 									.from("loans")
@@ -86,7 +86,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 											date: values.date
 										}
 									])
-									.single();
+									
 							}
 						}
 						if (on) {

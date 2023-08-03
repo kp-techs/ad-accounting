@@ -27,7 +27,8 @@ export const initialOutgoing: CreateOutgoing = {
 	description: '',
 	modifiedAt: null,
 	modifiedBy: '',
-	type: null,
+  type: null,
+  loanID:null
 }
 
 export const customStyles = {
@@ -53,10 +54,9 @@ export const ValidationOutgoingForm = object({
   beneficiaryID: number()
     .nullable()
     .when("type", {
-      is: outgoingTypeID.loan,
+      is: !outgoingTypeID.loan,
       then: () =>
-				number().required("Favor especificar el nombre del acreedor"),
-			otherwise:()=> number().required("Favor especificar el nombre del beneficiario")
+				number().required("Favor especificar el nombre del beneficiario")
     }),
     checkNumber: string().required("Favor especificar el número de cheque"),
 });

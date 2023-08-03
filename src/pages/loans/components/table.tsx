@@ -119,7 +119,7 @@ const Wrapper = styled.section`
   thead {
     tr {
       display: grid;
-      grid-template-columns: repeat(2, 2fr) 3fr repeat(3, 2fr);
+      grid-template-columns: repeat(7, 1fr);
       align-items: center;
       th {
         font-style: italic;
@@ -146,7 +146,7 @@ const Wrapper = styled.section`
       background-color: rgba(33, 80, 119, 0.109);
       position: relative;
       display: grid;
-      grid-template-columns:repeat(2, 2fr) 3fr repeat(3, 2fr);
+      grid-template-columns:repeat(7, 1fr);
       align-items: center;
       height: 100%;
       td {

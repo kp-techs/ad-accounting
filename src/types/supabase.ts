@@ -104,10 +104,11 @@ export interface Database {
           description: string | null
           id: number
           initialLoanAmount: number | null
-          modifiedAt: string | null
-          modifiedBy: string | null
           name: string | null
           paidAmount: number | null
+          status: string | null
+          updateAt: string | null
+          updateBy: string | null
         }
         Insert: {
           createdAt?: string | null
@@ -118,10 +119,11 @@ export interface Database {
           description?: string | null
           id?: number
           initialLoanAmount?: number | null
-          modifiedAt?: string | null
-          modifiedBy?: string | null
           name?: string | null
           paidAmount?: number | null
+          status?: string | null
+          updateAt?: string | null
+          updateBy?: string | null
         }
         Update: {
           createdAt?: string | null
@@ -132,10 +134,11 @@ export interface Database {
           description?: string | null
           id?: number
           initialLoanAmount?: number | null
-          modifiedAt?: string | null
-          modifiedBy?: string | null
           name?: string | null
           paidAmount?: number | null
+          status?: string | null
+          updateAt?: string | null
+          updateBy?: string | null
         }
         Relationships: [
           {

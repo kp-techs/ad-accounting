@@ -32,7 +32,7 @@ function Table({filters}:Props) {
   const table = useTable<TableOutgoing>({columns, data:outgoings.data})
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
   table;
-  useEffect(() => {
+  useEffect(() => { 
 		loadOuts(currentPage, pageSize, filters);
 	}, [currentPage, filters]);
 

@@ -61,13 +61,13 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, loan }) => {
 						</p>
 					</div>
 				</section>
-				{loan?.modifiedAt !== null && (
+				{loan?.updateAt !== null && (
 					<section className="side">
 						<p className="title">Última modificación</p>
 						<div className="user-info">
 							<FaRegUserCircle size={30} />
 							<p>
-								{capitalize(loan?.modifiedBy||'')}. {formatLongDate(loan?.modifiedAt || null)}
+								{capitalize(loan?.updateBy||'')}. {formatLongDate(loan?.updateAt || null)}
 							</p>
 						</div>
 					</section>

@@ -47,6 +47,7 @@ const FilterSection: FC<Props> = ({
                       component={(props: any) => (
                         <SelectOptions
                           {...props}
+                          isMulti={true}
                           table={"outgoingTypes"}
                           isCreatable={false}
                         />
