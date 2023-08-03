@@ -24,8 +24,25 @@ export const initialIncome: CreateIncome = {
 	eventName: "",
   concept: null,
   loanName: "",
-  
 };
+
+export const initialLoanIncome: CreateIncome = {
+	date: "",
+	amount: 0,
+	createdBy: "",
+	createdDate: today,
+	updatedBy: "",
+	updatedDate: null,
+	comment: "",
+	type: incomeTypeID.loan,
+	tithingID: null,
+	ministryID: null,
+	eventName: "",
+  concept: null,
+  loanName: "",
+};
+
+
 
 export const filterInitialValues: IncomesFilters = {
 	type: null,
@@ -64,6 +81,12 @@ export const ValidationIncomeForm = object({
 		is: incomeTypeID.loan,
 		then: () => string().required("Favor especificar el nombre del préstamo")
 	})
+});
+
+export const ValidationLoanVersionForm = object({
+	date: date().required("Favor especificar la fecha"),
+	amount: number().min(1, "Favor especificar el monto").required("Favor especificar el monto"),
+	loanName:  string().required("Favor especificar el nombre del préstamo"),
 });
 
 export const customStyles = {

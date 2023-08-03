@@ -13,7 +13,8 @@ type Props = {
   filters: LoansFilters;
 }
 
-function Table({filters}:Props) {
+function
+  Table({ filters }: Props) {
 	const { loans, loadLoans, profile } = useAppData();
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +29,8 @@ function Table({filters}:Props) {
   useEffect(() => {
 		loadLoans(currentPage, pageSize, filters);
 	}, [currentPage, filters]);
-
+//to do: modal de borrar prestamo o borrar pago.
+	//to do: version de modificar prestamo
 	return (
     <Wrapper>
       <DetailsModal isOpen={isDetailsModalOpen} onClose={toggleDetailsModal} loan={activeLoan} />

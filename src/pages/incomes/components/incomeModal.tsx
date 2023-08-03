@@ -8,7 +8,14 @@ import { Income } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
 import SelectOptions from "../../../components/selectOptions";
 
-import { initialIncome, customStyles, incomeTypeID, ValidationIncomeForm } from "../constants";
+import {
+	initialIncome,
+	customStyles,
+	incomeTypeID,
+	ValidationIncomeForm,
+	initialLoanIncome,
+	ValidationLoanVersionForm
+} from "../constants";
 import Textarea from "../../../components/textarea";
 import moment from "moment";
 
@@ -16,10 +23,11 @@ type Props = {
 	isOpen: boolean;
 	onClose: () => void;
 	income?: Income;
+	isLoanVersion?: boolean;
 };
 
-const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
-	const { loadIncomes, profile } = useAppData();
+const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = false }) => {
+	const { loadIncomes, profile, loadLoans } = useAppData();
 	const [on, setOn] = useState(false);
 	const { supabase } = useSupabase();
 
@@ -33,8 +41,8 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 		>
 			<Wrapper>
 				<Formik
-					validationSchema={ValidationIncomeForm}
-					initialValues={income ?? initialIncome}
+					validationSchema={isLoanVersion? ValidationLoanVersionForm:ValidationIncomeForm}
+					initialValues={income ?? (isLoanVersion ? initialLoanIncome : initialIncome)}
 					onSubmit={async (values, { resetForm }) => {
 						if (income) {
 							values.updatedBy = profile?.name;
@@ -51,8 +59,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 										description: values.comment,
 										date: values.date
 									})
-									.eq("name", income.loanName)
-								
+									.eq("name", income.loanName);
 							}
 							// @ts-ignore
 							delete values.incomeTypes;
@@ -66,34 +73,31 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 								.eq("id", income.id);
 							onClose();
 						} else {
+							if (isLoanVersion) values.type = incomeTypeID.loan;
 							values.createdBy = profile?.name;
-							await supabase
-								.from("incomes")
-								.insert([values as any])
-								
+							await supabase.from("incomes").insert([values as any]);
+
 							if (values.type === incomeTypeID.loan) {
-								await supabase
-									.from("loans")
-									.insert([
-										{
-											name: values.loanName,
-											creditorID: values.tithingID,
-											initialLoanAmount: values.amount,
-											currentLoanAmount: values.amount,
-											createdBy: profile?.name,
-											createdAt: moment().format(),
-											description: values.comment,
-											date: values.date
-										}
-									])
-									
+								await supabase.from("loans").insert([
+									{
+										name: values.loanName,
+										creditorID: values.tithingID,
+										initialLoanAmount: values.amount,
+										currentLoanAmount: values.amount,
+										createdBy: profile?.name,
+										createdAt: moment().format(),
+										description: values.comment,
+										date: values.date
+									}
+								]);
+								loadLoans();
 							}
 						}
 						if (on) {
 							initialIncome.date = values.date;
 							initialIncome.type = incomeTypeID.tithe;
 						} else {
-							initialIncome.date = '';
+							initialIncome.date = "";
 							initialIncome.type = null;
 						}
 						resetForm();
@@ -104,18 +108,27 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 						<Form>
 							<section className="form-content">
 								<div className="top-modal">
-									<div className="selectType-container selectIncomeType">
-										<div>
-											<label htmlFor="selectIncomeType">Concepto</label>
+									{isLoanVersion ? (
+										<div className="underline">
+											<label>NUEVO PRESTAMO</label>
 										</div>
-										<FastField
-											id="selectIncomeType"
-											name="type"
-											component={(props: any) => <SelectOptions {...props} table={"incomeTypes"} />}
-										/>
-										<div></div>
-										{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}
-									</div>
+									) : (
+										<div className="selectType-container selectIncomeType underline">
+											<>
+												<div>
+													<label htmlFor="selectIncomeType">Concepto</label>
+												</div>
+												<FastField
+													id="selectIncomeType"
+													name="type"
+													component={(props: any) => <SelectOptions {...props} table={"incomeTypes"} />}
+												/>
+												<div></div>
+											</>
+
+											{errors.type && touched.type && <div style={{ color: "red" }}>{errors.type}</div>}
+										</div>
+									)}
 									{values.type === incomeTypeID.tithe ? (
 										<section className="field-line">
 											<label htmlFor="tithingName">Diezmante</label>
@@ -156,7 +169,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 												)}
 											</div>
 										</section>
-									) : values.type === incomeTypeID.loan ? (
+									) : values.type === incomeTypeID.loan || isLoanVersion ? (
 										<section className="field-line fields-container">
 											<div>
 												<label htmlFor="loan-name">Nombre</label>
@@ -217,7 +230,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income }) => {
 										>
 											{income ? "Cancelar" : "Cerrar"}
 										</button>
-										<button type="submit">{income ? "Actualizar" : "Guardar"}</button>
+										<button type="submit" onClick={()=>console.log(errors)}>{income ? "Actualizar" : "Guardar"}</button>
 									</div>
 								</div>
 							</section>
@@ -290,11 +303,14 @@ const Wrapper = styled.div`
 		box-sizing: border-box;
 		display: grid;
 		grid-template: 1fr 1fr;
-		border-bottom: 1px gray solid;
 		width: 100%;
 		margin: 5px;
 		padding: 10px;
 		gap: 10px;
+	}
+
+	.underline {
+		border-bottom: 1px gray solid;
 	}
 
 	.fields-container {

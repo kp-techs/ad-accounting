@@ -1,26 +1,41 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { FaFilter } from "react-icons/fa";
+import { FaFilter, FaPlus } from "react-icons/fa";
 import useToggle from "../../hooks/useToggle";
 import FilterSection from "./components/loansFilter";
 import { loansInitialValues } from "./constant";
 import Table from "./components/table";
+import { MdAttachMoney } from "react-icons/md";
+import IncomesModal from "../incomes/components/incomeModal";
+import OutsModal from "../outgoings/components/outsModal";
 
 function Loans() {
 	const [filters, setFilters] = useState<LoansFilters>(loansInitialValues);
-	const [isActive, toggleActive] = useToggle();
+	const [isFilterActive, toggleFilter] = useToggle();
+	const [isAddModalActive, toggleAddModal] = useToggle();
+	const [isPayModalActive, togglePayModal] = useToggle();
+
 
 	return (
 		<Wrapper>
 			<nav>
-				<div onClick={toggleActive} className={`button nav-button`}>
+			<div onClick={toggleAddModal} className={`button nav-button`}>
+					<span>Nuevo</span>
+					<FaPlus size={18} />
+				</div>
+				<div onClick={togglePayModal} className={`button nav-button`}>
+					<span>Pagar</span>
+					<MdAttachMoney size={22} />
+				</div>
+				<div onClick={toggleFilter} className={`button nav-button`}>
 					<span>Filtrar</span>
-					<FaFilter size={20} />
+					<FaFilter size={18} />
 				</div>
 			</nav>
 
-			<FilterSection isActive={isActive} onClose={toggleActive} filters={filters} setFilters={setFilters} />
-
+			<FilterSection isActive={isFilterActive} onClose={toggleFilter} filters={filters} setFilters={setFilters} />
+			<IncomesModal isOpen={isAddModalActive} onClose={toggleAddModal} isLoanVersion={true} />
+			<OutsModal isOpen={isPayModalActive} onClose={togglePayModal} isLoanVersion={true}/>
 			<Table filters={filters} />
 		</Wrapper>
 	);
