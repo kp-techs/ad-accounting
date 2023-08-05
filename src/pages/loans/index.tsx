@@ -3,18 +3,17 @@ import { useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa";
 import useToggle from "../../hooks/useToggle";
 import FilterSection from "./components/loansFilter";
-import { loansInitialValues } from "./constant";
+import { loansInitialFilterValues } from "./constant";
 import Table from "./components/table";
 import { MdAttachMoney } from "react-icons/md";
 import IncomesModal from "../incomes/components/incomeModal";
 import OutsModal from "../outgoings/components/outsModal";
 
 function Loans() {
-	const [filters, setFilters] = useState<LoansFilters>(loansInitialValues);
+	const [filters, setFilters] = useState<LoansFilters>(loansInitialFilterValues);
 	const [isFilterActive, toggleFilter] = useToggle();
 	const [isAddModalActive, toggleAddModal] = useToggle();
 	const [isPayModalActive, togglePayModal] = useToggle();
-
 
 	return (
 		<Wrapper>

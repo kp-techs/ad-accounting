@@ -5,7 +5,6 @@ import { FC } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { useSupabase } from "../../../hooks/useSupabase";
 import {
-	ValidationLoanVersionForm,
 	ValidationOutgoingForm,
 	customStyles,
 	initialLoanVersion,
@@ -16,6 +15,7 @@ import { FastField, Field, Form, Formik } from "formik";
 import moment from "moment";
 import SelectOptions from "../../../components/selectOptions";
 import Textarea from "../../../components/textarea";
+import { ValidationLoanPaymentForm } from "../../loans/constant";
 
 type Props = {
 	isOpen: boolean;
@@ -39,7 +39,7 @@ const OutsModal: FC<Props> = ({ isOpen, onClose, outgoing, isLoanVersion = false
 			<Wrapper>
 				<Formik
 					initialValues={outgoing ?? (isLoanVersion ? initialLoanVersion : initialOutgoing)}
-					validationSchema={isLoanVersion ? ValidationLoanVersionForm : ValidationOutgoingForm}
+					validationSchema={isLoanVersion ? ValidationLoanPaymentForm : ValidationOutgoingForm}
 					onSubmit={async (values, { resetForm }) => {
 						if (outgoing) {
 							values.modifiedBy = profile?.name;

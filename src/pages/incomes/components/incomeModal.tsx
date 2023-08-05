@@ -41,7 +41,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = fals
 		>
 			<Wrapper>
 				<Formik
-					validationSchema={isLoanVersion? ValidationLoanVersionForm:ValidationIncomeForm}
+					validationSchema={isLoanVersion ? ValidationLoanVersionForm : ValidationIncomeForm}
 					initialValues={income ?? (isLoanVersion ? initialLoanIncome : initialIncome)}
 					onSubmit={async (values, { resetForm }) => {
 						if (income) {
@@ -74,8 +74,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = fals
 							onClose();
 						} else {
 							if (isLoanVersion) values.type = incomeTypeID.loan;
-							values.createdBy = profile?.name;
-							await supabase.from("incomes").insert([values as any]);
+							
 
 							if (values.type === incomeTypeID.loan) {
 								await supabase.from("loans").insert([
@@ -91,7 +90,17 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = fals
 									}
 								]);
 								loadLoans();
+								const { data: loan } = await supabase
+								.from("loans")
+								.select()
+								.eq("name", values.loanName)
+								.single();
+							
+								values.loanID = loan?.id;
 							}
+							
+							values.createdBy = profile?.name;
+							await supabase.from("incomes").insert([values as any]);
 						}
 						if (on) {
 							initialIncome.date = values.date;
@@ -230,7 +239,9 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = fals
 										>
 											{income ? "Cancelar" : "Cerrar"}
 										</button>
-										<button type="submit" onClick={()=>console.log(errors)}>{income ? "Actualizar" : "Guardar"}</button>
+										<button type="submit" onClick={() => console.log(errors)}>
+											{income ? "Actualizar" : "Guardar"}
+										</button>
 									</div>
 								</div>
 							</section>

@@ -19,6 +19,7 @@ export interface Database {
           date: string
           eventName: string | null
           id: number
+          loanID: number | null
           loanName: string | null
           ministryID: number | null
           tithingID: number | null
@@ -35,6 +36,7 @@ export interface Database {
           date: string
           eventName?: string | null
           id?: number
+          loanID?: number | null
           loanName?: string | null
           ministryID?: number | null
           tithingID?: number | null
@@ -51,6 +53,7 @@ export interface Database {
           date?: string
           eventName?: string | null
           id?: number
+          loanID?: number | null
           loanName?: string | null
           ministryID?: number | null
           tithingID?: number | null

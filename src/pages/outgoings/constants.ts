@@ -73,8 +73,3 @@ export const ValidationOutgoingForm = object({
 	checkNumber: string().required("Favor especificar el número de cheque")
 });
 
-export const ValidationLoanVersionForm = object({
-	date: date().required("Favor especificar la fecha"),
-	amount: number().min(1, "Favor especificar el monto").required("Favor especificar el monto"),
-	checkNumber: string().required("Favor especificar el número de cheque")
-});

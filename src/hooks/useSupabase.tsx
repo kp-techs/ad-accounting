@@ -52,7 +52,7 @@ export async function fetchIncomes(page: number, size: number, filters: IncomesF
 }
 
 export async function fetchUsers() {
-	const { data } = await supabase.from("users").select("*").order("last_sign_in_at", { ascending: false });
+	const { data } = await supabase.from("users").select("*").eq('active',true).order("last_sign_in_at", { ascending: false });
 	return data;
 }
 
