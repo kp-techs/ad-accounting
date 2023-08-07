@@ -5,13 +5,14 @@ import useAppData from "../../../hooks/useAppData";
 import { TableOutgoing } from "../../../types/models";
 import OutsModal from "./outsModal";
 import NoInfo from "../../../components/noInfo";
-import { MdDelete } from "react-icons/md";
 import useColumns from "../const/columns";
 import { useTable } from "react-table";
-import { ImPencil } from "react-icons/im";
 import DeleteModal from "./deleteModal";
 import DetailsModal from "./detailsModal";
 import Pagination from "../../../components/pagination";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+import { BsEye } from "react-icons/bs";
 
 type Props = {
   filters: OutgoingsFilters;
@@ -67,42 +68,45 @@ function Table({filters}:Props) {
                     <tr
                       {...outgoing.getRowProps()}
                       className="row"
-                      onClick={() => {
-                        setActiveOuts(outgoing.original);
-                        toggleDetailsModal();
-                      }}
                     >
                       {outgoing.cells.map((cell) => (
                         
                         <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                       ))}
 
+                      <div id="modifyButtons-container">
+                      <div
+                        className="button"
+                        onClick={() => {
+                          setActiveOuts(outgoing.original);
+                          toggleDetailsModal();
+                        }}
+                      >
+                        <BsEye size={19} />
+                      </div>
                       {profile?.role === "Administrador" && (
-                        <div id="modifyButtons-container">
+                        <>
                           <div
                             className="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
+                            onClick={() => {
                               setActiveOuts(outgoing.original);
                               toggleOutsModal();
                             }}
                           >
-                            <ImPencil size={17} />
+                            <FiEdit size={18} />
                           </div>
                           <div
                             className="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
+                            onClick={() => {
                               setActiveOuts(outgoing.original);
                               toggleDeleteModal();
                             }}
                           >
-                            <div className="button">
-                              <MdDelete size={22} />
-                            </div>
+                            <AiOutlineDelete size={20} />
                           </div>
-                        </div>
+                        </>
                       )}
+                    </div>
                     </tr>
                   </div>
                 );
@@ -173,6 +177,7 @@ const Wrapper = styled.section`
     border: white 1px solid;
     border-width: 1px 0 0 0;
     padding: 10px;
+    height: 50px;
   }
 
   tbody {
@@ -189,26 +194,19 @@ const Wrapper = styled.section`
         padding-left: 25px;
       }
     }
-
-    tr:hover {
-      background: #2626262b;
-      #modifyButtons-container {
-        display: flex;
-      }
-    }
   }
 
-  #modifyButtons-container {
-    height: 100%;
-    box-sizing: border-box;
-    display: none;
-    justify-content: center;
-    gap: 15px;
-    position: absolute;
-    top: 0;
-    right: 10px;
-    z-index: 50;
-  }
+	#modifyButtons-container {
+		height: 100%;
+		box-sizing: border-box;
+		display: flex;
+		justify-content: center;
+		gap: 15px;
+		position: absolute;
+		top: 0;
+		right: 10px;
+		z-index: 50;
+	}
   .button {
     display: flex;
     padding: 3px;

@@ -52,6 +52,7 @@ export const ValidationLoanPaymentForm = object({
 export const ValidationLoanForm = object({
   name: string().required("Favor especificar el nombre del préstamo"),
   date: date().required("Favor especificar la fecha"),
-	amount: number().min(1, "Favor especificar el monto").required("Favor especificar el monto"),
+  initialLoanAmount: number().min(1, "Favor especificar el monto").required("Favor especificar el monto"),
+  creditorID: number().required("Favor especificar acreedor")
 
 });

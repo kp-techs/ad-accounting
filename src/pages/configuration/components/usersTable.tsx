@@ -183,6 +183,7 @@ const Wrapper = styled.section`
 		border: white 1px solid;
 		border-width: 1px 0 0 0;
 		padding: 10px;
+		height: 50px;
 	}
 
 	tbody {

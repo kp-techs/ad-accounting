@@ -197,6 +197,7 @@ const Wrapper = styled.section`
 
 		tr:hover {
 			background: #2626262b;
+			display: flex;
 		}
 	}
 

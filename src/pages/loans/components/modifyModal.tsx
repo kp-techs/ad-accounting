@@ -10,9 +10,10 @@ import Textarea from "../../../components/textarea";
 import {
 	ValidationLoanForm,
 	customStyles,
+	initialLoanValues,
 } from "../constant";
 import { FC, useEffect, useState } from "react";
-import { initialIncome } from "../../incomes/constants";
+import { incomeTypeID, initialIncome } from "../../incomes/constants";
 
 type Props = {
 	isOpen: boolean;
@@ -20,7 +21,7 @@ type Props = {
 	loan?: Loans;
 };
 
-const ModifyLoanModal:FC<Props>= ({ isOpen, onClose, loan }) => {
+function ModifyLoanModal ({ isOpen, onClose, loan }:Props) {
 	const { loans, loadOuts, profile, loadLoans, loadIncomes } = useAppData();
 	const [income, setIncome] = useState<Income>();
 	const { supabase } = useSupabase();
@@ -34,259 +35,227 @@ const ModifyLoanModal:FC<Props>= ({ isOpen, onClose, loan }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+// return true
 
+ 	return (
+ 		<Modal
+ 			ariaHideApp= { false}
+ 			isOpen = { isOpen }
+ 			onRequestClose = { onClose }
+ 			style = { customStyles }
+ 			contentLabel = "Formulario para modificar préstamos"
+ 		>
+ 		<Wrapper>
+ 			<Formik
+ 				validationSchema = { ValidationLoanForm }
+				initialValues = { loan || initialLoanValues}
+				onSubmit = { async(values, { resetForm }) => {
+ 					values.updateBy = profile?.name || "";
+ 					values.updateAt = moment().format();
+			
+				let newCurrent = loan?.currentLoanAmount || 0;
+				const newInitial = values.initialLoanAmount || 0;
+				const previusInitial = loan?.initialLoanAmount || 0;
+				if (newInitial > previusInitial) newCurrent += newInitial - newCurrent;
+				
+				let newStatus = "Pendiente";
+				if (newCurrent <= 0) newStatus = "Saldado";
+	
+				if (loan) {
+ 					await supabase
+					.from("loans")
+							.update({
+						...values, id:loan.id,
+						initialLoanAmount: newInitial,
+						updateBy: profile?.name,
+						updateAt: moment().format(),
+						currentLoanAmount: newCurrent,
+						status: newStatus
+					})
+						.eq("id", loan.id);
+					
+						await supabase
+						.from("incomes")
+							.update({
+								date: values.date || '',
+								amount: values.initialLoanAmount,
+								updatedBy: profile?.name,
+								updatedDate: moment().format(),
+								type: incomeTypeID.loan,
+								comment: values.description,
+								loanName: values.name,
+								loadID: values.id
+							})
+						.eq("loanID", values.id);
+ 				}
+ 						// @ts-ignore
+ 						delete values.people;
 
-	return (
-		<Modal
-			ariaHideApp= { false}
-	isOpen = { isOpen }
-	onRequestClose = { onClose }
-	style = { customStyles }
-	contentLabel = "Formulario para modificar préstamos"
-		>
-		<Wrapper>
-		<Formik
-					initialValues={ income || initialIncome }
-	validationSchema = { ValidationLoanForm }
-	onSubmit = { async(values, { resetForm }) => {
-		values.updatedBy = profile?.name || "";
-		values.updatedDate = moment().format();
-
-		// const { data: loan } = await supabase.from("loans").select().eq("id", values.loanID).single();
-
-		let newCurrent = loan?.currentLoanAmount || 0;
-
-		const newInitial = values.amount || 0;
-		const previusInitial = loan?.initialLoanAmount || 0;
-		if (newInitial > previusInitial) newCurrent += newInitial - newCurrent;
-
-		let newStatus = "Pendiente";
-		if (newCurrent <= 0) newStatus = "Saldado";
-		if (income) {
-			await supabase
-				.from("loans")
-				.update({
-					name: values.loanName,
-					creditorID: values.tithingID,
-					initialLoanAmount: newInitial,
-					updateBy: profile?.name,
-					updateAt: moment().format(),
-					description: values.comment,
-					date: values.date,
-					currentLoanAmount: newCurrent,
-					status: newStatus
-				})
-				.eq("id", income.loanID);
-		}
-
-		// @ts-ignore
-		delete values.incomeTypes;
-		// @ts-ignore
-		delete values.ministries;
-		// @ts-ignore
-		delete values.people;
-		if (income) {
-			await supabase
-				.from("incomes")
-				.update({ ...values, id: income.id })
-				.eq("id", income.id);
-		}
-
-		resetForm();
-		loadOuts();
-		loadIncomes();
-		loadLoans();
-		onClose();
-	}
-}
-				>
+						resetForm();
+						loadOuts();
+						loadIncomes();
+						loadLoans();
+						onClose();
+					}}
+			>
 	{({ errors, touched }) => (
-		<Form>
-		<section className= "form-content" >
-		<div className="top-modal" >
-			<div className="underline" >
-				<label>MODIFICAR PRESTAMO < /label>
-					< /div>
-
-					< div className = "fields-container field-line" >
-
-						<div>
-						<label htmlFor="loan-name" > Nombre < /label>
-							< Field id = "loan-name" className = "field" type = "text" name = "loanName" />
-							{
-								errors.loanName && touched.loanName && (
-									<div style={ { color: "red" } }> { errors.eventName } < /div>
-											)}
-</div>
-
-	< div >
-	<label htmlFor="tithingID" > Acreedor < /label>
-		< FastField
-type = "number"
-name = "tithingID"
-component = {(props: any) => <SelectOptions { ...props } table = { "people"} />}
-/>
-{
-	errors.tithingID && touched.tithingID && (
-		<div style={ { color: "red" } }> { errors.tithingID } < /div>
-											)
-}
-</div>
-
-	< /div>
-
-	< div className = "fields-container field-line" >
-
-		<div>
-		<label>Fecha < /label>
-		< Field name = "date" type = "date" className = "field" />
-			{ errors.date && touched.date && <div style={ { color: "red" } }> { errors.date } < /div>}{" "}
-				< /div>
-
-				< div >
-				<label>Monto < /label>
-				< Field className = "field" name = "amount" type = "number" />
-					{ errors?.amount && touched.amount && (
-						<div style={ { color: "red" } }> { errors.amount } < /div>
-											)}
-</div>
-
-	< /div>
-
-	< div className = "field-line field-comment" >
-		<label htmlFor="description" > Descripción < /label>
-			< FastField className = "description" name = "description" component = { Textarea } />
-				</div>
-
-				< /div>
-
-				< div className = "foo-modal" >
-					<div className="buttons-container" >
-						<button onClick={ onClose }> Cancelar < /button>
-							< button type = "submit" > Actualizar < /button>
-								< /div>
-								< /div>
-								< /section>
-								< /Form>
-					)}
-</Formik>
-	< /Wrapper>
-	< /Modal>
-	);
+ 		<Form>
+ 			<section className= "form-content">
+ 				<div className="top-modal">
+ 					<div className="underline">
+ 						<label>MODIFICAR PRESTAMO </label>
+ 					</div>
+ 					<div className = "fields-container field-line" >
+ 						<div>
+ 						<label htmlFor="loan-name" > Nombre </label>
+ 							<Field id = "loan-name" className = "field" type = "text" name = "loanName" />
+ 							{errors.name && touched.name && (<div style={ { color: "red" } }> { errors.name } </div>)}
+ </div>
+ 	<div>
+ 	<label htmlFor="creditor">Acreedor</label>
+ 		<FastField
+ type = "number"
+ name = "creditor"
+ component = {(props: any) => <SelectOptions { ...props } table = { "people"} />}/>
+ {errors.creditorID && touched.creditorID && (
+ 		<div style={ { color: "red" } }> { errors.creditorID } </div>
+ 											)
+ }
+ </div>
+ 	</div>
+ 	<div className = "fields-container field-line">
+ 		<div>
+ 		<label>Fecha </label>
+ 		<Field name = "date" type = "date" className = "field" />
+ 			{errors.date && touched.date && <div style={ { color: "red" } }> {errors.date} </div>}
+ 				</div>
+ 				<div>
+ 				<label>Monto </label>
+ 				<Field className = "field" name = "initialLoanAmount" type = "number" />
+ 					{errors.initialLoanAmount && touched.initialLoanAmount && (<div style={ { color: "red" } }> { errors.initialLoanAmount } </div>)}
+ </div>
+ 	</div>
+ 	<div className = "field-line field-comment" >
+ 		<label htmlFor="description">Descripción </label>
+ 			<FastField className = "description" name = "description" component = { Textarea } />
+ 				</div>
+ 				</div>
+ 				<div className = "foo-modal">
+ 					<div className="buttons-container">
+ 						<button onClick={ onClose }> Cancelar </button>
+ 							<button type = "submit" > Actualizar </button>
+ 								</div>
+ 								</div>
+ 								</section>
+ 								</Form>
+ 					)}
+ </Formik>
+ 	</Wrapper>
+ 	</Modal>
+ 	);
 }
 
-const Wrapper = styled.section`
-	display: flex;
-	flex-direction: column;
-	box-sizing: border-box;
-	gap: 15px;
-	width: 700px;
-
-	label {
-		color: #ffffff;
-		font-family: Poppins;
-		font-weight: 400;
-		font-size: 18px;
-	}
-	.form-content {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
-
-	.selectOutgoingType {
-		display: grid;
-		grid-template-columns: 90px 1fr;
-		align-items: center;
-	}
-
-	.outgoingTypeLabel-container {
-		display: flex;
-		align-items: center;
-	}
-
-	input,
-	.description {
-		font-family: Poppins, Arial, Helvetica, sans-serif;
-		font-size: 14px;
-		width: 100%;
-		background-color: hsl(0, 0%, 100%);
-		border-radius: 4px;
-		border: 1px;
-		border-color: hsl(0, 0%, 80%);
-		border-style: solid;
-		outline: 0;
-		padding: 2px 8px;
-		box-sizing: border-box;
-		color: #2f2f2f;
-	}
-
-	.field {
-		height: 38px;
-	}
-	.field-description {
-		display: flex;
-		flex-direction: column;
-		.description {
-			padding: 5px 8px;
-		}
-	}
-
-	.selectType-container {
-		box-sizing: border-box;
-		display: grid;
-		grid-template: 1fr 1fr;
-		width: 100%;
-		margin: 5px;
-		padding: 10px;
-		gap: 10px;
-	}
-
-	.underline {
-		border-bottom: 1px gray solid;
-	}
-
-	.fields-container {
-		box-sizing: border-box;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 1rem;
-		justify-content: space-between;
-		width: 100%;
-	}
-
-	.field-line {
-		margin: 10px 0;
-	}
-	.buttons-container {
-		display: flex;
-		grid-area: right;
-		gap: 15px;
-
-		button {
-			width: 93px;
-			height: 30px;
-			text-align: center;
-			justify-content: center;
-			font-size: 16px;
-			box-sizing: border-box;
-			background-color: #eeeeee;
-			border-radius: 5px;
-			font-family: Poppins, Arial, Helvetica, sans-serif;
-			border: 0;
-			cursor: pointer;
-			&:active {
-				background-color: #a4a4a494;
-			}
-		}
-	}
-
-	.foo-modal {
-		display: grid;
-		grid-template: "left right" 25px/1fr;
-		padding: 5px;
-		height: 40px;
-	}
-`;
+ const Wrapper = styled.section`
+ 	display: flex;
+ 	flex-direction: column;
+ 	box-sizing: border-box;
+ 	gap: 15px;
+ 	width: 700px;
+ 	label {
+ 		color: #ffffff;
+ 		font-family: Poppins;
+ 		font-weight: 400;
+ 		font-size: 18px;
+ 	}
+ 	.form-content {
+ 		display: flex;
+ 		flex-direction: column;
+ 		justify-content: space-between;
+ 	}
+ 	.selectOutgoingType {
+ 		display: grid;
+ 		grid-template-columns: 90px 1fr;
+ 		align-items: center;
+ 	}
+ 	.outgoingTypeLabel-container {
+ 		display: flex;
+ 		align-items: center;
+ 	}
+ 	input,
+ 	.description {
+ 		font-family: Poppins, Arial, Helvetica, sans-serif;
+ 		font-size: 14px;
+ 		width: 100%;
+ 		background-color: hsl(0, 0%, 100%);
+ 		border-radius: 4px;
+ 		border: 1px;
+ 		border-color: hsl(0, 0%, 80%);
+ 		border-style: solid;
+ 		outline: 0;
+ 		padding: 2px 8px;
+ 		box-sizing: border-box;
+ 		color: #2f2f2f;
+ 	}
+ 	.field {
+ 		height: 38px;
+ 	}
+ 	.field-description {
+ 		display: flex;
+ 		flex-direction: column;
+ 		.description {
+ 			padding: 5px 8px;
+ 		}
+ 	}
+ 	.selectType-container {
+ 		box-sizing: border-box;
+ 		display: grid;
+ 		grid-template: 1fr 1fr;
+ 		width: 100%;
+ 		margin: 5px;
+ 		padding: 10px;
+ 		gap: 10px;
+ 	}
+ 	.underline {
+ 		border-bottom: 1px gray solid;
+ 	}
+ 	.fields-container {
+ 		box-sizing: border-box;
+ 		display: grid;
+ 		grid-template-columns: 1fr 1fr;
+ 		gap: 1rem;
+ 		justify-content: space-between;
+ 		width: 100%;
+ 	}
+ 	.field-line {
+ 		margin: 10px 0;
+ 	}
+ 	.buttons-container {
+ 		display: flex;
+ 		grid-area: right;
+ 		gap: 15px;
+ 		button {
+ 			width: 93px;
+ 			height: 30px;
+ 			text-align: center;
+ 			justify-content: center;
+ 			font-size: 16px;
+ 			box-sizing: border-box;
+ 			background-color: #eeeeee;
+ 			border-radius: 5px;
+ 			font-family: Poppins, Arial, Helvetica, sans-serif;
+ 			border: 0;
+ 			cursor: pointer;
+ 			&:active {
+ 				background-color: #a4a4a494;
+ 			}
+ 		}
+ 	}
+ 	.foo-modal {
+ 		display: grid;
+ 		grid-template: "left right" 25px/1fr;
+ 		padding: 5px;
+ 		height: 40px;
+ 	}
+ `;
 
 export default ModifyLoanModal;
