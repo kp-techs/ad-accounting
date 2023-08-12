@@ -22,29 +22,17 @@ type Props = {
 };
 
 function ModifyLoanModal ({ isOpen, onClose, loan }:Props) {
-	const { loans, loadOuts, profile, loadLoans, loadIncomes } = useAppData();
-	const [income, setIncome] = useState<Income>();
+	const { loadOuts, profile, loadLoans, loadIncomes } = useAppData();
 	const { supabase } = useSupabase();
 
-	useEffect(() => {
-		async function getIncome() {
-			const { data } = await supabase.from("incomes").select().eq("loanID", loan?.id).single();
-			if (data) setIncome(data)
-		}
-		getIncome().catch(console.error)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
-
-// return true
 
  	return (
  		<Modal
- 			ariaHideApp= { false}
+ 			ariaHideApp={false}
  			isOpen = { isOpen }
  			onRequestClose = { onClose }
  			style = { customStyles }
- 			contentLabel = "Formulario para modificar préstamos"
- 		>
+ 			contentLabel = "Formulario para modificar préstamos">
  		<Wrapper>
  			<Formik
  				validationSchema = { ValidationLoanForm }
@@ -53,15 +41,20 @@ function ModifyLoanModal ({ isOpen, onClose, loan }:Props) {
  					values.updateBy = profile?.name || "";
  					values.updateAt = moment().format();
 			
-				let newCurrent = loan?.currentLoanAmount || 0;
-				const newInitial = values.initialLoanAmount || 0;
+	let newCurrent = loan?.currentLoanAmount || 0;
+
+	const newInitial = values.initialLoanAmount || 0;
+
 				const previusInitial = loan?.initialLoanAmount || 0;
-				if (newInitial > previusInitial) newCurrent += newInitial - newCurrent;
+				if (newInitial > previusInitial) newCurrent = newInitial - (loan?.paidAmount || 0); ;
 				
 				let newStatus = "Pendiente";
-				if (newCurrent <= 0) newStatus = "Saldado";
+	if (newCurrent <= 0) newStatus = "Saldado";
+
+	// @ts-ignore
+	delete values.people;
 	
-				if (loan) {
+	if (loan) {
  					await supabase
 					.from("loans")
 							.update({
@@ -84,12 +77,11 @@ function ModifyLoanModal ({ isOpen, onClose, loan }:Props) {
 								type: incomeTypeID.loan,
 								comment: values.description,
 								loanName: values.name,
-								loadID: values.id
+								loanID: values.id,
 							})
 						.eq("loanID", values.id);
  				}
- 						// @ts-ignore
- 						delete values.people;
+ 						
 
 						resetForm();
 						loadOuts();
@@ -107,15 +99,15 @@ function ModifyLoanModal ({ isOpen, onClose, loan }:Props) {
  					</div>
  					<div className = "fields-container field-line" >
  						<div>
- 						<label htmlFor="loan-name" > Nombre </label>
- 							<Field id = "loan-name" className = "field" type = "text" name = "loanName" />
+ 						<label htmlFor="name" > Nombre </label>
+ 							<Field id="name" className="field" type="text" name="name" />
  							{errors.name && touched.name && (<div style={ { color: "red" } }> { errors.name } </div>)}
  </div>
  	<div>
  	<label htmlFor="creditor">Acreedor</label>
  		<FastField
  type = "number"
- name = "creditor"
+ name = "creditorID"
  component = {(props: any) => <SelectOptions { ...props } table = { "people"} />}/>
  {errors.creditorID && touched.creditorID && (
  		<div style={ { color: "red" } }> { errors.creditorID } </div>
@@ -137,7 +129,7 @@ function ModifyLoanModal ({ isOpen, onClose, loan }:Props) {
  	</div>
  	<div className = "field-line field-comment" >
  		<label htmlFor="description">Descripción </label>
- 			<FastField className = "description" name = "description" component = { Textarea } />
+ 			<FastField className = "description" name="description" component = { Textarea } />
  				</div>
  				</div>
  				<div className = "foo-modal">

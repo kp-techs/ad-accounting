@@ -34,7 +34,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, loan }) => {
         
 				<section className="side">
 					<p className="title">Acreedor</p>
-					<p>{capitalize(loan?.people.name || "")}</p>
+					<p>{capitalize(loan?.people?.name || "")}</p>
         </section>
         
 				<section className="side">

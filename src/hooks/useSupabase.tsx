@@ -67,7 +67,7 @@ export async function fetchOuts(page: number, size: number, filters: OutgoingsFi
 
 	let query = supabase
 		.from("outgoings")
-		.select(`*, outgoingTypes(*), people(*)`, {
+		.select(`*, outgoingTypes(*), people(*), loans(*)`, {
 			count: "exact"
 		})
 		.order("date", { ascending: false })

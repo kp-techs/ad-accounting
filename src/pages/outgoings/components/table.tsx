@@ -30,7 +30,7 @@ function Table({filters}:Props) {
   const pageSize = 15;
   
   const columns = useColumns();
-  const table = useTable<TableOutgoing>({columns, data:outgoings.data})
+  const table = useTable<TableOutgoing>({columns, data: outgoings.data})
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
   table;
   useEffect(() => { 
@@ -159,7 +159,7 @@ const Wrapper = styled.section`
   thead {
     tr {
       display: grid;
-      grid-template-columns: repeat(2, 2fr) 3fr 3fr 4fr 1fr;
+      grid-template-columns: repeat(2, 2fr) 3fr 3fr 5fr 1fr;
       align-items: center;
       th {
         font-style: italic;
@@ -186,7 +186,7 @@ const Wrapper = styled.section`
       background-color: rgba(33, 80, 119, 0.109);
       position: relative;
       display: grid;
-      grid-template-columns:repeat(2, 2fr) 3fr 3fr 4fr 1fr;
+      grid-template-columns:repeat(2, 2fr) 3fr 3fr 5fr 1fr;
       align-items: center;
       height: 100%;
       td {

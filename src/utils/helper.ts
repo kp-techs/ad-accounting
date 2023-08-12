@@ -1,8 +1,10 @@
+import { outgoingTypeID } from './../pages/outgoings/constants';
 import { supabase, useSupabase } from "./../hooks/useSupabase";
 import { incomeTypeID } from "../pages/incomes/constants";
 import { TableIncome, TableOutgoing, TableLoans } from "../types/models";
 import moment from "moment";
 import "moment/locale/es";
+
 
 export function generateConcept({ type, ...income }: TableIncome) {
 	return type === incomeTypeID.tithe
@@ -127,9 +129,9 @@ export function getCreditorName(loan: TableLoans) {
 }
 
 export function getOutgoingDescription(outgoing: TableOutgoing) {
-	if (outgoing.outgoingTypes)
-		return `${outgoing.outgoingTypes.name}${outgoing.description ? `: ${outgoing.description}` : ""}`;
-	return "-";
+	if (outgoing.type === outgoingTypeID.loan) return `Préstamo: ${outgoing.loans ? outgoing.loans.name : outgoing.description}`
+	if (outgoing.outgoingTypes) return `${outgoing.outgoingTypes.name}${outgoing.description ? `: ${outgoing.description}` : ""}`;
+	return ''
 }
 
 export function getOutgoingFilterString({ ...filters }: OutgoingsFilters) {	

@@ -8,7 +8,7 @@ import { useTable } from "react-table";
 import Pagination from "../../../components/pagination";
 import { TableLoans } from "../../../types/models";
 import DetailsModal from "./detailsModal";
-// import ModifyLoanModal from "./modifyModal";
+import ModifyLoanModal from "./modifyModal";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
@@ -41,7 +41,7 @@ const Table: FC<Props> = ({ filters }: Props) => {
 	return (
 		<Wrapper>
 			<DetailsModal isOpen={isDetailsModalOpen} onClose={toggleDetailsModal} loan={activeLoan} />
-			{/* <ModifyLoanModal isOpen={ isModifyLoanOpen} onClose={toggleModifyModal} loan={activeLoan} /> */}
+			 <ModifyLoanModal isOpen={ isModifyLoanOpen} onClose={toggleModifyModal} loan={activeLoan} /> 
 			{loans.count ? (
 				<div className="table-container">
 					<table {...getTableProps()}>

@@ -1,10 +1,10 @@
 import Modal from "react-modal";
 import styled from "styled-components";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Formik, Field, Form, FastField } from "formik";
 import SwitchButton from "../../../components/switchButton";
 import { useSupabase } from "../../../hooks/useSupabase";
-import { Income } from "../../../types/models";
+import { Income, Loans } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
 import SelectOptions from "../../../components/selectOptions";
 
@@ -30,7 +30,49 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = fals
 	const { loadIncomes, profile, loadLoans } = useAppData();
 	const [on, setOn] = useState(false);
 	const { supabase } = useSupabase();
+	const [loan, setLoan] = useState<Loans>();
 
+	useEffect(() => {
+		if (income){
+		const getLoan = async () => {
+			const {data} = await supabase.from('loans').select().eq('id', income.loanID).single();
+			if (data) setLoan(data)
+			}
+		getLoan();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [income])
+	
+	async function updatedLoan (values:any) {
+			const { data: loan } = await supabase.from('loans').select().eq('id', values.loanID).single();
+			let newCurrent = loan?.currentLoanAmount || 0;
+			const newInitial = values.amount ||0;
+			const previusInitial = loan?.initialLoanAmount || 0;
+			
+			if (newInitial > previusInitial) newCurrent = newInitial - (loan?.paidAmount || 0);;
+						
+			let newStatus = "Pendiente";
+			if (newCurrent <= 0) newStatus = "Saldado";
+			console.log('initial',newInitial)
+			console.log('previos', previusInitial)
+
+			await supabase
+				.from("loans")
+				.update({
+					name: values.loanName,
+					creditorID: values.tithingID,
+					initialLoanAmount: values.amount,
+					currentLoanAmount: newCurrent,
+					status:newStatus,
+					createdBy: profile?.name,
+					createdAt: moment().format(),
+					description: values.comment,
+					date: values.date
+				})
+				.eq("id", values.loanID);
+		
+	}
+	
 	return (
 		<Modal
 			ariaHideApp={false}
@@ -47,20 +89,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = fals
 						if (income) {
 							values.updatedBy = profile?.name;
 							values.updatedDate = moment().format();
-							if (income.type === incomeTypeID.loan) {
-								await supabase
-									.from("loans")
-									.update({
-										name: values.loanName,
-										creditorID: values.tithingID,
-										initialLoanAmount: values.amount,
-										createdBy: profile?.name,
-										createdAt: moment().format(),
-										description: values.comment,
-										date: values.date
-									})
-									.eq("name", income.loanName);
-							}
+							
 							// @ts-ignore
 							delete values.incomeTypes;
 							// @ts-ignore
@@ -239,7 +268,7 @@ const IncomesModal: FC<Props> = ({ isOpen, onClose, income, isLoanVersion = fals
 										>
 											{income ? "Cancelar" : "Cerrar"}
 										</button>
-										<button type="submit" onClick={() => console.log(errors)}>
+										<button type="submit">
 											{income ? "Actualizar" : "Guardar"}
 										</button>
 									</div>
