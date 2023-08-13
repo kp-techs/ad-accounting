@@ -8,7 +8,6 @@ import {
   getCreditorName,
 } from "../../../utils/helper";
 
-
 function useColumns() {
   const columns = useMemo<Column<TableLoans>[]>(
     () => [
@@ -17,23 +16,26 @@ function useColumns() {
         accessor: "date",
         // @ts-ignore
         Cell: ({ row }) => formatTableDate(row.original.date),
-      }, 
+      },
       {
         Header: "Nombre",
         accessor: "name",
         // @ts-ignore
         Cell: ({ row }) => capitalize(row.original.name),
-      },{
+      },
+      {
         Header: "Acreedor",
         accessor: "creditorID",
         // @ts-ignore
         Cell: ({ row }) => getCreditorName(row.original),
-      }, {
+      },
+      {
         Header: "Monto Inicial",
         accessor: "initialLoanAmount",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.initialLoanAmount),
-      }, {
+      },
+      {
         Header: "Restante",
         accessor: "currentLoanAmount",
         // @ts-ignore
@@ -55,8 +57,8 @@ function useColumns() {
         Header: "Acciones",
         accessor: "description",
         // @ts-ignore
-        Cell: ({ row }) => '',
-      }
+        Cell: ({ row }) => "",
+      },
     ],
     []
   );

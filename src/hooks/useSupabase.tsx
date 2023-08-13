@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { TableIncome, TableLoans, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
 import { getIncomeFilterString, getLoanFilterString, getOutgoingFilterString } from "../utils/helper";
-import moment from "moment";
 
 export const supabase = createClient<Database>(
 	process.env.REACT_APP_SUPABASE_URL || "",

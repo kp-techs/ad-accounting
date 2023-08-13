@@ -3,50 +3,27 @@ import { FC } from "react";
 import { useSupabase } from "../../../hooks/useSupabase";
 import useAppData from "../../../hooks/useAppData";
 import styled from "styled-components";
-import { customStyles, outgoingTypeID } from "../constants";
-import { Outgoing } from "../../../types/models";
-import moment from "moment";
+import { Loans } from "../../../types/models";
+import { customStyles } from "../constant";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  outgoing?: Outgoing;
+  loan?: Loans;
 };
 
-const DeleteModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
+const DeleteLoanModal: FC<Props> = ({ isOpen, onClose, loan }) => {
   const { supabase } = useSupabase();
-  const { loadOuts, loadLoans, profile } = useAppData();
+  const { loadIncomes, loadLoans, loadOuts } = useAppData();
 
-  async function deleteOutgoing() {
-    if (outgoing) {
-      if (outgoing.type === outgoingTypeID.loan) {
-        const { data: loan } = await supabase
-          .from("loans")
-          .select()
-          .eq("id", outgoing.loanID)
-          .single();
-        let newPaidLoanAmount =
-          (loan?.paidAmount || 0) - (outgoing.amount || 0);
-        let newCurrent = (loan?.initialLoanAmount || 0) - newPaidLoanAmount;
-
-        let newStatus = "Pendiente";
-        if (newCurrent <= 0) newStatus = "Saldado";
-
-        await supabase
-          .from("loans")
-          .update({
-            currentLoanAmount: newCurrent,
-            paidAmount: newPaidLoanAmount,
-            status: newStatus,
-            updateBy: profile?.name,
-            updateAt: moment().format(),
-          })
-          .eq("id", outgoing.loanID);
-      }
-
-      await supabase.from("outgoings").delete().eq("id", outgoing.id);
-      loadOuts();
+  async function deleteLoan() {
+    if (loan) {
+      await supabase.from("outgoings").delete().eq("loanID", loan.id);
+      await supabase.from("incomes").delete().eq("loanID", loan.id);
+      await supabase.from("loans").delete().eq("id", loan.id);
       loadLoans();
+      loadOuts();
+      loadIncomes();
       onClose();
     }
   }
@@ -69,7 +46,7 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           <button className="cancel" onClick={onClose}>
             Cancelar
           </button>
-          <button onClick={deleteOutgoing}>Confirmar</button>
+          <button onClick={deleteLoan}>Confirmar</button>
         </div>
       </Wrapper>
     </Modal>
@@ -92,7 +69,6 @@ const Wrapper = styled.div`
   .buttons-container {
     display: flex;
     justify-content: center;
-    grid-area: right;
     gap: 15px;
 
     .cancel {
@@ -120,4 +96,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default DeleteModal;
+export default DeleteLoanModal;
