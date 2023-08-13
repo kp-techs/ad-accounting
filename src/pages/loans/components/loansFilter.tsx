@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SelectOptions from "../../../components/selectOptions";
 import { FastField, Field, Form, Formik } from "formik";
 import { GrFormClose } from "react-icons/gr";
-import { loansInitialValues } from "../constant";
+import { loansInitialFilterValues } from "../constant";
 
 type Props = {
 	isActive: boolean;
@@ -19,7 +19,7 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 				<Formik
 					initialValues={filters}
 					onReset={() => {
-						setFilters(loansInitialValues);
+						setFilters(loansInitialFilterValues);
 					}}
 					onSubmit={setFilters}
 				>

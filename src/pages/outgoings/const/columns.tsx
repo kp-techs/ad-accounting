@@ -16,27 +16,28 @@ function useColumns() {
         accessor: "date",
         // @ts-ignore
         Cell: ({ row }) => formatTableDate(row.original.date),
-      }, {
+      },
+      {
         Header: "Cheque",
-        accessor:"checkNumber",
+        accessor: "checkNumber",
       },
       {
         Header: "Beneficiario",
         accessor: "beneficiaryID",
         // @ts-ignore
         Cell: ({ row }) => getBeneficiaryName(row.original),
-
-      },{
-        Header: "Monto",
-        accessor: "amount",
-        // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.amount),
       },
       {
         Header: "Descripción",
         accessor: "description",
         // @ts-ignore
         Cell: ({ row }) => getOutgoingDescription(row.original),
+      },
+      {
+        Header: "Monto",
+        accessor: "amount",
+        // @ts-ignore
+        Cell: ({ row }) => formatMoney(row.original.amount),
       },
     ],
     []

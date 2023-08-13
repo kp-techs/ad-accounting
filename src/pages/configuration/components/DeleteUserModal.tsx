@@ -4,6 +4,7 @@ import {  User } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
 import styled from "styled-components";
 import { customStyles } from "../../incomes/constants";
+import useAppData from "../../../hooks/useAppData";
 
 type Props = {
   isOpen: boolean;
@@ -13,11 +14,14 @@ type Props = {
 
 const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
   const { supabase } = useSupabase();
+  const { loadUsers } = useAppData();
+
 
   async function deleteUser() {
     if (user) {
       await supabase.from("users").update({ active: false }).eq("id", user.id);
       await supabase.auth.admin.deleteUser(user.id);
+      loadUsers();
       onClose();
     }
   }
