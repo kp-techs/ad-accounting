@@ -75,8 +75,8 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
               </div>
             </section>
             <div className="foo-modal">
-              <button>Enviar</button>
-              <button>Cancelar</button>
+            <button>Cancelar</button>
+            <button>Enviar</button>
             </div>
           </form>
         </div>

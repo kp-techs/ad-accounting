@@ -10,7 +10,7 @@ import {
 } from "../hooks/useSupabase";
 import { filterInitialValues } from "../pages/incomes/constants";
 import { outgoingsInitialValues } from "../pages/outgoings/constants";
-import { loansInitialValues } from "../pages/loans/constant";
+import { loansInitialFilterValues } from "../pages/loans/constant";
 
 
 function useAppData() {
@@ -66,7 +66,7 @@ function useAppData() {
 		setOuts(data);
 	}
 
-	async function loadLoans(page: number = 1, size: number = 15, filters:LoansFilters=loansInitialValues) {
+	async function loadLoans(page: number = 1, size: number = 15, filters:LoansFilters=loansInitialFilterValues) {
 		const data = await fetchLoans(page, size,filters);
 		setLoans(data);
 	}
