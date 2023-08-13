@@ -1,8 +1,8 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import useAppData from "../hooks/useAppData";
+import { Link } from "react-router-dom";
 
 function Nav() {
 	const location = useLocation();

@@ -1,26 +1,26 @@
 import Modal from "react-modal";
-import React, { FC } from "react";
-import { Income } from "../../../types/models";
+import { FC } from "react";
 import { useSupabase } from "../../../hooks/useSupabase";
 import useAppData from "../../../hooks/useAppData";
-import { customStyles } from "../constants";
 import styled from "styled-components";
+import { Loans } from "../../../types/models";
+import { customStyles } from "../constant";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  income?: Income;
+  loan?: Loans;
 };
 
-const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
+const DeleteLoanModal: FC<Props> = ({ isOpen, onClose, loan }) => {
   const { supabase } = useSupabase();
-  const { loadIncomes, loadLoans, loadOuts} = useAppData();
+  const { loadIncomes, loadLoans, loadOuts } = useAppData();
 
-  async function deleteIncome() {
-    if (income) {
-      await supabase.from("outgoings").delete().eq("loanID", income.loanID);
-      await supabase.from("loans").delete().eq("id", income.loanID);
-      await supabase.from("incomes").delete().eq("id", income.id);
+  async function deleteLoan() {
+    if (loan) {
+      await supabase.from("outgoings").delete().eq("loanID", loan.id);
+      await supabase.from("incomes").delete().eq("loanID", loan.id);
+      await supabase.from("loans").delete().eq("id", loan.id);
       loadLoans();
       loadOuts();
       loadIncomes();
@@ -46,7 +46,7 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
           <button className="cancel" onClick={onClose}>
             Cancelar
           </button>
-          <button onClick={deleteIncome}>Confirmar</button>
+          <button onClick={deleteLoan}>Confirmar</button>
         </div>
       </Wrapper>
     </Modal>
@@ -69,7 +69,6 @@ const Wrapper = styled.div`
   .buttons-container {
     display: flex;
     justify-content: center;
-    grid-area: right;
     gap: 15px;
 
     .cancel {
@@ -97,4 +96,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default DeleteModal;
+export default DeleteLoanModal;

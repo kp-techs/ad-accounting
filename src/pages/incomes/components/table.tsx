@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useSortBy, useTable } from "react-table";
+import { useTable } from "react-table";
 import useColumns from "../const/columns";
 import { useEffect, useState } from "react";
 import useAppData from "../../../hooks/useAppData";
@@ -7,17 +7,18 @@ import DeleteModal from "./deletemodal";
 import { TableIncome } from "../../../types/models";
 import IncomesModal from "./incomeModal";
 import Pagination from "../../../components/pagination";
-import { MdDelete } from "react-icons/md";
-import { ImPencil } from "react-icons/im";
 import DetailsModal from "./detailsModal";
 import useToggle from "../../../hooks/useToggle";
 import NoInfo from "../../../components/noInfo";
+import { BsEye } from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
+import { AiOutlineDelete } from "react-icons/ai";
 
 type Props = {
   filters: IncomesFilters;
 };
 
-function Table({ filters }: Props) {
+function IncomeTable({ filters }: Props) {
   const { incomes, loadIncomes, profile } = useAppData();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,8 +40,6 @@ function Table({ filters }: Props) {
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle();
   const [isModifyModalOpen, toggleModifyModal] = useToggle();
   const [isDetailsModalOpen, toggleDetailsModal] = useToggle();
-
-
 
   return (
     <Wrapper>
@@ -81,45 +80,44 @@ function Table({ filters }: Props) {
 
                 return (
                   <div className="row-body">
-                    <tr
-                      {...income.getRowProps()}
-                      className="row"
-                      onClick={() => {
-                        setActiveIncome(income.original);
-                        toggleDetailsModal()
-                      }}
-                    >
+                    <tr {...income.getRowProps()} className="row">
                       {income.cells.map((cell) => (
-                        
                         <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                       ))}
 
-                      {profile?.role === "Administrador" && (
-                        <div id="modifyButtons-container">
-                          <div
-                            className="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveIncome(income.original);
-                              toggleModifyModal();
-                            }}
-                          >
-                            <ImPencil size={18} />
-                          </div>
-                          <div
-                            className="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveIncome(income.original);
-                              toggleDeleteModal();
-                            }}
-                          >
-                            <div className="button">
-                              <MdDelete size={20} />
-                            </div>
-                          </div>
+                      <div id="modifyButtons-container">
+                        <div
+                          className="button"
+                          onClick={() => {
+                            setActiveIncome(income.original);
+                            toggleDetailsModal();
+                          }}
+                        >
+                          <BsEye size={19} />
                         </div>
-                      )}
+                        {profile?.role === "Administrador" && (
+                          <>
+                            <div
+                              className="button"
+                              onClick={() => {
+                                setActiveIncome(income.original);
+                                toggleModifyModal();
+                              }}
+                            >
+                              <FiEdit size={18} />
+                            </div>
+                            <div
+                              className="button"
+                              onClick={() => {
+                                setActiveIncome(income.original);
+                                toggleDeleteModal();
+                              }}
+                            >
+                              <AiOutlineDelete size={20} />
+                            </div>
+                          </>
+                        )}
+                      </div>
                     </tr>
                   </div>
                 );
@@ -214,16 +212,13 @@ const Wrapper = styled.section`
 
     tr:hover {
       background: #2626262b;
-      #modifyButtons-container {
-        display: flex;
-      }
     }
   }
 
   #modifyButtons-container {
     height: 100%;
     box-sizing: border-box;
-    display: none;
+    display: flex;
     justify-content: center;
     gap: 15px;
     position: absolute;
@@ -259,4 +254,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default Table;
+export default IncomeTable;

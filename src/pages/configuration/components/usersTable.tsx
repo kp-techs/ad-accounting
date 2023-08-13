@@ -182,8 +182,8 @@ const Wrapper = styled.section`
 	.row-body {
 		border: white 1px solid;
 		border-width: 1px 0 0 0;
-		height: 50px;
 		padding: 10px;
+		height: 50px;
 	}
 
 	tbody {

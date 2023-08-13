@@ -1,5 +1,3 @@
-
-
 type UserData = {
   name: string | null;
   lastName: string | null;
@@ -22,7 +20,6 @@ type IncomesFilters = {
   endAmount: number | null;
 };
 
-
 type OutgoingsFilters = {
   type: number[] | null;
   beneficiaryID: number[] | null;
@@ -32,11 +29,12 @@ type OutgoingsFilters = {
   description: string | null;
   startAmount: number | null;
   endAmount: number | null;
-}
+  loanID: number | null;
+};
 
 type LoansFilters = {
   startAmount_currentAmount: number | null;
-    endAmount_currentAmount: number | null;
+  endAmount_currentAmount: number | null;
   startAmount_initialAmount: number | null;
   endAmount_initialAmount: number | null;
   startAmount_paidAmount: number | null;
@@ -46,7 +44,6 @@ type LoansFilters = {
   description: string | null;
   startDate: string | null;
   endDate: string | null;
-
-}
+};
 
 type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | "NONE";

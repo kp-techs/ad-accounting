@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { TableIncome, TableLoans, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
 import { getIncomeFilterString, getLoanFilterString, getOutgoingFilterString } from "../utils/helper";
-import moment from "moment";
 
 export const supabase = createClient<Database>(
 	process.env.REACT_APP_SUPABASE_URL || "",
@@ -52,7 +51,7 @@ export async function fetchIncomes(page: number, size: number, filters: IncomesF
 }
 
 export async function fetchUsers() {
-	const { data } = await supabase.from("users").select("*").order("last_sign_in_at", { ascending: false });
+	const { data } = await supabase.from("users").select("*").eq('active',true).order("last_sign_in_at", { ascending: false });
 	return data;
 }
 
@@ -67,7 +66,7 @@ export async function fetchOuts(page: number, size: number, filters: OutgoingsFi
 
 	let query = supabase
 		.from("outgoings")
-		.select(`*, outgoingTypes(*), people(*)`, {
+		.select(`*, outgoingTypes(*), people(*), loans(*)`, {
 			count: "exact"
 		})
 		.order("date", { ascending: false })
