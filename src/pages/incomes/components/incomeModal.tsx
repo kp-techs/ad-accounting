@@ -10,7 +10,6 @@ import SelectOptions from "../../../components/selectOptions";
 
 import {
   initialIncome,
-  customStyles,
   incomeTypeID,
   ValidationIncomeForm,
   initialLoanIncome,
@@ -18,6 +17,7 @@ import {
 } from "../constants";
 import Textarea from "../../../components/textarea";
 import moment from "moment";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
@@ -35,6 +35,8 @@ const IncomesModal: FC<Props> = ({
   const { loadIncomes, profile, loadLoans } = useAppData();
   const [on, setOn] = useState(false);
   const { supabase } = useSupabase();
+
+  console.dir(income);
 
   return (
     <Modal
@@ -129,6 +131,7 @@ const IncomesModal: FC<Props> = ({
 
                 values.loanID = loan?.id;
               }
+              console.dir(values);
 
               values.createdBy = profile?.name;
               await supabase.from("incomes").insert([values as any]);

@@ -1,22 +1,26 @@
 import Modal from "react-modal";
 import { FC } from "react";
-import { customStyles } from "../constant";
-import OutgoingsTable from "../../outgoings/components/table";
+import OutgoingsTable from "../../outgoings/components/table.old";
 import styled from "styled-components";
 import { GrFormClose } from "react-icons/gr";
+import { customStyles } from "../../../utils/constants";
+import { TableLoans } from "../../../types/models";
+import { capitalize, formatLongDate } from "../../../utils/helper";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   filters: OutgoingsFilters;
+  loan: TableLoans;
   loanName?: string;
 };
 
-const PaymentLoanModal: FC<Props> = ({
+const LoanPaymentsModal: FC<Props> = ({
   isOpen,
   onClose,
   filters,
   loanName,
+  loan,
 }) => {
   return (
     <Modal
@@ -40,6 +44,18 @@ const PaymentLoanModal: FC<Props> = ({
           isLoanVersion={true}
           loanName={loanName}
         />
+        <section className="creation-data">
+          <p>
+            Registro creado por {capitalize(loan.createdBy)}. <br />
+            El {formatLongDate(loan.createdAt)}
+          </p>
+          {loan.updateAt && (
+            <p>
+              Actualizado por úlima vez por {capitalize(loan.updateBy)}. <br />
+              El {formatLongDate(loan.updateAt)}
+            </p>
+          )}
+        </section>
       </Wrapper>
     </Modal>
   );
@@ -81,5 +97,9 @@ const Wrapper = styled.div`
       cursor: pointer;
     }
   }
+  .creation-data {
+    font-style: italic;
+    font-size: 12px;
+  }
 `;
-export default PaymentLoanModal;
+export default LoanPaymentsModal;

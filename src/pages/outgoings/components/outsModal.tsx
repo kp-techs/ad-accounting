@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { Outgoing } from "../../../types/models";
+import { Outgoing, TableOutgoing } from "../../../types/models";
 import { FC } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { useSupabase } from "../../../hooks/useSupabase";
 import {
   ValidationOutgoingForm,
-  customStyles,
   initialLoanVersion,
   initialOutgoing,
   outgoingTypeID,
@@ -15,11 +14,12 @@ import { FastField, Field, Form, Formik } from "formik";
 import moment from "moment";
 import SelectOptions from "../../../components/selectOptions";
 import { ValidationLoanPaymentForm } from "../../loans/constant";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  outgoing?: Outgoing;
+  outgoing?: TableOutgoing;
   isLoanVersion?: boolean;
   loanName?: string;
 };
