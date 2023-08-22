@@ -11,7 +11,7 @@ import colsSchema from "../const/columnsUsers";
 import useToggle from "../../../hooks/useToggle";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import RolModal from "./rolModal";
-import DeleteUserModal from "./deleteUserModal";
+import DeleteUserModal from "./removeUserModal";
 import InviteUserModal from "./inviteUserModal";
 
 function UsersTable() {
