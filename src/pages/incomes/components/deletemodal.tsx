@@ -3,8 +3,8 @@ import React, { FC } from "react";
 import { Income } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
 import useAppData from "../../../hooks/useAppData";
-import { customStyles } from "../constants";
 import styled from "styled-components";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
@@ -14,7 +14,7 @@ type Props = {
 
 const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
   const { supabase } = useSupabase();
-  const { loadIncomes, loadLoans, loadOuts} = useAppData();
+  const { loadIncomes, loadLoans, loadOuts } = useAppData();
 
   async function deleteIncome() {
     if (income) {

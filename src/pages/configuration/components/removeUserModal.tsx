@@ -1,10 +1,10 @@
 import Modal from "react-modal";
 import { FC } from "react";
-import {  User } from "../../../types/models";
+import { User } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
 import styled from "styled-components";
-import { customStyles } from "../../incomes/constants";
 import useAppData from "../../../hooks/useAppData";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
@@ -15,7 +15,6 @@ type Props = {
 const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
   const { supabase } = useSupabase();
   const { loadUsers } = useAppData();
-
 
   async function deleteUser() {
     if (user) {
@@ -34,7 +33,7 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
       style={customStyles}
     >
       <Wrapper>
-        <h3>¿Seguro que desea eliminar a { user?.name || 'este usuario'}?</h3>
+        <h3>¿Seguro que desea eliminar a {user?.name || "este usuario"}?</h3>
         <p>
           Este usuario se eliminará permanentemente. Esta acción no se puede
           deshacer.

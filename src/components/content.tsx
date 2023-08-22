@@ -13,7 +13,7 @@ const Wrapper = styled.main`
   display: flex;
   grid-area: content;
   flex-direction: column;
-  height: calc(100vh - 190px);
+  height: calc(100% - 30px);
   overflow: hidden;
   border-radius: 10px 0 0;
   padding: 25px;
@@ -22,4 +22,5 @@ const Wrapper = styled.main`
   border-radius: 40px;
   box-sizing: border-box;
 `;
+
 export default Content;

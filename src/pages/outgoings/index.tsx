@@ -3,16 +3,20 @@ import { useState } from "react";
 import { FaPlus, FaFilter } from "react-icons/fa";
 import { outgoingsInitialValues } from "./constants";
 import OutsModal from "./components/outsModal";
-import OutgoingsTable from "./components/table";
 import FilterSection from "./components/filterSeccion";
+import OutgoingsTable from "./components/table";
 
-type Action = "ADD" | "FILTER" | "SEARCH";
+type Action = "ADD" | "FILTER";
 
 function Outgoings() {
   const [activeAction, setActiveAction] = useState<Action>();
   const [filters, setFilters] = useState<OutgoingsFilters>(
     outgoingsInitialValues
   );
+
+  function toggleAction(action: Action) {
+    setActiveAction(action === activeAction ? undefined : action);
+  }
 
   return (
     <Wrapper>
@@ -28,7 +32,7 @@ function Outgoings() {
         )}
         {(activeAction === "FILTER" || !activeAction) && (
           <div
-            onClick={() => setActiveAction("FILTER")}
+            onClick={() => toggleAction("FILTER")}
             className={"button nav-button"}
           >
             <FaFilter size={20} />
@@ -37,11 +41,6 @@ function Outgoings() {
         )}
       </nav>
 
-      <OutsModal
-        isOpen={activeAction === "ADD"}
-        onClose={() => setActiveAction(undefined)}
-      />
-
       <FilterSection
         isActive={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
@@ -49,6 +48,11 @@ function Outgoings() {
         setFilters={setFilters}
       />
 
+      <OutsModal
+        isOpen={activeAction === "ADD"}
+        onClose={() => toggleAction("ADD")}
+      />
+      
       <OutgoingsTable filters={filters} />
     </Wrapper>
   );
