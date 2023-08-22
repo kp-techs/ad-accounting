@@ -11,8 +11,8 @@ import colsSchema from "../const/columnsUsers";
 import useToggle from "../../../hooks/useToggle";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import RolModal from "./rolModal";
-import UserInvitationModal from "./userInvitationModal";
 import DeleteUserModal from "./deleteUserModal";
+import InviteUserModal from "./inviteUserModal";
 
 function UsersTable() {
   const { users, loadUsers } = useAppData();
@@ -34,7 +34,7 @@ function UsersTable() {
 
   return (
     <Wrapper>
-      <UserInvitationModal
+      <InviteUserModal
         isOpen={isInvitationModalOpen}
         onClose={toggleInvitationModal}
       />
