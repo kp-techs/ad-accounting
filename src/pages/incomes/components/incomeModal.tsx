@@ -20,10 +20,10 @@ import moment from "moment";
 import { customStyles } from "../../../utils/constants";
 
 type Props = {
-	isOpen: boolean;
-	onClose: () => void;
-	income?: Income;
-	isLoanVersion?: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  income?: Income;
+  isLoanVersion?: boolean;
 };
 
 const IncomesModal: FC<Props> = ({
@@ -317,124 +317,124 @@ const IncomesModal: FC<Props> = ({
 };
 
 const Wrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	box-sizing: border-box;
-	gap: 15px;
-	width: 700px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: 15px;
+  width: 700px;
 
-	label {
-		color: #ffffff;
-		font-family: Poppins;
-		font-weight: 400;
-		font-size: 18px;
-	}
-	.form-content {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
+  label {
+    color: #ffffff;
+    font-family: Poppins;
+    font-weight: 400;
+    font-size: 18px;
+  }
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-	.selectIncomeType {
-		display: grid;
-		grid-template-columns: 90px 1fr;
-		align-items: center;
-	}
+  .selectIncomeType {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    align-items: center;
+  }
 
-	.incomeTypeLabel-container {
-		display: flex;
-		align-items: center;
-	}
+  .incomeTypeLabel-container {
+    display: flex;
+    align-items: center;
+  }
 
-	input,
-	.comment {
-		font-family: Poppins, Arial, Helvetica, sans-serif;
-		font-size: 14px;
-		width: 100%;
-		background-color: hsl(0, 0%, 100%);
-		border-radius: 4px;
-		border: 1px;
-		border-color: hsl(0, 0%, 80%);
-		border-style: solid;
-		outline: 0;
-		padding: 2px 8px;
-		box-sizing: border-box;
-		color: #2f2f2f;
-	}
+  input,
+  .comment {
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    width: 100%;
+    background-color: hsl(0, 0%, 100%);
+    border-radius: 4px;
+    border: 1px;
+    border-color: hsl(0, 0%, 80%);
+    border-style: solid;
+    outline: 0;
+    padding: 2px 8px;
+    box-sizing: border-box;
+    color: #2f2f2f;
+  }
 
-	.field {
-		height: 38px;
-	}
-	.field-comment {
-		display: flex;
-		flex-direction: column;
-		.comment {
-			padding: 5px 8px;
-		}
-	}
+  .field {
+    height: 38px;
+  }
+  .field-comment {
+    display: flex;
+    flex-direction: column;
+    .comment {
+      padding: 5px 8px;
+    }
+  }
 
-	.selectType-container {
-		box-sizing: border-box;
-		display: grid;
-		grid-template: 1fr 1fr;
-		width: 100%;
-		margin: 5px;
-		padding: 10px;
-		gap: 10px;
-	}
+  .selectType-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template: 1fr 1fr;
+    width: 100%;
+    margin: 5px;
+    padding: 10px;
+    gap: 10px;
+  }
 
-	.underline {
-		border-bottom: 1px gray solid;
-	}
+  .underline {
+    border-bottom: 1px gray solid;
+  }
 
-	.fields-container {
-		box-sizing: border-box;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 1rem;
-		justify-content: space-between;
-		width: 100%;
-	}
+  .fields-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    justify-content: space-between;
+    width: 100%;
+  }
 
-	.field-line {
-		margin: 10px 0;
-	}
-	.toggle {
-		grid-area: left;
-		display: inline-flex;
-		align-items: center;
-		box-sizing: border-box;
-		gap: 10px;
-	}
-	.buttons-container {
-		display: flex;
-		grid-area: right;
-		gap: 15px;
+  .field-line {
+    margin: 10px 0;
+  }
+  .toggle {
+    grid-area: left;
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 10px;
+  }
+  .buttons-container {
+    display: flex;
+    grid-area: right;
+    gap: 15px;
 
-		button {
-			width: 93px;
-			height: 30px;
-			text-align: center;
-			justify-content: center;
-			font-size: 16px;
-			box-sizing: border-box;
-			background-color: #eeeeee;
-			border-radius: 5px;
-			font-family: Poppins, Arial, Helvetica, sans-serif;
-			border: 0;
-			cursor: pointer;
-			&:active {
-				background-color: #a4a4a494;
-			}
-		}
-	}
+    button {
+      width: 93px;
+      height: 30px;
+      text-align: center;
+      justify-content: center;
+      font-size: 16px;
+      box-sizing: border-box;
+      background-color: #eeeeee;
+      border-radius: 5px;
+      font-family: Poppins, Arial, Helvetica, sans-serif;
+      border: 0;
+      cursor: pointer;
+      &:active {
+        background-color: #a4a4a494;
+      }
+    }
+  }
 
-	.foo-modal {
-		display: grid;
-		grid-template: "left right" 25px/1fr;
-		padding: 5px;
-		height: 40px;
-	}
+  .foo-modal {
+    display: grid;
+    grid-template: "left right" 25px/1fr;
+    padding: 5px;
+    height: 40px;
+  }
 `;
 
 export default IncomesModal;

@@ -53,6 +53,12 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => capitalize(row.original.status),
       },
+      {
+        Header: "Acciones",
+        accessor: "description",
+        // @ts-ignore
+        Cell: ({ row }) => "",
+      },
     ],
     []
   );
