@@ -1,14 +1,15 @@
 import { useSupabase } from "../../../hooks/useSupabase";
 import Modal from "react-modal";
 import styled from "styled-components";
-import { useState } from "react";
+import { useId, useState } from "react";
 import useAppData from "../../../hooks/useAppData";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
 	isOpen: boolean;
 	onClose: () => void;
 };
-const UserInvitationModal = ({ isOpen, onClose }: Props) => {
+const InviteUserModal = ({ isOpen, onClose }: Props) => {
 	const { profile } = useAppData();
 	const invitedBy = profile ? profile.name : "Origen";
 	const { supabase } = useSupabase();
@@ -29,7 +30,12 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
 	};
 
 	return (
-		<Modal ariaHideApp={false} isOpen={isOpen} onRequestClose={onClose}>
+		<Modal
+			ariaHideApp={false}
+			isOpen={isOpen}
+			onRequestClose={onClose}
+			style={customStyles}
+		>
 			<Wrapper>
 				<div>
 					<form className="form-widget" onSubmit={handleInvitation}>
@@ -143,4 +149,4 @@ const Wrapper = styled.div`
 		}
 	}
 `;
-export default UserInvitationModal;
+export default InviteUserModal;

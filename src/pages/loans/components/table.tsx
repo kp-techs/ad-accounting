@@ -14,7 +14,6 @@ import DeleteLoanModal from "./deleteLoan";
 import { supabase } from "../../../hooks/useSupabase";
 import IncomesModal from "../../incomes/components/incomeModal";
 import { outgoingsInitialValues } from "../../outgoings/constants";
-import PaymentLoanModal from "./paymentTableModal";
 
 type Props = {
   filters: LoansFilters;
@@ -75,12 +74,12 @@ const LoanTable: FC<Props> = ({ filters }: Props) => {
         onClose={toggleDeleteModal}
         loan={activeLoan}
       />
-      <PaymentLoanModal
+      {/* <LoanPaymentsModal
         isOpen={isPaymentModalOpen}
         onClose={togglePaymentModal}
         filters={loanFilters}
         loanName={loanName}
-      />
+      /> */}
       {loans.count ? (
         <div className="table-container">
           <table {...getTableProps()}>

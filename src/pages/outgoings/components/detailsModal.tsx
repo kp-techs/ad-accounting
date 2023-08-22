@@ -11,7 +11,8 @@ import {
   getOutgoingDescription,
 } from "../../../utils/helper";
 import { TableOutgoing } from "../../../types/models";
-import { customStyles, outgoingTypeID } from "../constants";
+import { outgoingTypeID } from "../constants";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
@@ -47,35 +48,39 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
         </section>
         <section className="side">
           <p className="title">Tipo de egreso</p>
-          <p>{capitalize(outgoing?.outgoingTypes.name||'')}</p>
+          <p>{capitalize(outgoing?.outgoingTypes.name || "")}</p>
         </section>
         <section className="side">
-          <p className="title">{outgoing?.type === outgoingTypeID.loan?'Acreedor':'Beneficiario'}</p>
-          <p>{capitalize(outgoing?.people.name||'')}</p>
+          <p className="title">
+            {outgoing?.type === outgoingTypeID.loan
+              ? "Acreedor"
+              : "Beneficiario"}
+          </p>
+          <p>{capitalize(outgoing?.people.name || "")}</p>
         </section>
         {outgoing?.type === outgoingTypeID.loan ? (
           <>
-          <section className="side">
-            <p className="title">Deuda inicial</p>
-              <p>{formatMoney(outgoing?.loans?.initialLoanAmount||null)}</p>
-          </section>
-          <section className="side">
-            <p className="title">Deuda restante</p>
-              <p>{formatMoney(outgoing?.loans?.currentLoanAmount||null)}</p>
+            <section className="side">
+              <p className="title">Deuda inicial</p>
+              <p>{formatMoney(outgoing?.loans?.initialLoanAmount || null)}</p>
             </section>
             <section className="side">
-            <p className="title">Total abonado</p>
-              <p>{formatMoney(outgoing?.loans?.paidAmount||null)}</p>
+              <p className="title">Deuda restante</p>
+              <p>{formatMoney(outgoing?.loans?.currentLoanAmount || null)}</p>
+            </section>
+            <section className="side">
+              <p className="title">Total abonado</p>
+              <p>{formatMoney(outgoing?.loans?.paidAmount || null)}</p>
             </section>
           </>
-        ):null}
+        ) : null}
 
         <section className="side">
           <p className="title">Creación</p>
           <div className="user-info">
-            <FaRegUserCircle size={30} />
             <p>
-              {capitalize(outgoing?.createdBy||'')}. {formatLongDate(outgoing?.createdDate || null)}
+              {capitalize(outgoing?.createdBy || "")}.{" "}
+              {formatLongDate(outgoing?.createdDate || null)}
             </p>
           </div>
         </section>
@@ -85,7 +90,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
             <div className="user-info">
               <FaRegUserCircle size={30} />
               <p>
-                {capitalize(outgoing?.modifiedBy||'')}.{" "}
+                {capitalize(outgoing?.modifiedBy || "")}.{" "}
                 {formatLongDate(outgoing?.modifiedAt || null)}
               </p>
             </div>

@@ -1,28 +1,30 @@
 import Modal from "react-modal";
-import { FC } from "react";
-import { User } from "../../../types/models";
-import { useSupabase } from "../../../hooks/useSupabase";
+import React, { FC } from "react";
 import styled from "styled-components";
-import useAppData from "../../../hooks/useAppData";
-import { customStyles } from "../../../utils/constants";
+import { useSupabase } from "../hooks/useSupabase";
+import { customStyles } from "../utils/constants";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  user?: User;
-  newValue?: string;
+  id: number;
+  tableName: string;
+  onSucess: () => void;
 };
 
-const RolModal: FC<Props> = ({ isOpen, onClose, user, newValue }) => {
+const DeleteModal: FC<Props> = ({
+  isOpen,
+  onClose,
+  id,
+  tableName,
+  onSucess,
+}) => {
   const { supabase } = useSupabase();
-  const { loadUsers } = useAppData();
 
-  async function switchRol() {
-    if (user) {
-      await supabase.from("users").update({ role: newValue }).eq("id", user.id);
-      loadUsers();
-      onClose();
-    }
+  async function deleteItem() {
+    await supabase.from(tableName).delete().eq("id", id);
+    onSucess();
+    onClose();
   }
 
   return (
@@ -31,21 +33,19 @@ const RolModal: FC<Props> = ({ isOpen, onClose, user, newValue }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
+      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
-        <h4>
-          ¿Seguro que desea convertir a {user?.name || "esta persona"} en{" "}
-          {newValue}?
-        </h4>
+        <h3>¿Seguro que quieres eliminar este registro?</h3>
         <p>
-          El cambio de roles implica cambiar las restrincciones de acceso que
-          esta persona posee.
+          Este registro se eliminará permanentemente. Esta acción no se puede
+          deshacer.
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
             Cancelar
           </button>
-          <button onClick={switchRol}>Confirmar</button>
+          <button onClick={deleteItem}>Confirmar</button>
         </div>
       </Wrapper>
     </Modal>
@@ -53,17 +53,16 @@ const RolModal: FC<Props> = ({ isOpen, onClose, user, newValue }) => {
 };
 
 const Wrapper = styled.div`
-  width: 350px;
+  width: 450px;
   text-align: center;
   margin: 10px;
 
-  h4 {
+  h3 {
     margin: 5px;
   }
   p {
     margin: 0;
     margin-bottom: 20px;
-    font-size: 13px;
   }
 
   .buttons-container {
@@ -97,4 +96,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default RolModal;
+export default DeleteModal;

@@ -46,4 +46,6 @@ type LoansFilters = {
   endDate: string | null;
 };
 
+type Filters = IncomesFilters | OutgoingsFilters | LoansFilters;
+
 type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | "NONE";

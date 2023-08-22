@@ -9,15 +9,15 @@ import useAppData from "../../../hooks/useAppData";
 import SelectOptions from "../../../components/selectOptions";
 
 import {
-  initialIncome,
-  customStyles,
-  incomeTypeID,
-  ValidationIncomeForm,
-  initialLoanIncome,
-  ValidationLoanVersionForm,
+	initialIncome,
+	incomeTypeID,
+	ValidationIncomeForm,
+	initialLoanIncome,
+	ValidationLoanVersionForm
 } from "../constants";
 import Textarea from "../../../components/textarea";
 import moment from "moment";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
@@ -27,293 +27,293 @@ type Props = {
 };
 
 const IncomesModal: FC<Props> = ({
-  isOpen,
-  onClose,
-  income,
-  isLoanVersion = false,
+	isOpen,
+	onClose,
+	income,
+	isLoanVersion = false
 }) => {
-  const { loadIncomes, profile, loadLoans } = useAppData();
-  const [on, setOn] = useState(false);
-  const { supabase } = useSupabase();
+	const { loadIncomes, profile, loadLoans } = useAppData();
+	const [on, setOn] = useState(false);
+	const { supabase } = useSupabase();
 
-  return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
-    >
-      <Wrapper>
-        <Formik
-          validationSchema={
-            isLoanVersion ? ValidationLoanVersionForm : ValidationIncomeForm
-          }
-          initialValues={
-            income ?? (isLoanVersion ? initialLoanIncome : initialIncome)
-          }
-          onSubmit={async (values, { resetForm }) => {
-            if (income) {
-              values.updatedBy = profile?.name;
-              values.updatedDate = moment().format();
+	return (
+		<Modal
+			ariaHideApp={false}
+			isOpen={isOpen}
+			onRequestClose={onClose}
+			style={customStyles}
+			contentLabel="Formulario para registrar ingresos"
+		>
+			<Wrapper>
+				<Formik
+					validationSchema={
+						isLoanVersion ? ValidationLoanVersionForm : ValidationIncomeForm
+					}
+					initialValues={
+						income ?? (isLoanVersion ? initialLoanIncome : initialIncome)
+					}
+					onSubmit={async (values, { resetForm }) => {
+						if (income) {
+							values.updatedBy = profile?.name;
+							values.updatedDate = moment().format();
 
-              // @ts-ignore
-              delete values.incomeTypes;
-              // @ts-ignore
-              delete values.ministries;
-              // @ts-ignore
-              delete values.people;
+							// @ts-ignore
+							delete values.incomeTypes;
+							// @ts-ignore
+							delete values.ministries;
+							// @ts-ignore
+							delete values.people;
 
-              if (isLoanVersion) values.type = incomeTypeID.loan;
+							if (isLoanVersion) values.type = incomeTypeID.loan;
 
-              if (values.type === incomeTypeID.loan) {
-                const { data: loan } = await supabase
-                  .from("loans")
-                  .select()
-                  .eq("id", values.loanID)
-                  .single();
+							if (values.type === incomeTypeID.loan) {
+								const { data: loan } = await supabase
+									.from("loans")
+									.select()
+									.eq("id", values.loanID)
+									.single();
 
-                let newCurrent = loan?.currentLoanAmount || 0;
-                const newInitial = values.amount || 0;
-                const previusInitial = loan?.initialLoanAmount || 0;
+								let newCurrent = loan?.currentLoanAmount || 0;
+								const newInitial = values.amount || 0;
+								const previusInitial = loan?.initialLoanAmount || 0;
 
-                if (newInitial !== previusInitial)
-                  newCurrent = newInitial - (loan?.paidAmount || 0);
+								if (newInitial !== previusInitial)
+									newCurrent = newInitial - (loan?.paidAmount || 0);
 
-                let newStatus = "Pendiente";
-                if (newCurrent <= 0) newStatus = "Saldado";
+								let newStatus = "Pendiente";
+								if (newCurrent <= 0) newStatus = "Saldado";
 
-                await supabase
-                  .from("loans")
-                  .update({
-                    name: values.loanName,
-                    creditorID: values.tithingID,
-                    initialLoanAmount: values.amount,
-                    currentLoanAmount: newCurrent,
-                    status: newStatus,
-                    createdBy: profile?.name,
-                    createdAt: moment().format(),
-                    description: values.comment,
-                    date: values.date,
-                  })
-                  .eq("id", income.loanID);
-              }
+								await supabase
+									.from("loans")
+									.update({
+										name: values.loanName,
+										creditorID: values.tithingID,
+										initialLoanAmount: values.amount,
+										currentLoanAmount: newCurrent,
+										status: newStatus,
+										createdBy: profile?.name,
+										createdAt: moment().format(),
+										description: values.comment,
+										date: values.date
+									})
+									.eq("id", income.loanID);
+							}
 
-              await supabase
-                .from("incomes")
-                .update({ ...values, id: income.id })
-                .eq("id", income.id);
-              onClose();
-            } else {
-              if (isLoanVersion) values.type = incomeTypeID.loan;
+							await supabase
+								.from("incomes")
+								.update({ ...values, id: income.id })
+								.eq("id", income.id);
+							onClose();
+						} else {
+							if (isLoanVersion) values.type = incomeTypeID.loan;
 
-              if (values.type === incomeTypeID.loan) {
-                await supabase.from("loans").insert([
-                  {
-                    name: values.loanName,
-                    creditorID: values.tithingID,
-                    initialLoanAmount: values.amount,
-                    currentLoanAmount: values.amount,
-                    createdBy: profile?.name,
-                    createdAt: moment().format(),
-                    description: values.comment,
-                    date: values.date,
-                  },
-                ]);
-                loadLoans();
-                const { data: loan } = await supabase
-                  .from("loans")
-                  .select()
-                  .eq("name", values.loanName)
-                  .single();
+							if (values.type === incomeTypeID.loan) {
+								await supabase.from("loans").insert([
+									{
+										name: values.loanName,
+										creditorID: values.tithingID,
+										initialLoanAmount: values.amount,
+										currentLoanAmount: values.amount,
+										createdBy: profile?.name,
+										createdAt: moment().format(),
+										description: values.comment,
+										date: values.date
+									}
+								]);
+								loadLoans();
+								const { data: loan } = await supabase
+									.from("loans")
+									.select()
+									.eq("name", values.loanName)
+									.single();
 
-                values.loanID = loan?.id;
-              }
+								values.loanID = loan?.id;
+							}
 
-              values.createdBy = profile?.name;
-              await supabase.from("incomes").insert([values as any]);
-            }
-            if (on) {
-              initialIncome.date = values.date;
-              initialIncome.type = incomeTypeID.tithe;
-            } else {
-              initialIncome.date = "";
-              initialIncome.type = null;
-            }
-            resetForm();
-            loadIncomes();
-          }}
-        >
-          {({ values, errors, touched }) => (
-            <Form>
-              <section className="form-content">
-                <div className="top-modal">
-                  {isLoanVersion ? (
-                    <div className="underline">
-                      <label>
-                        {income ? "MODIFICAR PRESTAMO" : "NUEVO PRESTAMO"}
-                      </label>
-                    </div>
-                  ) : (
-                    <div className="selectType-container selectIncomeType underline">
-                      <>
-                        <div>
-                          <label htmlFor="selectIncomeType">Concepto</label>
-                        </div>
-                        <FastField
-                          id="selectIncomeType"
-                          name="type"
-                          component={(props: any) => (
-                            <SelectOptions {...props} table={"incomeTypes"} />
-                          )}
-                        />
-                        <div></div>
-                      </>
+							values.createdBy = profile?.name;
+							await supabase.from("incomes").insert([values as any]);
+						}
+						if (on) {
+							initialIncome.date = values.date;
+							initialIncome.type = incomeTypeID.tithe;
+						} else {
+							initialIncome.date = "";
+							initialIncome.type = null;
+						}
+						resetForm();
+						loadIncomes();
+					}}
+				>
+					{({ values, errors, touched }) => (
+						<Form>
+							<section className="form-content">
+								<div className="top-modal">
+									{isLoanVersion ? (
+										<div className="underline">
+											<label>
+												{income ? "MODIFICAR PRESTAMO" : "NUEVO PRESTAMO"}
+											</label>
+										</div>
+									) : (
+										<div className="selectType-container selectIncomeType underline">
+											<>
+												<div>
+													<label htmlFor="selectIncomeType">Concepto</label>
+												</div>
+												<FastField
+													id="selectIncomeType"
+													name="type"
+													component={(props: any) => (
+														<SelectOptions {...props} table={"incomeTypes"} />
+													)}
+												/>
+												<div></div>
+											</>
 
-                      {errors.type && touched.type && (
-                        <div style={{ color: "red" }}>{errors.type}</div>
-                      )}
-                    </div>
-                  )}
-                  {values.type === incomeTypeID.tithe ? (
-                    <section className="field-line">
-                      <label htmlFor="tithingName">Diezmante</label>
-                      <FastField
-                        name="tithingID"
-                        id="tithingName"
-                        component={(props: any) => (
-                          <SelectOptions {...props} table={"people"} />
-                        )}
-                      />
-                      {errors.tithingID && touched.tithingID && (
-                        <div style={{ color: "red" }}>{errors.tithingID}</div>
-                      )}
-                    </section>
-                  ) : values.type === incomeTypeID.event ? (
-                    <section
-                      id="typeEventFields-container"
-                      className="fields-container field-line"
-                    >
-                      <div>
-                        <label htmlFor="event-name">Nombre</label>
-                        <Field
-                          id="event-name"
-                          className="field"
-                          type="text"
-                          name="eventName"
-                          placeholder="Congreso Estruendo"
-                        />
-                        {errors.eventName && touched.eventName && (
-                          <div style={{ color: "red" }}>{errors.eventName}</div>
-                        )}
-                      </div>
-                      <div>
-                        <label htmlFor="ministry-name">Ministerio</label>
-                        <FastField
-                          id="ministry-name"
-                          type="text"
-                          name="ministryID"
-                          component={(props: any) => (
-                            <SelectOptions {...props} table={"ministries"} />
-                          )}
-                        />
-                        {errors.ministryID && touched.ministryID && (
-                          <div style={{ color: "red" }}>
-                            {errors.ministryID}
-                          </div>
-                        )}
-                      </div>
-                    </section>
-                  ) : values.type === incomeTypeID.loan || isLoanVersion ? (
-                    <section className="field-line fields-container">
-                      <div>
-                        <label htmlFor="loan-name">Nombre</label>
-                        <Field
-                          id="loan-name"
-                          className="field"
-                          type="text"
-                          name="loanName"
-                        />
-                        {errors.loanName && touched.loanName && (
-                          <div style={{ color: "red" }}>{errors.eventName}</div>
-                        )}
-                      </div>
-                      <div>
-                        <label htmlFor="tithingID">Acreedor</label>
-                        <FastField
-                          type="number"
-                          name="tithingID"
-                          component={(props: any) => (
-                            <SelectOptions {...props} table={"people"} />
-                          )}
-                        />
-                        {errors.tithingID && touched.tithingID && (
-                          <div style={{ color: "red" }}>{errors.tithingID}</div>
-                        )}
-                      </div>
-                    </section>
-                  ) : null}
+											{errors.type && touched.type && (
+												<div style={{ color: "red" }}>{errors.type}</div>
+											)}
+										</div>
+									)}
+									{values.type === incomeTypeID.tithe ? (
+										<section className="field-line">
+											<label htmlFor="tithingName">Diezmante</label>
+											<FastField
+												name="tithingID"
+												id="tithingName"
+												component={(props: any) => (
+													<SelectOptions {...props} table={"people"} />
+												)}
+											/>
+											{errors.tithingID && touched.tithingID && (
+												<div style={{ color: "red" }}>{errors.tithingID}</div>
+											)}
+										</section>
+									) : values.type === incomeTypeID.event ? (
+										<section
+											id="typeEventFields-container"
+											className="fields-container field-line"
+										>
+											<div>
+												<label htmlFor="event-name">Nombre</label>
+												<Field
+													id="event-name"
+													className="field"
+													type="text"
+													name="eventName"
+													placeholder="Congreso Estruendo"
+												/>
+												{errors.eventName && touched.eventName && (
+													<div style={{ color: "red" }}>{errors.eventName}</div>
+												)}
+											</div>
+											<div>
+												<label htmlFor="ministry-name">Ministerio</label>
+												<FastField
+													id="ministry-name"
+													type="text"
+													name="ministryID"
+													component={(props: any) => (
+														<SelectOptions {...props} table={"ministries"} />
+													)}
+												/>
+												{errors.ministryID && touched.ministryID && (
+													<div style={{ color: "red" }}>
+														{errors.ministryID}
+													</div>
+												)}
+											</div>
+										</section>
+									) : values.type === incomeTypeID.loan || isLoanVersion ? (
+										<section className="field-line fields-container">
+											<div>
+												<label htmlFor="loan-name">Nombre</label>
+												<Field
+													id="loan-name"
+													className="field"
+													type="text"
+													name="loanName"
+												/>
+												{errors.loanName && touched.loanName && (
+													<div style={{ color: "red" }}>{errors.eventName}</div>
+												)}
+											</div>
+											<div>
+												<label htmlFor="tithingID">Acreedor</label>
+												<FastField
+													type="number"
+													name="tithingID"
+													component={(props: any) => (
+														<SelectOptions {...props} table={"people"} />
+													)}
+												/>
+												{errors.tithingID && touched.tithingID && (
+													<div style={{ color: "red" }}>{errors.tithingID}</div>
+												)}
+											</div>
+										</section>
+									) : null}
 
-                  <div className="fields-container field-line">
-                    <div>
-                      <label>Fecha</label>
-                      <Field name="date" type="date" className="field" />
-                      {errors.date && touched.date && (
-                        <div style={{ color: "red" }}>{errors.date}</div>
-                      )}
-                    </div>
-                    <div>
-                      <label>Monto</label>
-                      <Field className="field" name="amount" type="number" />
-                      {errors.amount && touched.amount && (
-                        <div style={{ color: "red" }}>{errors.amount}</div>
-                      )}
-                    </div>
-                  </div>
+									<div className="fields-container field-line">
+										<div>
+											<label>Fecha</label>
+											<Field name="date" type="date" className="field" />
+											{errors.date && touched.date && (
+												<div style={{ color: "red" }}>{errors.date}</div>
+											)}
+										</div>
+										<div>
+											<label>Monto</label>
+											<Field className="field" name="amount" type="number" />
+											{errors.amount && touched.amount && (
+												<div style={{ color: "red" }}>{errors.amount}</div>
+											)}
+										</div>
+									</div>
 
-                  <div className="field-line field-comment">
-                    <label htmlFor="comment">
-                      {values.type === incomeTypeID.loan
-                        ? "Descripción"
-                        : "Comentario"}
-                    </label>
-                    <FastField
-                      className="comment"
-                      name="comment"
-                      component={Textarea}
-                    />
-                  </div>
-                </div>
+									<div className="field-line field-comment">
+										<label htmlFor="comment">
+											{values.type === incomeTypeID.loan
+												? "Descripción"
+												: "Comentario"}
+										</label>
+										<FastField
+											className="comment"
+											name="comment"
+											component={Textarea}
+										/>
+									</div>
+								</div>
 
-                <div className="foo-modal">
-                  {!income && values.type === incomeTypeID.tithe ? (
-                    <div className="toggle">
-                      <SwitchButton on={on} onClick={() => setOn(!on)} />
-                      <label>Mantener selección</label>
-                    </div>
-                  ) : null}
-                  <div className="buttons-container">
-                    <button
-                      onClick={() => {
-                        setOn(false);
-                        onClose();
-                        initialIncome.type = null;
-                      }}
-                    >
-                      {income ? "Cancelar" : "Cerrar"}
-                    </button>
-                    <button type="submit">
-                      {income ? "Actualizar" : "Guardar"}
-                    </button>
-                  </div>
-                </div>
-              </section>
-            </Form>
-          )}
-        </Formik>
-      </Wrapper>
-    </Modal>
-  );
+								<div className="foo-modal">
+									{!income && values.type === incomeTypeID.tithe ? (
+										<div className="toggle">
+											<SwitchButton on={on} onClick={() => setOn(!on)} />
+											<label>Mantener selección</label>
+										</div>
+									) : null}
+									<div className="buttons-container">
+										<button
+											onClick={() => {
+												setOn(false);
+												onClose();
+												initialIncome.type = null;
+											}}
+										>
+											{income ? "Cancelar" : "Cerrar"}
+										</button>
+										<button type="submit">
+											{income ? "Actualizar" : "Guardar"}
+										</button>
+									</div>
+								</div>
+							</section>
+						</Form>
+					)}
+				</Formik>
+			</Wrapper>
+		</Modal>
+	);
 };
 
 const Wrapper = styled.div`

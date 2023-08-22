@@ -3,9 +3,10 @@ import { FC } from "react";
 import { useSupabase } from "../../../hooks/useSupabase";
 import useAppData from "../../../hooks/useAppData";
 import styled from "styled-components";
-import { customStyles, outgoingTypeID } from "../constants";
+import { outgoingTypeID } from "../constants";
 import { Outgoing } from "../../../types/models";
 import moment from "moment";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;

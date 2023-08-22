@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import { FC } from "react";
-import { customStyles, incomeTypeID } from "../constants";
+import { incomeTypeID } from "../constants";
 import styled from "styled-components";
 import { FaRegUserCircle } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
@@ -12,6 +12,7 @@ import {
   formatMoney,
   generateConcept,
 } from "../../../utils/helper";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
@@ -52,13 +53,13 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
         {income?.type === incomeTypeID.tithe ? (
           <section className="side">
             <p className="title">Diezmante</p>
-            <p>{capitalize(income.people.name||'')}</p>
+            <p>{capitalize(income.people.name || "")}</p>
           </section>
         ) : income?.type === incomeTypeID.event ? (
           <>
             <section className="side">
               <p className="title">Ministerio</p>
-              <p>{capitalize(income.ministries.name||'')}</p>
+              <p>{capitalize(income.ministries.name || "")}</p>
             </section>
             <section className="side">
               <p className="title">Actividad</p>
@@ -68,7 +69,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
         ) : null}
         <section className="side">
           <p className="title">Comentario</p>
-          <p>{capitalize(income?.comment||'')}</p>
+          <p>{capitalize(income?.comment || "")}</p>
         </section>
 
         <section className="side">
@@ -76,7 +77,8 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           <div className="user-info">
             <FaRegUserCircle size={30} />
             <p>
-              {capitalize(income?.createdBy||'')}. {formatLongDate(income?.createdDate || null)}
+              {capitalize(income?.createdBy || "")}.{" "}
+              {formatLongDate(income?.createdDate || null)}
             </p>
           </div>
         </section>
@@ -86,7 +88,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
             <div className="user-info">
               <FaRegUserCircle size={30} />
               <p>
-                {capitalize(income?.updatedBy||"")}.{" "}
+                {capitalize(income?.updatedBy || "")}.{" "}
                 {formatLongDate(income?.updatedDate || null)}
               </p>
             </div>

@@ -18,43 +18,53 @@ const Tab: FC<Props> = ({ tabs }) => {
 
   return (
     <Wrapper>
-      <nav className="tab--options">
+      <nav className="tab-options">
         {tabs.map((tab) => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)}>
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`${activeTab === tab.id ? "active" : null}`}
+          >
             {tab.name}
           </button>
         ))}
       </nav>
-      <section>{currentTab?.content}</section>
+      <section className="tab-content">{currentTab?.content}</section>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template:
-    "options" 60px
-    "content" 1fr / 1fr;
   gap: 25px;
-  padding: 20px;
-  nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  .tab-options {
     display: flex;
-    grid-area: options;
-    gap: 5px;
+    gap: 15px;
+    height: 60px;
     border-bottom: 1px solid gray;
   }
+
+  .tab-content {
+    height: calc(100% - 85px);
+  }
+
   button {
     border: 0;
     background-color: transparent;
-    font-size: 16px;
-  }
-  button:hover {
-    /* background-color: #97b1c940; */
-    border-bottom: 2px solid #5a61e6;
-    cursor: pointer;
-  }
-  section {
-    grid-area: content;
+    font-size: 18px;
+    border-bottom: 2px solid transparent;
+    &:hover {
+      border-bottom: 2px solid #00000026;
+      cursor: pointer;
+    }
+    &.active {
+      border-bottom: 2px solid #5a61e6;
+      cursor: pointer;
+    }
   }
 `;
 export default Tab;

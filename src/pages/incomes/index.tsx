@@ -1,27 +1,77 @@
 import styled from "styled-components";
-import IncomeTable from "./components/table";
-import React, { useState } from "react";
+import { useState } from "react";
 import IncomesModal from "./components/incomeModal";
+import DetailsModal from "./components/detailsModal";
 import { FaPlus, FaFilter } from "react-icons/fa";
 import FilterSection from "./components/incomesFilter";
 import { filterInitialValues } from "./constants";
+import Table from "../../components/table";
+import useAppData from "../../hooks/useAppData";
+import useColumns from "./const/columns";
+import { useTable } from "react-table";
+import { BsEye } from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
+import { TableIncome } from "../../types/models";
+import { AiOutlineDelete } from "react-icons/ai";
+import DeleteModal from "../../components/deleteModal";
 
-type Action = "ADD" | "FILTER" | "SEARCH";
+type Action = "ADD" | "FILTER";
 
 function Incomes() {
   const [activeAction, setActiveAction] = useState<Action>();
   const [filters, setFilters] = useState<IncomesFilters>(filterInitialValues);
 
+  const [activeIncome, setActiveIncome] = useState<TableIncome>();
+  const [activeModal, setActiveModal] = useState<
+    "SEE" | "EDIT/ADD" | "DELETE"
+  >();
+
+  function toggleAction(action: Action) {
+    setActiveAction(action === activeAction ? undefined : action);
+  }
+
+  const { incomes, loadIncomes } = useAppData();
+
+  const columns = useColumns();
+  const table = useTable({ data: incomes.data, columns });
+
+  const actions = [
+    {
+      icon: BsEye,
+      action: (income: TableIncome) => {
+        setActiveModal("SEE");
+        setActiveIncome(income);
+      },
+      iconSize: 19,
+    },
+    {
+      icon: FiEdit,
+      action: (income: TableIncome) => {
+        setActiveModal("EDIT/ADD");
+        setActiveIncome(income);
+      },
+      iconSize: 18,
+    },
+    {
+      icon: AiOutlineDelete,
+      action: (income: TableIncome) => {
+        setActiveModal("DELETE");
+        setActiveIncome(income);
+      },
+    },
+  ];
+
+  const closeModal = () => {
+    setActiveModal(undefined);
+    setActiveIncome(undefined);
+  };
+
   return (
     <Wrapper>
       <nav>
-        {(activeAction === "ADD" || !activeAction) && (
+        {!activeAction && (
           <div
-            onClick={() => {
-              activeAction === "ADD"
-                ? setActiveAction(undefined)
-                : setActiveAction("ADD");
-            }}
+            onClick={() => setActiveModal("EDIT/ADD")}
             className={"button nav-button"}
           >
             <FaPlus size={20} />
@@ -30,11 +80,7 @@ function Incomes() {
         )}
         {(activeAction === "FILTER" || !activeAction) && (
           <div
-            onClick={() => {
-              activeAction === "FILTER"
-                ? setActiveAction(undefined)
-                : setActiveAction("FILTER");
-            }}
+            onClick={() => toggleAction("FILTER")}
             className={"button nav-button"}
           >
             <FaFilter size={20} />
@@ -43,10 +89,6 @@ function Incomes() {
         )}
       </nav>
 
-      <IncomesModal
-        isOpen={activeAction === "ADD"}
-        onClose={() => setActiveAction(undefined)}
-      />
       <FilterSection
         isActive={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
@@ -54,24 +96,51 @@ function Incomes() {
         setFilters={setFilters}
       />
 
-      <IncomeTable filters={filters} />
+      <IncomesModal
+        isOpen={activeModal === "EDIT/ADD"}
+        onClose={closeModal}
+        income={activeIncome}
+      />
+
+      <DetailsModal
+        isOpen={activeModal === "SEE"}
+        onClose={closeModal}
+        income={activeIncome}
+      />
+
+      {activeIncome && (
+        <DeleteModal
+          isOpen={activeModal === "DELETE"}
+          onClose={closeModal}
+          id={activeIncome.id}
+          tableName={"incomes"}
+          onSucess={loadIncomes}
+        />
+      )}
+
+      <div className="table-wrapper">
+        <Table
+          filters={filters}
+          table={table}
+          loadData={loadIncomes}
+          count={incomes.count}
+          actions={actions}
+        />
+      </div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.section`
-  box-sizing: border-box;
-  border-radius: 8px;
-  gap: 15px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: grid;
+  overflow: hidden;
 
   nav {
     height: 48px;
     display: flex;
     gap: 30px;
   }
+
   select {
     width: 500px;
     border-radius: 20px;
@@ -81,6 +150,7 @@ const Wrapper = styled.section`
     padding-left: 20px;
     padding-right: 20px;
   }
+
   .button {
     display: flex;
     gap: 9px;
@@ -90,6 +160,7 @@ const Wrapper = styled.section`
       color: #5a5a5a;
     }
   }
+
   .nav-button {
     padding: 5px;
 
@@ -103,6 +174,10 @@ const Wrapper = styled.section`
     font-family: "Poppins";
     font-size: 18px;
     text-align: center;
+  }
+
+  .table-wrapper {
+    overflow: hidden;
   }
 `;
 

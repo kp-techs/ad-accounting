@@ -1,9 +1,9 @@
 import Modal from "react-modal";
 import { FC, useState } from "react";
 import styled from "styled-components";
-import { customStyles } from "../../incomes/constants";
 import { useSupabase } from "../../../hooks/useSupabase";
 import useAppData from "../../../hooks/useAppData";
+import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
