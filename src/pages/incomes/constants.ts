@@ -1,5 +1,5 @@
 import { CreateIncome } from "../../types/models";
-import { object, string, date, number, ref } from "yup";
+import { object, string, date, number } from "yup";
 import moment from "moment";
 
 export const incomeTypeID = {
@@ -24,6 +24,7 @@ export const initialIncome: CreateIncome = {
   eventName: "",
   concept: null,
   loanName: "",
+  loanID: null,
 };
 
 export const initialLoanIncome: CreateIncome = {

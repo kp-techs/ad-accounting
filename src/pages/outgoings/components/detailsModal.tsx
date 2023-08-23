@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaRegUserCircle } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
@@ -10,9 +10,10 @@ import {
   formatMoney,
   getOutgoingDescription,
 } from "../../../utils/helper";
-import { TableOutgoing } from "../../../types/models";
+import { Income, TableOutgoing } from "../../../types/models";
 import { outgoingTypeID } from "../constants";
 import { customStyles } from "../../../utils/constants";
+import { useSupabase } from "../../../hooks/useSupabase";
 
 type Props = {
   isOpen: boolean;
@@ -21,6 +22,23 @@ type Props = {
 };
 
 const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
+  const { supabase } = useSupabase();
+  const [income, setIncome] = useState<Income>();
+
+  async function getIncome(id: number) {
+    const { data } = await supabase
+      .from("incomes")
+      .select()
+      .eq("loanID", id)
+      .single();
+    if (data) setIncome(data);
+  }
+
+  useEffect(() => {
+    if (outgoing?.loanID) getIncome(outgoing.loanID);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [outgoing?.loanID]);
+
   let description = "";
   if (outgoing) {
     description = getOutgoingDescription(outgoing);
@@ -48,7 +66,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
         </section>
         <section className="side">
           <p className="title">Tipo de egreso</p>
-          <p>{capitalize(outgoing?.outgoingTypes.name || "")}</p>
+          <p>{capitalize(outgoing?.outgoingTypes?.name || "")}</p>
         </section>
         <section className="side">
           <p className="title">
@@ -56,13 +74,13 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
               ? "Acreedor"
               : "Beneficiario"}
           </p>
-          <p>{capitalize(outgoing?.people.name || "")}</p>
+          <p>{capitalize(outgoing?.people?.name || "")}</p>
         </section>
         {outgoing?.type === outgoingTypeID.loan ? (
           <>
             <section className="side">
               <p className="title">Deuda inicial</p>
-              <p>{formatMoney(outgoing?.loans?.initialLoanAmount || null)}</p>
+              <p>{formatMoney(income?.amount || null)}</p>
             </section>
             <section className="side">
               <p className="title">Deuda restante</p>

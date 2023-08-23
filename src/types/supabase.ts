@@ -106,6 +106,7 @@ export interface Database {
           date: string | null
           description: string | null
           id: number
+          incomeID: number | null
           initialLoanAmount: number | null
           name: string | null
           paidAmount: number | null
@@ -121,6 +122,7 @@ export interface Database {
           date?: string | null
           description?: string | null
           id?: number
+          incomeID?: number | null
           initialLoanAmount?: number | null
           name?: string | null
           paidAmount?: number | null
@@ -136,6 +138,7 @@ export interface Database {
           date?: string | null
           description?: string | null
           id?: number
+          incomeID?: number | null
           initialLoanAmount?: number | null
           name?: string | null
           paidAmount?: number | null
@@ -148,6 +151,12 @@ export interface Database {
             foreignKeyName: "loans_creditorID_fkey"
             columns: ["creditorID"]
             referencedRelation: "people"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loans_incomeID_fkey"
+            columns: ["incomeID"]
+            referencedRelation: "incomes"
             referencedColumns: ["id"]
           }
         ]

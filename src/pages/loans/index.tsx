@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa";
-import FilterSection from "./components/loansFilter";
-import { loansInitialFilterValues } from "./constant";
+// import FilterSection from "./components/loansFilter";
 import { MdAttachMoney } from "react-icons/md";
 import IncomesModal from "../incomes/components/incomeModal";
 import OutsModal from "../outgoings/components/outsModal";
@@ -10,22 +9,22 @@ import useAppData from "../../hooks/useAppData";
 import useColumns from "./const/columns";
 import { useTable } from "react-table";
 import Table from "../../components/table";
-import { TableLoans } from "../../types/models";
 import { BsEye } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import LoanPaymentsModal from "./components/paymentTableModal";
 import { outgoingsInitialValues } from "../outgoings/constants";
 import DeleteModal from "../../components/deleteModal";
+import { TableIncome } from "../../types/models";
+import { filterInitialValues, incomeTypeID } from "../incomes/constants";
 
 type Action = "ADD" | "PAY" | "FILTER";
 
 function Loans() {
   const [activeAction, setActiveAction] = useState<Action>();
-  const [filters, setFilters] = useState<LoansFilters>(
-    loansInitialFilterValues
-  );
-  const [activeLoan, setActiveLoan] = useState<TableLoans>();
+  const [filters, setFilters] = useState<IncomesFilters>(filterInitialValues);
+
+  const [activeLoan, setActiveLoan] = useState<TableIncome>();
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE" | "PAY"
   >();
@@ -34,16 +33,14 @@ function Loans() {
     setActiveAction(action === activeAction ? undefined : action);
   }
 
-  const { loans, loadLoans } = useAppData();
+  const { incomes, loadIncomes, loadLoans } = useAppData();
   const columns = useColumns();
-  const table = useTable({ data: loans.data, columns });
-
-  const [loanFilters] = useState<OutgoingsFilters>(outgoingsInitialValues);
+  const table = useTable({ data: incomes.data, columns });
 
   const actions = [
     {
       icon: BsEye,
-      action: (loan: TableLoans) => {
+      action: (loan: TableIncome) => {
         setActiveModal("SEE");
         setActiveLoan(loan);
       },
@@ -51,7 +48,7 @@ function Loans() {
     },
     {
       icon: FiEdit,
-      action: (loan: TableLoans) => {
+      action: (loan: TableIncome) => {
         setActiveModal("EDIT/ADD");
         setActiveLoan(loan);
       },
@@ -59,7 +56,7 @@ function Loans() {
     },
     {
       icon: AiOutlineDelete,
-      action: (loan: TableLoans) => {
+      action: (loan: TableIncome) => {
         setActiveModal("DELETE");
         setActiveLoan(loan);
       },
@@ -72,6 +69,7 @@ function Loans() {
   };
 
   function onSucess() {
+    loadIncomes();
     loadLoans();
   }
 
@@ -106,14 +104,13 @@ function Loans() {
           </div>
         )}
       </nav>
-      {activeLoan && (
-        <IncomesModal
-          isOpen={activeModal === "EDIT/ADD"}
-          onClose={closeModal}
-          isLoanVersion={true}
-          income={activeLoan.incomes}
-        />
-      )}
+
+      <IncomesModal
+        isOpen={activeModal === "EDIT/ADD"}
+        onClose={closeModal}
+        isLoanVersion={true}
+        income={activeLoan}
+      />
 
       <OutsModal
         isOpen={activeModal === "PAY"}
@@ -121,19 +118,21 @@ function Loans() {
         isLoanVersion={true}
       />
 
+      {/* 
+      TO DO: reparar la seccion de filtros loanversion, en base a la seccion que ya tiene incomes.
       <FilterSection
         isActive={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
         filters={filters}
         setFilters={setFilters}
-      />
+      /> */}
 
       {activeLoan && (
         <DeleteModal
           isOpen={activeModal === "DELETE"}
           onClose={closeModal}
-          id={activeLoan.incomes.id}
-          tableName={"incomes"}
+          id={activeLoan.loans.id}
+          tableName={"loans"}
           onSucess={onSucess}
         />
       )}
@@ -142,30 +141,31 @@ function Loans() {
         <LoanPaymentsModal
           isOpen={activeModal === "SEE"}
           onClose={closeModal}
-          filters={loanFilters}
-          loanName={""}
-          loan={activeLoan}
+          filters={{
+            ...outgoingsInitialValues,
+            type: [25],
+            loanID: activeLoan.loans.id,
+          }}
+          income={activeLoan}
         />
       )}
 
-      <Table
-        filters={filters}
-        table={table}
-        loadData={loadLoans}
-        count={loans.count}
-        actions={actions}
-      />
+      <div className="table-wrapper">
+        <Table
+          filters={{ ...filters, type: [incomeTypeID.loan] }}
+          table={table}
+          loadData={loadIncomes}
+          count={incomes.count}
+          actions={actions}
+        />
+      </div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.section`
-  box-sizing: border-box;
-  border-radius: 8px;
-  gap: 15px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: grid;
+  overflow: hidden;
 
   nav {
     height: 48px;
@@ -202,6 +202,10 @@ const Wrapper = styled.section`
     font-family: "Poppins";
     font-size: 18px;
     text-align: center;
+  }
+
+  .table-wrapper {
+    overflow: hidden;
   }
 `;
 

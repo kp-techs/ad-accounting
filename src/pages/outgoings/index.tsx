@@ -52,19 +52,17 @@ function Outgoings() {
         isOpen={activeAction === "ADD"}
         onClose={() => toggleAction("ADD")}
       />
-      
-      <OutgoingsTable filters={filters} />
+
+      <div className="table-wrapper">
+        <OutgoingsTable filters={filters} />
+      </div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.section`
-  box-sizing: border-box;
-  border-radius: 8px;
-  gap: 15px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: grid;
+  overflow: hidden;
 
   nav {
     height: 48px;
@@ -101,6 +99,10 @@ const Wrapper = styled.section`
     font-family: "Poppins";
     font-size: 18px;
     text-align: center;
+  }
+
+  .table-wrapper {
+    overflow: hidden;
   }
 `;
 

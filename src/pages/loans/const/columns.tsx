@@ -1,15 +1,14 @@
-import { TableLoans } from "../../../types/models";
 import { useMemo } from "react";
 import { Column } from "react-table";
+import { TableIncome } from "../../../types/models";
 import {
   formatTableDate,
   formatMoney,
   capitalize,
-  getCreditorName,
 } from "../../../utils/helper";
 
 function useColumns() {
-  const columns = useMemo<Column<TableLoans>[]>(
+  const columns = useMemo<Column<TableIncome>[]>(
     () => [
       {
         Header: "Fecha",
@@ -19,45 +18,39 @@ function useColumns() {
       },
       {
         Header: "Nombre",
-        accessor: "name",
+        accessor: "loans",
         // @ts-ignore
-        Cell: ({ row }) => capitalize(row.original.name),
+        Cell: ({ row }) => capitalize(row.original.loans?.name),
       },
       {
         Header: "Acreedor",
-        accessor: "creditorID",
+        accessor: "people",
         // @ts-ignore
-        Cell: ({ row }) => getCreditorName(row.original),
+        Cell: ({ row }) => capitalize(row.original.people?.name),
       },
       {
         Header: "Monto Inicial",
-        accessor: "initialLoanAmount",
+        accessor: "amount",
         // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.initialLoanAmount),
+        Cell: ({ row }) => formatMoney(row.original.amount),
       },
       {
         Header: "Restante",
-        accessor: "currentLoanAmount",
+        accessor: "concept",
         // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.currentLoanAmount),
+        Cell: ({ row }) => formatMoney(row.original.loans?.currentLoanAmount),
       },
       {
         Header: "Monto Pagado",
-        accessor: "paidAmount",
+        accessor: "eventName",
         // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.paidAmount),
+        Cell: ({ row }) => formatMoney(row.original.loans?.paidAmount),
       },
       {
         Header: "Estado",
-        accessor: "status",
+        accessor: "ministries",
         // @ts-ignore
-        Cell: ({ row }) => capitalize(row.original.status),
-      },
-      {
-        Header: "Acciones",
-        accessor: "description",
-        // @ts-ignore
-        Cell: ({ row }) => "",
+        Cell: ({ row }) => capitalize(row.original.loans?.status),
       },
     ],
     []

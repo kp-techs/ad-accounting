@@ -42,7 +42,9 @@ export async function fetchIncomes(
 
   let query = supabase
     .from("incomes")
-    .select(`*, incomeTypes(*), ministries(*),  people(*)`, { count: "exact" })
+    .select(`*, incomeTypes(*), ministries(*),  people(*), loans(*)`, {
+      count: "exact",
+    })
     .order("date", { ascending: false })
     .range(from, to);
 
