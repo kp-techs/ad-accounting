@@ -9,16 +9,16 @@ import {
   formatLongDate,
   formatMoney,
 } from "../../../utils/helper";
-import { TableLoans } from "../../../types/models";
 import { customStyles } from "../../../utils/constants";
+import { TableIncome } from "../../../types/models";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  loan?: TableLoans;
+  income: TableIncome;
 };
 
-const DetailsModal: FC<Props> = ({ isOpen, onClose, loan }) => {
+const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
   return (
     <Modal
       ariaHideApp={false}
@@ -29,32 +29,32 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, loan }) => {
     >
       <Wrapper>
         <div className="concept-container">
-          <h3>{capitalize(loan?.name || "")}</h3>
+          <h3>{capitalize(income.loans.name || "")}</h3>
         </div>
 
         <section className="side">
           <p className="title">Fecha</p>
-          <p>{formatDate(loan?.date || "—")}</p>
+          <p>{formatDate(income.date || "—")}</p>
         </section>
 
         <section className="side">
           <p className="title">Acreedor</p>
-          <p>{capitalize(loan?.people?.name || "")}</p>
+          <p>{capitalize(income.people.name || "")}</p>
         </section>
 
         <section className="side">
           <p className="title">Deuda Inicial</p>
-          <p>{formatMoney(loan?.initialLoanAmount || null)}</p>
+          <p>{formatMoney(income.amount || null)}</p>
         </section>
 
         <section className="side">
           <p className="title">Deuda Restante</p>
-          <p>{formatMoney(loan?.currentLoanAmount || null)}</p>
+          <p>{formatMoney(income.loans.currentLoanAmount || null)}</p>
         </section>
 
         <section className="side">
           <p className="title">Total Pagado</p>
-          <p>{formatMoney(loan?.paidAmount || null)}</p>
+          <p>{formatMoney(income.loans.paidAmount || null)}</p>
         </section>
 
         <section className="side">
@@ -62,19 +62,19 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, loan }) => {
           <div className="user-info">
             <FaRegUserCircle size={30} />
             <p>
-              {capitalize(loan?.createdBy || "")}.{" "}
-              {formatLongDate(loan?.createdAt || null)}
+              {capitalize(income.createdBy || "")}.{" "}
+              {formatLongDate(income.createdDate || null)}
             </p>
           </div>
         </section>
-        {loan?.updateAt !== null && (
+        {income.updatedDate !== null && (
           <section className="side">
             <p className="title">Última modificación</p>
             <div className="user-info">
               <FaRegUserCircle size={30} />
               <p>
-                {capitalize(loan?.updateBy || "")}.{" "}
-                {formatLongDate(loan?.updateAt || null)}
+                {capitalize(income.updatedBy || "")}.{" "}
+                {formatLongDate(income.updatedDate || null)}
               </p>
             </div>
           </section>

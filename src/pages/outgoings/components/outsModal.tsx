@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { Outgoing, TableOutgoing } from "../../../types/models";
+import { TableOutgoing } from "../../../types/models";
 import { FC } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { useSupabase } from "../../../hooks/useSupabase";
@@ -51,6 +51,18 @@ const OutsModal: FC<Props> = ({
             isLoanVersion ? ValidationLoanPaymentForm : ValidationOutgoingForm
           }
           onSubmit={async (values, { resetForm }) => {
+            const { data: income } = await supabase
+              .from("incomes")
+              .select()
+              .eq("loanID", values.loanID)
+              .single();
+
+            const { data: loan } = await supabase
+              .from("loans")
+              .select()
+              .eq("id", values.loanID)
+              .single();
+
             if (outgoing) {
               values.modifiedBy = profile?.name;
               values.modifiedAt = moment().format();
@@ -58,6 +70,20 @@ const OutsModal: FC<Props> = ({
               delete values.people;
               // @ts-ignore
               delete values.outgoingTypes;
+              // @ts-ignore
+              delete values.loans;
+              const x = (outgoing.amount || 0) - (values.amount || 0);
+              const paidAmount = (loan?.paidAmount || 0) - x;
+              const current = (income?.amount || 0) - paidAmount;
+              const status = current <= 0 ? "Saldado" : "Pendiente";
+
+              if (values.type === outgoingTypeID.loan) {
+                await supabase.from("loans").update({
+                  paidAmount: paidAmount,
+                  currentLoanAmount: current,
+                  status: status,
+                });
+              }
               await supabase
                 .from("outgoings")
                 .update({ ...values, id: outgoing.id })
@@ -65,23 +91,19 @@ const OutsModal: FC<Props> = ({
               onClose();
             } else {
               if (values.loanID) {
-                const { data: loan } = await supabase
-                  .from("loans")
-                  .select()
-                  .eq("id", values.loanID)
-                  .single();
-                values.beneficiaryID = loan?.creditorID;
-                let status = "Pendiente";
-                if ((loan?.currentLoanAmount || 0) - (values.amount || 0) <= 0)
-                  status = "Saldado";
+                values.beneficiaryID = income?.tithingID;
+
+                const status =
+                  (loan?.currentLoanAmount || 0) - (values.amount || 0) <= 0
+                    ? "Saldado"
+                    : "Pendiente";
+
                 await supabase
                   .from("loans")
                   .update({
                     paidAmount: (loan?.paidAmount || 0) + (values.amount || 0),
                     currentLoanAmount:
                       (loan?.currentLoanAmount || 0) - (values.amount || 0),
-                    updateAt: moment().format(),
-                    updateBy: profile?.name,
                     status: status,
                   })
                   .eq("id", values.loanID);

@@ -9,19 +9,19 @@ export type People = Tables["people"]["Row"];
 export type Income = Tables["incomes"]["Row"];
 export type Ministries = Tables["ministries"]["Row"];
 export type IncomeType = Tables["incomeTypes"]["Row"];
-export type CreateIncome = Tables["incomes"]["Insert"];
+export type CreateIncome = Tables["incomes"]["Insert"] & {
+  loanName?: string;
+};
 export type TableIncome = Income & {
   people: People;
   ministries: Ministries;
   incomeTypes: IncomeType;
+  loans: Loans;
 };
 
 export type Loans = Tables["loans"]["Row"];
 export type CreateLoans = Tables["loans"]["Insert"];
-export type TableLoans = Loans & {
-  people: People;
-  incomes: Income;
-};
+export type TableLoans = Loans;
 
 export type Outgoing = Tables["outgoings"]["Row"];
 export type OutgoingTypes = Tables["outgoingTypes"]["Row"];
@@ -32,7 +32,7 @@ export type TableOutgoing = Outgoing & {
   loans: Loans;
 };
 
-export type TableData = TableIncome | TableLoans | TableOutgoing;
+export type TableData = TableIncome | TableOutgoing;
 
 export type TablePeople = Tables["people"]["Row"];
 export type TableMinistries = Tables["ministries"]["Row"];

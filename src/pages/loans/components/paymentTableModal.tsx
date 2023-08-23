@@ -4,14 +4,14 @@ import OutgoingsTable from "../../outgoings/components/table.old";
 import styled from "styled-components";
 import { GrFormClose } from "react-icons/gr";
 import { customStyles } from "../../../utils/constants";
-import { TableLoans } from "../../../types/models";
 import { capitalize, formatLongDate } from "../../../utils/helper";
+import { TableIncome } from "../../../types/models";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   filters: OutgoingsFilters;
-  loan: TableLoans;
+  income: TableIncome;
   loanName?: string;
 };
 
@@ -20,7 +20,7 @@ const LoanPaymentsModal: FC<Props> = ({
   onClose,
   filters,
   loanName,
-  loan,
+  income,
 }) => {
   return (
     <Modal
@@ -46,13 +46,14 @@ const LoanPaymentsModal: FC<Props> = ({
         />
         <section className="creation-data">
           <p>
-            Registro creado por {capitalize(loan.createdBy)}. <br />
-            El {formatLongDate(loan.createdAt)}
+            Registro creado por {capitalize(income.createdBy)}. <br />
+            El {formatLongDate(income.createdDate)}
           </p>
-          {loan.updateAt && (
+          {income.updatedDate && (
             <p>
-              Actualizado por úlima vez por {capitalize(loan.updateBy)}. <br />
-              El {formatLongDate(loan.updateAt)}
+              Actualizado por úlima vez por {capitalize(income.updatedBy)}.{" "}
+              <br />
+              El {formatLongDate(income.updatedDate)}
             </p>
           )}
         </section>

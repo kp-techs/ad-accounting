@@ -1,6 +1,6 @@
 import { outgoingTypeID } from "./../pages/outgoings/constants";
 import { incomeTypeID } from "../pages/incomes/constants";
-import { TableIncome, TableOutgoing, TableLoans } from "../types/models";
+import { TableIncome, TableOutgoing } from "../types/models";
 import moment from "moment";
 import "moment/locale/es";
 
@@ -130,9 +130,9 @@ export function getBeneficiaryName(outgoing: TableOutgoing) {
   return outgoing.people?.name ?? "-";
 }
 
-export function getCreditorName(loan: TableLoans) {
-  return loan.people?.name ?? "-";
-}
+// export function getCreditorName(loan: TableLoans) {
+//   return loan.people?.name ?? "-";
+// }
 
 export function getOutgoingDescription(outgoing: TableOutgoing) {
   if (outgoing.type === outgoingTypeID.loan)
