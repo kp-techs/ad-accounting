@@ -18,9 +18,9 @@ function useColumns() {
       },
       {
         Header: "Nombre",
-        accessor: "loans",
+        accessor: "loanName",
         // @ts-ignore
-        Cell: ({ row }) => capitalize(row.original.loans?.name),
+        Cell: ({ row }) => capitalize(row.original.loanName),
       },
       {
         Header: "Acreedor",
@@ -36,21 +36,21 @@ function useColumns() {
       },
       {
         Header: "Restante",
-        accessor: "concept",
+        accessor: "currentDebt",
         // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.loans?.currentLoanAmount),
+        Cell: ({ row }) => formatMoney(row.original.currentDebt),
       },
       {
         Header: "Monto Pagado",
-        accessor: "eventName",
+        accessor: "paidAmount",
         // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.loans?.paidAmount),
+        Cell: ({ row }) => formatMoney(row.original.paidAmount),
       },
       {
         Header: "Estado",
-        accessor: "ministries",
+        accessor: "status",
         // @ts-ignore
-        Cell: ({ row }) => capitalize(row.original.loans?.status),
+        Cell: ({ row }) => capitalize(row.original.status),
       },
     ],
     []

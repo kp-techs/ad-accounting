@@ -16,13 +16,15 @@ export interface Database {
           concept: string | null
           createdBy: string | null
           createdDate: string | null
+          currentDebt: number | null
           date: string
           eventName: string | null
           id: number
-          loanID: number | null
           loanName: string | null
+          memberID: number | null
           ministryID: number | null
-          tithingID: number | null
+          paidAmount: number | null
+          status: string | null
           type: number | null
           updatedBy: string | null
           updatedDate: string | null
@@ -33,13 +35,15 @@ export interface Database {
           concept?: string | null
           createdBy?: string | null
           createdDate?: string | null
+          currentDebt?: number | null
           date: string
           eventName?: string | null
           id?: number
-          loanID?: number | null
           loanName?: string | null
+          memberID?: number | null
           ministryID?: number | null
-          tithingID?: number | null
+          paidAmount?: number | null
+          status?: string | null
           type?: number | null
           updatedBy?: string | null
           updatedDate?: string | null
@@ -50,28 +54,30 @@ export interface Database {
           concept?: string | null
           createdBy?: string | null
           createdDate?: string | null
+          currentDebt?: number | null
           date?: string
           eventName?: string | null
           id?: number
-          loanID?: number | null
           loanName?: string | null
+          memberID?: number | null
           ministryID?: number | null
-          tithingID?: number | null
+          paidAmount?: number | null
+          status?: string | null
           type?: number | null
           updatedBy?: string | null
           updatedDate?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "incomes_ministryID_fkey"
-            columns: ["ministryID"]
-            referencedRelation: "ministries"
+            foreignKeyName: "incomes_memberID_fkey"
+            columns: ["memberID"]
+            referencedRelation: "people"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "incomes_tithingID_fkey"
-            columns: ["tithingID"]
-            referencedRelation: "people"
+            foreignKeyName: "incomes_ministryID_fkey"
+            columns: ["ministryID"]
+            referencedRelation: "ministries"
             referencedColumns: ["id"]
           },
           {
@@ -96,70 +102,6 @@ export interface Database {
           name?: string
         }
         Relationships: []
-      }
-      loans: {
-        Row: {
-          createdAt: string | null
-          createdBy: string | null
-          creditorID: number | null
-          currentLoanAmount: number | null
-          date: string | null
-          description: string | null
-          id: number
-          incomeID: number | null
-          initialLoanAmount: number | null
-          name: string | null
-          paidAmount: number | null
-          status: string | null
-          updateAt: string | null
-          updateBy: string | null
-        }
-        Insert: {
-          createdAt?: string | null
-          createdBy?: string | null
-          creditorID?: number | null
-          currentLoanAmount?: number | null
-          date?: string | null
-          description?: string | null
-          id?: number
-          incomeID?: number | null
-          initialLoanAmount?: number | null
-          name?: string | null
-          paidAmount?: number | null
-          status?: string | null
-          updateAt?: string | null
-          updateBy?: string | null
-        }
-        Update: {
-          createdAt?: string | null
-          createdBy?: string | null
-          creditorID?: number | null
-          currentLoanAmount?: number | null
-          date?: string | null
-          description?: string | null
-          id?: number
-          incomeID?: number | null
-          initialLoanAmount?: number | null
-          name?: string | null
-          paidAmount?: number | null
-          status?: string | null
-          updateAt?: string | null
-          updateBy?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "loans_creditorID_fkey"
-            columns: ["creditorID"]
-            referencedRelation: "people"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "loans_incomeID_fkey"
-            columns: ["incomeID"]
-            referencedRelation: "incomes"
-            referencedColumns: ["id"]
-          }
-        ]
       }
       ministries: {
         Row: {
@@ -229,7 +171,7 @@ export interface Database {
           {
             foreignKeyName: "outgoings_loanID_fkey"
             columns: ["loanID"]
-            referencedRelation: "loans"
+            referencedRelation: "incomes"
             referencedColumns: ["id"]
           },
           {
@@ -361,3 +303,4 @@ export interface Database {
     }
   }
 }
+

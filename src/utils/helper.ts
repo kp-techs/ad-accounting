@@ -8,10 +8,10 @@ export function generateConcept({ type, ...income }: TableIncome) {
   return type === incomeTypeID.tithe
     ? `Diezmo: ${income.people?.name}`
     : type === incomeTypeID.event
-    ? `${income.ministries?.name}: ${income.eventName}`
-    : type === incomeTypeID.loan
-    ? `${income.incomeTypes.name}: ${income.loanName}`
-    : income.incomeTypes.name;
+      ? `${income.ministries?.name}: ${income.eventName}`
+      : type === incomeTypeID.loan
+        ? `${income.incomeTypes.name}: ${income.loanName}`
+        : income.incomeTypes.name;
 }
 
 export function formatMoney(amount: number | null) {
@@ -71,13 +71,13 @@ export function formatRelativeDate(date: string | null) {
 
 export function getIncomeFilterString({ ...filters }: IncomesFilters) {
   if (!filters) return [];
-  if (filters.tithingID?.length) {
+  if (filters.memberID?.length) {
     if (filters.type?.includes(incomeTypeID.tithe)) {
       filters.type = (filters.type || []).filter(
         (type) => type !== incomeTypeID.tithe
       );
     } else {
-      filters.tithingID = null;
+      filters.memberID = null;
     }
   }
   if (filters.ministryID?.length || filters.eventName?.length) {
@@ -108,7 +108,7 @@ export function getIncomeFilterString({ ...filters }: IncomesFilters) {
       case "endAmount":
         return `amount.lt.${value}`;
       case "type":
-      case "tithingID":
+      case "memberID":
       case "ministryID":
         if (Array.isArray(value)) {
           typesStr +=
@@ -136,13 +136,11 @@ export function getBeneficiaryName(outgoing: TableOutgoing) {
 
 export function getOutgoingDescription(outgoing: TableOutgoing) {
   if (outgoing.type === outgoingTypeID.loan)
-    return `Préstamo: ${
-      outgoing.loans ? outgoing.loans.name : outgoing.description
-    }`;
+    return `Préstamo: ${outgoing.incomes ? outgoing.incomes.loanName : outgoing.description
+      }`;
   if (outgoing.outgoingTypes)
-    return `${outgoing.outgoingTypes.name}${
-      outgoing.description ? `: ${outgoing.description}` : ""
-    }`;
+    return `${outgoing.outgoingTypes.name}${outgoing.description ? `: ${outgoing.description}` : ""
+      }`;
   return "";
 }
 
@@ -193,21 +191,21 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
   const mappedFilters = entries.map(([key, value]) => {
     switch (key) {
       case "description":
+      case "loanName":
         return `${key}.ilike.%${value}%`;
-      case "startAmount_initialAmount":
-      case "startAmount_currentAmount":
-      case "startAmount_paidAmount":
-      case "startDate":
+      case "startCurrentAmount":
+      case "startInitialAmount":
+      case "startPaidAmount":
         return `${key}.gte.${value}`;
+      case "startDate":
+        return `date.gte.${value}`;
       case "endDate":
         return `date.lt.${value}`;
-      case "endAmount_initialAmount":
-      case "endAmount_currentAmount":
-      case "endAmount_paidAmount":
-      case "endAmount":
+      case "endCurrentAmount":
+      case "endInitialAmount":
+      case "endPaidAmount":
         return `${key}.lt.${value}`;
-      case "loansNameID":
-      case "creditorID":
+      case "memberID":
         if (Array.isArray(value)) {
           typesStr +=
             (typesStr && value.length ? "," : "") +

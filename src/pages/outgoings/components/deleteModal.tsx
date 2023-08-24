@@ -21,26 +21,26 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
   async function deleteOutgoing() {
     if (outgoing) {
       if (outgoing.type === outgoingTypeID.loan) {
-        const { data: loan } = await supabase
-          .from("loans")
+        const { data: income } = await supabase
+          .from("incomes")
           .select()
           .eq("id", outgoing.loanID)
           .single();
         let newPaidLoanAmount =
-          (loan?.paidAmount || 0) - (outgoing.amount || 0);
-        let newCurrent = (loan?.initialLoanAmount || 0) - newPaidLoanAmount;
+          (income?.paidAmount || 0) - (outgoing.amount || 0);
+        let newCurrent = (income?.amount || 0) - newPaidLoanAmount;
 
         let newStatus = "Pendiente";
         if (newCurrent <= 0) newStatus = "Saldado";
 
         await supabase
-          .from("loans")
+          .from("incomes")
           .update({
-            currentLoanAmount: newCurrent,
+            currentDebt: newCurrent,
             paidAmount: newPaidLoanAmount,
             status: newStatus,
-            updateBy: profile?.name,
-            updateAt: moment().format(),
+            updatedBy: profile?.name,
+            updatedDate: moment().format(),
           })
           .eq("id", outgoing.loanID);
       }

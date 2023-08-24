@@ -29,7 +29,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
     >
       <Wrapper>
         <div className="concept-container">
-          <h3>{capitalize(income.loans.name || "")}</h3>
+          <h3>{capitalize(income.loanName || "")}</h3>
         </div>
 
         <section className="side">
@@ -49,12 +49,12 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
 
         <section className="side">
           <p className="title">Deuda Restante</p>
-          <p>{formatMoney(income.loans.currentLoanAmount || null)}</p>
+          <p>{formatMoney(income.currentDebt || null)}</p>
         </section>
 
         <section className="side">
           <p className="title">Total Pagado</p>
-          <p>{formatMoney(income.loans.paidAmount || null)}</p>
+          <p>{formatMoney(income.paidAmount || null)}</p>
         </section>
 
         <section className="side">

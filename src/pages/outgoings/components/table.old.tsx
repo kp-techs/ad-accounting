@@ -17,10 +17,9 @@ import { BsEye } from "react-icons/bs";
 type Props = {
   filters: OutgoingsFilters;
   isLoanVersion?: boolean;
-  loanName?: string;
 };
 
-function OutgoingsTable({ filters, isLoanVersion = false, loanName }: Props) {
+function OutgoingsTable({ filters, isLoanVersion = false }: Props) {
   const { outgoings, loadOuts, profile } = useAppData();
 
   const [isOutModalOpen, toggleOutsModal] = useToggle();
@@ -53,7 +52,6 @@ function OutgoingsTable({ filters, isLoanVersion = false, loanName }: Props) {
         onClose={toggleOutsModal}
         outgoing={activeOuts}
         isLoanVersion={isLoanVersion}
-        loanName={loanName}
       />
       <DeleteModal
         isOpen={isDeleteModalOpen}
