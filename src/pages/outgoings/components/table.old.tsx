@@ -40,11 +40,6 @@ function OutgoingsTable({ filters, isLoanVersion = false }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, filters]);
 
-  useEffect(() => {
-    console.log(filters);
-    console.dir(outgoings);
-  }, []);
-
   return (
     <Wrapper>
       <OutsModal

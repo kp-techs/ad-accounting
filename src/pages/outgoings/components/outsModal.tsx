@@ -57,12 +57,13 @@ const OutsModal: FC<Props> = ({
               // @ts-ignore
               delete values.outgoingTypes;
 
-              const x = (outgoing.amount || 0) - (values.amount || 0);
-              const paidAmount = (outgoing.incomes.paidAmount || 0) - x;
-              const current = (outgoing.incomes.amount || 0) - paidAmount;
-              const status = current <= 0 ? "Saldado" : "Pendiente";
-
               if (values.type === outgoingTypeID.loan) {
+
+                const x = (outgoing.amount || 0) - (values.amount || 0);
+                const paidAmount = (outgoing.incomes.paidAmount || 0) - x;
+                const current = (outgoing.incomes.amount || 0) - paidAmount;
+                const status = current <= 0 ? "Saldado" : "Pendiente";
+
                 await supabase
                   .from("incomes")
                   .update({
@@ -72,6 +73,10 @@ const OutsModal: FC<Props> = ({
                   })
                   .eq("id", outgoing.loanID);
               }
+
+              // @ts-ignore
+              delete values.incomes
+
               await supabase
                 .from("outgoings")
                 .update({ ...values, id: outgoing.id })

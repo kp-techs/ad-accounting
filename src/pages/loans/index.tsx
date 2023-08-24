@@ -149,7 +149,7 @@ function Loans() {
         />
       )}
 
-      <div className="table-wrapper">
+      {/* <div className="table-wrapper">
         <Table
           filters={{ ...filters, type: [incomeTypeID.loan] }}
           table={table}
@@ -157,7 +157,7 @@ function Loans() {
           count={incomes.count}
           actions={actions}
         />
-      </div>
+      </div> */}
     </Wrapper>
   );
 }

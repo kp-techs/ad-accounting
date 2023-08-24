@@ -1,20 +1,31 @@
 import Modal from "react-modal";
-import React, { FC } from "react";
+import { FC } from "react";
 import { Income } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
-import useAppData from "../../../hooks/useAppData";
 import styled from "styled-components";
 import { customStyles } from "../../../utils/constants";
+import { incomeTypeID } from "../constants";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  income?: Income;
+  onConfirm: () => void;
+  income: Income;
+  values: any;
 };
 
-const WarningModal: FC<Props> = ({ isOpen, onClose, income }) => {
-  function handleSubmit() {
-    return ''
+const WarningModal: FC<Props> = ({ isOpen, onClose, income, values, onConfirm }) => {
+  const { supabase } = useSupabase();
+
+  async function handleSubmit() {
+    await supabase.from('incomes').delete().eq('id', income.id);
+
+    if (values.type !== incomeTypeID.tithe) values.memberID = null;
+
+    await supabase.from('incomes').insert({ ...values, currentDebt: 0, paidAmount: 0, status: '', loanName: '' })
+
+    onClose();
+    onConfirm();
   }
 
   //TO DO: Terminar este modal de advertencia si intentan cambiar el tipo a un prestamo.
@@ -29,9 +40,11 @@ const WarningModal: FC<Props> = ({ isOpen, onClose, income }) => {
       <Wrapper>
         <h3>¡CUIDADO!</h3>
         <p>
-          Hay pagos asociados a este préstamo, si cambias el tipo de ingreso, se borrará también todo pago relacionado con este préstamo.
+          Hay pagos asociados al préstamo <span>"{income.loanName}"</span>, al
+          <br /> cambiar el tipo de ingreso, se borrará definitivamente
+          <br /> todo pago relacionado con este préstamo.
           <br />
-          ¿Esta seguro de que desea continuar?
+          ¿Está seguro de que desea continuar?
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
@@ -40,7 +53,6 @@ const WarningModal: FC<Props> = ({ isOpen, onClose, income }) => {
           <button className="submit" onClick={handleSubmit}>
             Confirmar
           </button>
-
         </div>
       </Wrapper>
     </Modal>
@@ -54,10 +66,18 @@ const Wrapper = styled.div`
 
   h3 {
     margin: 5px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    
   }
   p {
+    font-size:15px;
     margin: 0;
     margin-bottom: 20px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+  }
+  span {
+    font-style:italic;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
   }
 
   .buttons-container {

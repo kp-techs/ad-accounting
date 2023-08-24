@@ -5,13 +5,17 @@ import moment from "moment";
 import "moment/locale/es";
 
 export function generateConcept({ type, ...income }: TableIncome) {
-  return type === incomeTypeID.tithe
-    ? `Diezmo: ${income.people?.name}`
-    : type === incomeTypeID.event
-      ? `${income.ministries?.name}: ${income.eventName}`
-      : type === incomeTypeID.loan
-        ? `${income.incomeTypes.name}: ${income.loanName}`
-        : income.incomeTypes.name;
+  try {
+    return type === incomeTypeID.tithe
+      ? `Diezmo: ${income.people?.name}`
+      : type === incomeTypeID.event
+        ? `${income.ministries?.name}: ${income.eventName}`
+        : type === incomeTypeID.loan
+          ? `${income.incomeTypes?.name}: ${income.loanName}`
+          : income.incomeTypes?.name;
+  } catch (error) {
+    return ''
+  }
 }
 
 export function formatMoney(amount: number | null) {

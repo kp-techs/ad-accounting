@@ -18,6 +18,8 @@ import {
 import Textarea from "../../../components/textarea";
 import moment from "moment";
 import { customStyles } from "../../../utils/constants";
+import useToggle from "../../../hooks/useToggle";
+import WarningModal from "./warningModal";
 
 type Props = {
   isOpen: boolean;
@@ -35,9 +37,7 @@ const IncomesModal: FC<Props> = ({
   const { loadIncomes, profile, loadLoans } = useAppData();
   const [on, setOn] = useState(false);
   const { supabase } = useSupabase();
-  const [newLoanName, setNewLoanName] = useState('');
-
-
+  const [isWarningModalOpen, toggleWarningModal] = useToggle();
 
   return (
     <Modal
@@ -66,13 +66,16 @@ const IncomesModal: FC<Props> = ({
               // @ts-ignore
               delete values.people;
 
-
-              if (values.type === incomeTypeID.loan) {
-                values.currentDebt =
-                  (values.amount || 0) - (income.paidAmount || 0);
-                values.status = (values.currentDebt <= 0) ? 'Saldado' : 'Pendiente';
+              if (values.type !== incomeTypeID.loan && income.paidAmount) {
+                toggleWarningModal();
+                return;
               }
 
+              if (values.type === incomeTypeID.loan) {
+                if (values.amount && income.paidAmount) values.currentDebt =
+                  values.amount - income.paidAmount;
+                if (values.currentDebt) values.status = (values.currentDebt <= 0) ? 'Saldado' : 'Pendiente';
+              }
 
               await supabase
                 .from("incomes")
@@ -82,14 +85,8 @@ const IncomesModal: FC<Props> = ({
             } else {
               if (isLoanVersion) values.type = incomeTypeID.loan;
               values.createdBy = profile?.name;
-
               if (values.type === incomeTypeID.loan) values.currentDebt = values.amount
-
-              await supabase
-                .from("incomes")
-                .insert([values as any])
-                .select()
-                .single();
+              await supabase.from("incomes").insert([values]);
             }
 
             if (on) {
@@ -99,12 +96,17 @@ const IncomesModal: FC<Props> = ({
               initialIncome.date = "";
               initialIncome.type = null;
             }
+
             resetForm();
             loadIncomes();
           }}
         >
           {({ values, errors, touched }) => (
             <Form>
+              {income && <WarningModal isOpen={isWarningModalOpen} onClose={toggleWarningModal} income={income} values={values} onConfirm={() => {
+                onClose();
+                loadIncomes();
+              }} />}
               <section className="form-content">
                 <div className="top-modal">
                   {isLoanVersion ? (
@@ -261,9 +263,7 @@ const IncomesModal: FC<Props> = ({
                     >
                       {income ? "Cancelar" : "Cerrar"}
                     </button>
-                    <button type="submit" onClick={() => {
-                      console.log(errors, values)
-                    }}>
+                    <button type="submit">
                       {income ? "Actualizar" : "Guardar"}
                     </button>
                   </div>
@@ -278,37 +278,37 @@ const IncomesModal: FC<Props> = ({
 };
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  gap: 15px;
-  width: 700px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 15px;
+    width: 700px;
 
-  label {
-    color: #ffffff;
+    label {
+      color: #ffffff;
     font-family: Poppins;
     font-weight: 400;
     font-size: 18px;
   }
-  .form-content {
-    display: flex;
+    .form-content {
+      display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  .selectIncomeType {
-    display: grid;
+    .selectIncomeType {
+      display: grid;
     grid-template-columns: 90px 1fr;
     align-items: center;
   }
 
-  .incomeTypeLabel-container {
-    display: flex;
+    .incomeTypeLabel-container {
+      display: flex;
     align-items: center;
   }
 
-  input,
-  .comment {
+    input,
+    .comment {
     font-family: Poppins, Arial, Helvetica, sans-serif;
     font-size: 14px;
     width: 100%;
@@ -323,19 +323,19 @@ const Wrapper = styled.div`
     color: #2f2f2f;
   }
 
-  .field {
-    height: 38px;
+    .field {
+      height: 38px;
   }
-  .field-comment {
-    display: flex;
+    .field-comment {
+      display: flex;
     flex-direction: column;
     .comment {
       padding: 5px 8px;
     }
   }
 
-  .selectType-container {
-    box-sizing: border-box;
+    .selectType-container {
+      box - sizing: border-box;
     display: grid;
     grid-template: 1fr 1fr;
     width: 100%;
@@ -344,12 +344,12 @@ const Wrapper = styled.div`
     gap: 10px;
   }
 
-  .underline {
-    border-bottom: 1px gray solid;
+    .underline {
+      border - bottom: 1px gray solid;
   }
 
-  .fields-container {
-    box-sizing: border-box;
+    .fields-container {
+      box - sizing: border-box;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
@@ -357,45 +357,45 @@ const Wrapper = styled.div`
     width: 100%;
   }
 
-  .field-line {
-    margin: 10px 0;
+    .field-line {
+      margin: 10px 0;
   }
-  .toggle {
-    grid-area: left;
+    .toggle {
+      grid - area: left;
     display: inline-flex;
     align-items: center;
     box-sizing: border-box;
     gap: 10px;
   }
-  .buttons-container {
-    display: flex;
+    .buttons-container {
+      display: flex;
     grid-area: right;
     gap: 15px;
 
     button {
       width: 93px;
-      height: 30px;
-      text-align: center;
-      justify-content: center;
-      font-size: 16px;
-      box-sizing: border-box;
-      background-color: #eeeeee;
-      border-radius: 5px;
-      font-family: Poppins, Arial, Helvetica, sans-serif;
-      border: 0;
-      cursor: pointer;
-      &:active {
-        background-color: #a4a4a494;
+    height: 30px;
+    text-align: center;
+    justify-content: center;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #eeeeee;
+    border-radius: 5px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    border: 0;
+    cursor: pointer;
+    &:active {
+      background - color: #a4a4a494;
       }
     }
   }
 
-  .foo-modal {
-    display: grid;
+    .foo-modal {
+      display: grid;
     grid-template: "left right" 25px/1fr;
     padding: 5px;
     height: 40px;
   }
-`;
+    `;
 
 export default IncomesModal;
