@@ -91,7 +91,7 @@ const OutsModal: FC<Props> = ({
                   .from("incomes")
                   .update({
                     paidAmount: (income?.paidAmount || 0) + (values.amount || 0),
-                    currentLoanAmount:
+                    currentDebt:
                       (income?.currentDebt || 0) - (values.amount || 0),
                     status: status,
                   })

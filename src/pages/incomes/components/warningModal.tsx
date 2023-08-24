@@ -7,36 +7,44 @@ import styled from "styled-components";
 import { customStyles } from "../../../utils/constants";
 
 type Props = {
-   isOpen: boolean;
-   onClose: () => void;
-   income?: Income;
+  isOpen: boolean;
+  onClose: () => void;
+  income?: Income;
 };
 
 const WarningModal: FC<Props> = ({ isOpen, onClose, income }) => {
+  function handleSubmit() {
+    return ''
+  }
 
+  //TO DO: Terminar este modal de advertencia si intentan cambiar el tipo a un prestamo.
+  return (
+    <Modal
+      ariaHideApp={false}
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      style={customStyles}
+      contentLabel="Formulario para registrar ingresos"
+    >
+      <Wrapper>
+        <h3>¡CUIDADO!</h3>
+        <p>
+          Hay pagos asociados a este préstamo, si cambias el tipo de ingreso, se borrará también todo pago relacionado con este préstamo.
+          <br />
+          ¿Esta seguro de que desea continuar?
+        </p>
+        <div className="buttons-container">
+          <button className="cancel" onClick={onClose}>
+            Cancelar
+          </button>
+          <button className="submit" onClick={handleSubmit}>
+            Confirmar
+          </button>
 
-   return (
-      <Modal
-         ariaHideApp={false}
-         isOpen={isOpen}
-         onRequestClose={onClose}
-         style={customStyles}
-         contentLabel="Formulario para registrar ingresos"
-      >
-         <Wrapper>
-            <h3>LO SENTIMOS</h3>
-            <p>
-
-            </p>
-            <div className="buttons-container">
-               <button className="cancel" onClick={onClose}>
-                  OK
-               </button>
-
-            </div>
-         </Wrapper>
-      </Modal>
-   );
+        </div>
+      </Wrapper>
+    </Modal>
+  );
 };
 
 const Wrapper = styled.div`
