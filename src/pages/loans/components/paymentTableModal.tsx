@@ -19,7 +19,6 @@ const LoanPaymentsModal: FC<Props> = ({
   isOpen,
   onClose,
   filters,
-  loanName,
   income,
 }) => {
   return (
@@ -42,7 +41,6 @@ const LoanPaymentsModal: FC<Props> = ({
         <OutgoingsTable
           filters={filters}
           isLoanVersion={true}
-          loanName={loanName}
         />
         <section className="creation-data">
           <p>

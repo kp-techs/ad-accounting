@@ -39,7 +39,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "codegen": "npx supabase gen types typescript --project-id \"zbkaraymzililualfreq\" --schema public > src/types/supabase.ts"
+    "codegen": "npx supabase gen types typescript --project-id \"zbkaraymzililualfreq\" --schema public > src/types/supabase.ts",
+    "codegen-local": "npx supabase gen types typescript --db-url postgresql://postgres:postgres@localhost:54322/postgres --schema public > src/types/supabase.ts"
   },
   "eslintConfig": {
     "extends": [

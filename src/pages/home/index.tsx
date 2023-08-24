@@ -16,55 +16,55 @@ function Home() {
 
   const getValues = async () => {
     const thisMonth = moment().startOf('month').format('YYYY-MM-DD')
-    const totalIncomes = await getTotalAmount('incomes','amount',thisMonth);
+    const totalIncomes = await getTotalAmount('incomes', 'amount', thisMonth);
     setIncomesAmount(totalIncomes)
 
-    const totalOutgoings = await getTotalAmount('outgoings','amount',thisMonth);
+    const totalOutgoings = await getTotalAmount('outgoings', 'amount', thisMonth);
     setOutgoingsAmount(totalOutgoings);
 
-    const totalLoans = await getTotalAmount('loans', 'currentLoanAmount')
+    const totalLoans = await getTotalAmount('incomes', 'currentDebt')
     setLoansAmount(totalLoans);
   }
 
   useEffect(() => {
     getValues()
-  },[])
- 
+  }, [])
+
   const totalValues = {
     income: formatMoney(incomesAmount),
     outgoing: formatMoney(outgoingsAmount),
     loan: formatMoney(loansAmount),
-    balance:formatMoney(incomesAmount - outgoingsAmount)
+    balance: formatMoney(incomesAmount - outgoingsAmount)
   }
-	return (
+  return (
     <Wrapper>
       <section className="top-container">
         <p>¡Hola, {profile?.name || 'bienvenido devuelta'}!</p>
-        <div className="separation-line"/>
+        <div className="separation-line" />
       </section>
-			<section className="resumen">
-				<div className="shortcut" onClick={() => navigate('/incomes')}>
-					<p className="title">INGRESOS</p>
-          <p>{ totalValues.income}</p>
-				</div>
-				<div className="shortcut" onClick={() => navigate('/outgoings')}>
-					<p className="title">EGRESOS</p>
-          <p>{ totalValues.outgoing}</p>
-				</div>
-				<div className="shortcut" onClick={() => navigate('/loans')}>
-					<p className="title">PRESTAMOS</p>
+      <section className="resumen">
+        <div className="shortcut" onClick={() => navigate('/incomes')}>
+          <p className="title">INGRESOS</p>
+          <p>{totalValues.income}</p>
+        </div>
+        <div className="shortcut" onClick={() => navigate('/outgoings')}>
+          <p className="title">EGRESOS</p>
+          <p>{totalValues.outgoing}</p>
+        </div>
+        <div className="shortcut" onClick={() => navigate('/loans')}>
+          <p className="title">PRESTAMOS</p>
           <p>{totalValues.loan}</p>
-				</div>
-				<div>
-					<p className="title">BALANCE</p>
+        </div>
+        <div>
+          <p className="title">BALANCE</p>
           <p>{totalValues.balance}</p>
-				</div>
+        </div>
       </section>
       <section className="chart-container">
         <p>Las gráficas aún no están disponibles.</p>
       </section>
-		</Wrapper>
-	);
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.section`

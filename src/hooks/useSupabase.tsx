@@ -1,12 +1,13 @@
 import { createClient, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { TableIncome, TableLoans, TableOutgoing } from "../types/models";
+import { TableIncome, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
 import {
   getIncomeFilterString,
   getLoanFilterString,
   getOutgoingFilterString,
 } from "../utils/helper";
+import { incomeTypeID } from "../pages/incomes/constants";
 
 export const supabase = createClient<Database>(
   process.env.REACT_APP_SUPABASE_URL || "",
@@ -42,7 +43,7 @@ export async function fetchIncomes(
 
   let query = supabase
     .from("incomes")
-    .select(`*, incomeTypes(*), ministries(*),  people(*), loans(*)`, {
+    .select(`*, incomeTypes(*), ministries(*),  people(*)`, {
       count: "exact",
     })
     .order("date", { ascending: false })
@@ -88,7 +89,7 @@ export async function fetchOuts(
 
   let query = supabase
     .from("outgoings")
-    .select(`*, outgoingTypes(*), people(*), loans(*)`, {
+    .select(`*, outgoingTypes(*), people(*), incomes(*)`, {
       count: "exact",
     })
     .order("date", { ascending: false })
@@ -115,12 +116,11 @@ export async function fetchLoans(
   const to = from + size;
 
   let query = supabase
-    .from("loans")
-    .select(`*, people(*), incomes(*)`, {
+    .from("incomes")
+    .select("*", {
       count: "exact",
     })
-    .order("date", { ascending: false })
-    .range(from, to);
+    .range(from, to).eq('type', incomeTypeID.loan);
 
   const mappedFilters = getLoanFilterString(filters);
   mappedFilters.forEach((filter) => {
@@ -129,7 +129,7 @@ export async function fetchLoans(
     }
   });
 
-  const { data, count } = await query.returns<TableLoans[]>();
+  const { data, count } = await query.returns<TableIncome[]>();
 
   return { data: data || [], count: count || 0 };
 }

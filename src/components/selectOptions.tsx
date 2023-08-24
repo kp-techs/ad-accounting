@@ -21,15 +21,16 @@ function SelectOptions({ form, field, table, isCreatable = true, isLoan = false,
 	const [options, setOptions] = useState<Option[]>([]);
 	useEffect(() => {
 		fetchOptions();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	async function fetchOptions() {
 		const { data } = isLoan
-			? await supabase.from(table).select(`*`).gt("currentLoanAmount", 0)
+			? await supabase.from(table).select('*').gt('currentDebt', 0)
 			: await supabase.from(table).select(`*`);
-
-		const mapped = data?.map((item) => ({ label: item.name, value: item.id })) || [];
+		console.log(isLoan, table, data)
+		const mapped = isLoan ? (data?.map((item) => ({ label: item.loanName, value: item.id })) || []) : (data?.map((item) => ({ label: item.name, value: item.id })) || [])
 		setOptions(mapped);
 	}
 

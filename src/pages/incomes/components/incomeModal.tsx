@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import { Formik, Field, Form, FastField } from "formik";
 import SwitchButton from "../../../components/switchButton";
 import { useSupabase } from "../../../hooks/useSupabase";
-import { Income } from "../../../types/models";
+import { TableIncome } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
 import SelectOptions from "../../../components/selectOptions";
 
@@ -22,7 +22,7 @@ import { customStyles } from "../../../utils/constants";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  income?: Income;
+  income?: TableIncome;
   isLoanVersion?: boolean;
 };
 
@@ -35,6 +35,9 @@ const IncomesModal: FC<Props> = ({
   const { loadIncomes, profile, loadLoans } = useAppData();
   const [on, setOn] = useState(false);
   const { supabase } = useSupabase();
+  const [newLoanName, setNewLoanName] = useState('');
+
+
 
   return (
     <Modal
@@ -62,32 +65,14 @@ const IncomesModal: FC<Props> = ({
               delete values.ministries;
               // @ts-ignore
               delete values.people;
-              // @ts-ignore
-              delete values.loans;
+
 
               if (values.type === incomeTypeID.loan) {
-                const { data: loan } = await supabase
-                  .from("loans")
-                  .select()
-                  .eq("id", values.loanID)
-                  .single();
-
-                const newCurrent =
-                  (values.amount || 0) - (loan?.paidAmount || 0);
-                const newStatus = newCurrent <= 0 ? "Saldado" : "Pendiente";
-
-                await supabase
-                  .from("loans")
-                  .update({
-                    name: values.loanName,
-                    currentLoanAmount: newCurrent,
-                    status: newStatus,
-                  })
-                  .eq("id", income.loanID);
+                values.currentDebt =
+                  (values.amount || 0) - (income.paidAmount || 0);
+                values.status = (values.currentDebt <= 0) ? 'Saldado' : 'Pendiente';
               }
 
-              // @ts-ignore
-              delete values.loanName;
 
               await supabase
                 .from("incomes")
@@ -96,25 +81,9 @@ const IncomesModal: FC<Props> = ({
               onClose();
             } else {
               if (isLoanVersion) values.type = incomeTypeID.loan;
-              if (values.type === incomeTypeID.loan) {
-                const loanName = values.loanName;
-                const { data: loan } = await supabase
-                  .from("loans")
-                  .insert([
-                    {
-                      name: loanName,
-                      currentLoanAmount: values.amount,
-                    },
-                  ])
-                  .select()
-                  .single();
-                loadLoans();
-                values.loanID = loan?.id;
-              }
-
-              // @ts-ignore
-              delete values.loanName;
               values.createdBy = profile?.name;
+
+              if (values.type === incomeTypeID.loan) values.currentDebt = values.amount
 
               await supabase
                 .from("incomes")
@@ -169,14 +138,14 @@ const IncomesModal: FC<Props> = ({
                     <section className="field-line">
                       <label htmlFor="tithingName">Diezmante</label>
                       <FastField
-                        name="tithingID"
+                        name="memberID"
                         id="tithingName"
                         component={(props: any) => (
                           <SelectOptions {...props} table={"people"} />
                         )}
                       />
-                      {errors.tithingID && touched.tithingID && (
-                        <div style={{ color: "red" }}>{errors.tithingID}</div>
+                      {errors.memberID && touched.memberID && (
+                        <div style={{ color: "red" }}>{errors.memberID}</div>
                       )}
                     </section>
                   ) : values.type === incomeTypeID.event ? (
@@ -217,9 +186,9 @@ const IncomesModal: FC<Props> = ({
                   ) : values.type === incomeTypeID.loan || isLoanVersion ? (
                     <section className="field-line fields-container">
                       <div>
-                        <label htmlFor="loan-name">Nombre</label>
+                        <label htmlFor="loanName">Nombre</label>
                         <Field
-                          id="loan-name"
+                          id="loanName"
                           className="field"
                           type="text"
                           name="loanName"
@@ -229,16 +198,16 @@ const IncomesModal: FC<Props> = ({
                         )}
                       </div>
                       <div>
-                        <label htmlFor="tithingID">Acreedor</label>
+                        <label htmlFor="memberID">Acreedor</label>
                         <FastField
                           type="number"
-                          name="tithingID"
+                          name="memberID"
                           component={(props: any) => (
                             <SelectOptions {...props} table={"people"} />
                           )}
                         />
-                        {errors.tithingID && touched.tithingID && (
-                          <div style={{ color: "red" }}>{errors.tithingID}</div>
+                        {errors.memberID && touched.memberID && (
+                          <div style={{ color: "red" }}>{errors.memberID}</div>
                         )}
                       </div>
                     </section>
@@ -292,7 +261,9 @@ const IncomesModal: FC<Props> = ({
                     >
                       {income ? "Cancelar" : "Cerrar"}
                     </button>
-                    <button type="submit">
+                    <button type="submit" onClick={() => {
+                      console.log(errors, values)
+                    }}>
                       {income ? "Actualizar" : "Guardar"}
                     </button>
                   </div>

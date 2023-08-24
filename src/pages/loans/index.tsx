@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa";
 // import FilterSection from "./components/loansFilter";
 import { MdAttachMoney } from "react-icons/md";
@@ -23,7 +23,6 @@ type Action = "ADD" | "PAY" | "FILTER";
 function Loans() {
   const [activeAction, setActiveAction] = useState<Action>();
   const [filters, setFilters] = useState<IncomesFilters>(filterInitialValues);
-
   const [activeLoan, setActiveLoan] = useState<TableIncome>();
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE" | "PAY"
@@ -131,8 +130,8 @@ function Loans() {
         <DeleteModal
           isOpen={activeModal === "DELETE"}
           onClose={closeModal}
-          id={activeLoan.loans.id}
-          tableName={"loans"}
+          id={activeLoan.id}
+          tableName={"incomes"}
           onSucess={onSucess}
         />
       )}
@@ -144,7 +143,7 @@ function Loans() {
           filters={{
             ...outgoingsInitialValues,
             type: [25],
-            loanID: activeLoan.loans.id,
+            loanID: activeLoan.id,
           }}
           income={activeLoan}
         />

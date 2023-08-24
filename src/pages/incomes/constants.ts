@@ -19,12 +19,13 @@ export const initialIncome: CreateIncome = {
   updatedDate: null,
   comment: "",
   type: null,
-  tithingID: null,
+  memberID: null,
   ministryID: null,
   eventName: "",
   concept: null,
   loanName: "",
-  loanID: null,
+  status: '',
+  currentDebt: 0,
 };
 
 export const initialLoanIncome: CreateIncome = {
@@ -36,7 +37,7 @@ export const initialLoanIncome: CreateIncome = {
   updatedDate: null,
   comment: "",
   type: incomeTypeID.loan,
-  tithingID: null,
+  memberID: null,
   ministryID: null,
   eventName: "",
   concept: null,
@@ -45,7 +46,7 @@ export const initialLoanIncome: CreateIncome = {
 
 export const filterInitialValues: IncomesFilters = {
   type: null,
-  tithingID: null,
+  memberID: null,
   ministryID: null,
   eventName: "",
   comment: "",
@@ -61,7 +62,7 @@ export const ValidationIncomeForm = object({
     .min(1, "Favor especificar el monto")
     .required("Favor especificar el monto"),
   type: number().required("Favor especificar el tipo de ingreso"),
-  tithingID: number()
+  memberID: number()
     .nullable()
     .when("type", {
       is: incomeTypeID.tithe,
@@ -89,5 +90,8 @@ export const ValidationLoanVersionForm = object({
   amount: number()
     .min(1, "Favor especificar el monto")
     .required("Favor especificar el monto"),
-  loanName: string().required("Favor especificar el nombre del préstamo"),
+  loanName: string().when("type", {
+    is: incomeTypeID.loan,
+    then: () => string().required("Favor especificar el nombre del préstamo"),
+  }),
 });

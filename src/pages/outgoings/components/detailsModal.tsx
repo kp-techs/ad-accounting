@@ -10,10 +10,9 @@ import {
   formatMoney,
   getOutgoingDescription,
 } from "../../../utils/helper";
-import { Income, TableOutgoing } from "../../../types/models";
+import { TableOutgoing } from "../../../types/models";
 import { outgoingTypeID } from "../constants";
 import { customStyles } from "../../../utils/constants";
-import { useSupabase } from "../../../hooks/useSupabase";
 
 type Props = {
   isOpen: boolean;
@@ -22,23 +21,6 @@ type Props = {
 };
 
 const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
-  const { supabase } = useSupabase();
-  const [income, setIncome] = useState<Income>();
-
-  async function getIncome(id: number) {
-    const { data } = await supabase
-      .from("incomes")
-      .select()
-      .eq("loanID", id)
-      .single();
-    if (data) setIncome(data);
-  }
-
-  useEffect(() => {
-    if (outgoing?.loanID) getIncome(outgoing.loanID);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [outgoing?.loanID]);
-
   let description = "";
   if (outgoing) {
     description = getOutgoingDescription(outgoing);
@@ -80,15 +62,15 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           <>
             <section className="side">
               <p className="title">Deuda inicial</p>
-              <p>{formatMoney(income?.amount || null)}</p>
+              <p>{formatMoney(outgoing?.incomes.amount || null)}</p>
             </section>
             <section className="side">
               <p className="title">Deuda restante</p>
-              <p>{formatMoney(outgoing?.loans?.currentLoanAmount || null)}</p>
+              <p>{formatMoney(outgoing?.incomes.currentDebt || null)}</p>
             </section>
             <section className="side">
               <p className="title">Total abonado</p>
-              <p>{formatMoney(outgoing?.loans?.paidAmount || null)}</p>
+              <p>{formatMoney(outgoing?.incomes.paidAmount || null)}</p>
             </section>
           </>
         ) : null}

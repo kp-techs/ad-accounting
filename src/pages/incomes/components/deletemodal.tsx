@@ -12,14 +12,16 @@ type Props = {
   income?: Income;
 };
 
+//TO DO: CHEQUEA SI YA NO UTILIZAS ESTO Y BORRALO
+
 const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
   const { supabase } = useSupabase();
   const { loadIncomes, loadLoans, loadOuts } = useAppData();
 
   async function deleteIncome() {
     if (income) {
-      await supabase.from("outgoings").delete().eq("loanID", income.loanID);
-      await supabase.from("loans").delete().eq("id", income.loanID);
+      // await supabase.from("outgoings").delete().eq("loanID", income.loanID);
+      // await supabase.from("loans").delete().eq("id", income.loanID);
       await supabase.from("incomes").delete().eq("id", income.id);
       loadLoans();
       loadOuts();

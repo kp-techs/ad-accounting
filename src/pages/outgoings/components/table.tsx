@@ -16,10 +16,9 @@ import OutsModal from "./outsModal";
 type Props = {
   filters: OutgoingsFilters;
   isLoanVersion?: boolean;
-  loanName?: string;
 };
 
-function OutgoingsTable({ filters, isLoanVersion = false, loanName }: Props) {
+function OutgoingsTable({ filters, isLoanVersion = false }: Props) {
   const { outgoings, loadOuts } = useAppData();
   const columns = useColumns();
 
@@ -65,7 +64,6 @@ function OutgoingsTable({ filters, isLoanVersion = false, loanName }: Props) {
         isOpen={activeModal === "EDIT"}
         onClose={closeModal}
         outgoing={activeOutgoing}
-        loanName={loanName}
         isLoanVersion={isLoanVersion}
       />
 
