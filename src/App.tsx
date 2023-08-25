@@ -10,8 +10,6 @@ function App() {
   const navigate = useNavigate();
   const { supabase } = useSupabase();
 
-  //to do: reducir las llamadas al API.
-
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {

@@ -1,26 +1,24 @@
 import Modal from "react-modal";
-import { FC } from "react";
-import OutgoingsTable from "../../outgoings/components/table.old";
+import { FC, useMemo } from "react";
 import styled from "styled-components";
 import { GrFormClose } from "react-icons/gr";
 import { customStyles } from "../../../utils/constants";
 import { capitalize, formatLongDate } from "../../../utils/helper";
 import { TableIncome } from "../../../types/models";
 
+import OutgoingsTable from "../../outgoings/components/table";
+import { outgoingsInitialValues } from "../../outgoings/constants";
+
 type Props = {
   isOpen: boolean;
-  onClose: () => void;
-  filters: OutgoingsFilters;
   income: TableIncome;
-  loanName?: string;
+  onClose: () => void;
 };
 
-const LoanPaymentsModal: FC<Props> = ({
-  isOpen,
-  onClose,
-  filters,
-  income,
-}) => {
+
+const LoanPaymentsModal: FC<Props> = ({ isOpen, income, onClose }) => {
+  const filters = useMemo(() => ({ ...outgoingsInitialValues, loanID: income.id }), [income])
+
   return (
     <Modal
       ariaHideApp={false}
@@ -38,10 +36,7 @@ const LoanPaymentsModal: FC<Props> = ({
         <div className="title">
           <label>HISTORIAL DE PAGOS</label>
         </div>
-        <OutgoingsTable
-          filters={filters}
-          isLoanVersion={true}
-        />
+        <OutgoingsTable filters={filters} isLoanVersion={true} />
         <section className="creation-data">
           <p>
             Registro creado por {capitalize(income.createdBy)}. <br />

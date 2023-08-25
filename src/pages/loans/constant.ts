@@ -16,6 +16,16 @@ export const loansInitialFilterValues: LoansFilters = {
   memberID: null,
 };
 
+export const paymentsFilterValues: PaymentsFilters = {
+  beneficiaryID: null,
+  checkNumber: '',
+  startDate: '',
+  endDate: '',
+  description: '',
+  startAmount: 0,
+  endAmount: null,
+}
+
 const today = moment().format();
 export const initialLoanValues: CreateIncome = {
   amount: 0,

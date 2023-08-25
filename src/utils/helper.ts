@@ -108,9 +108,9 @@ export function getIncomeFilterString({ ...filters }: IncomesFilters) {
       case "startDate":
         return `date.gte.${value}`;
       case "endDate":
-        return `date.lt.${value}`;
+        return `date.lte.${value}`;
       case "endAmount":
-        return `amount.lt.${value}`;
+        return `amount.lte.${value}`;
       case "type":
       case "memberID":
       case "ministryID":
@@ -134,9 +134,9 @@ export function getBeneficiaryName(outgoing: TableOutgoing) {
   return outgoing.people?.name ?? "-";
 }
 
-// export function getCreditorName(loan: TableLoans) {
-//   return loan.people?.name ?? "-";
-// }
+export function getCreditorName(income: TableIncome) {
+  return capitalize(income.people?.name) ?? "-";
+}
 
 export function getOutgoingDescription(outgoing: TableOutgoing) {
   if (outgoing.type === outgoingTypeID.loan)
@@ -164,9 +164,9 @@ export function getOutgoingFilterString({ ...filters }: OutgoingsFilters) {
       case "startDate":
         return `date.gte.${value}`;
       case "endDate":
-        return `date.lt.${value}`;
+        return `date.lte.${value}`;
       case "endAmount":
-        return `amount.lt.${value}`;
+        return `amount.lte.${value}`;
       case "type":
       case "beneficiaryID":
         if (Array.isArray(value)) {
@@ -175,6 +175,8 @@ export function getOutgoingFilterString({ ...filters }: OutgoingsFilters) {
             value.map((id: number) => `${key}.eq.${id}`).join(",");
         }
         return "";
+      case "loanID":
+        return `loanID.eq.${value}`;
       default:
         return "";
     }
@@ -194,21 +196,26 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
 
   const mappedFilters = entries.map(([key, value]) => {
     switch (key) {
-      case "description":
       case "loanName":
+        return `id.eq.${value}`
+      case "description":
         return `${key}.ilike.%${value}%`;
-      case "startCurrentAmount":
       case "startInitialAmount":
+        return `amount.gte.${value}`;
+      case "startCurrentAmount":
+        return `currentDebt.gte.${value}`;
       case "startPaidAmount":
-        return `${key}.gte.${value}`;
+        return `paidAmount.gte.${value}`;
       case "startDate":
         return `date.gte.${value}`;
       case "endDate":
-        return `date.lt.${value}`;
-      case "endCurrentAmount":
+        return `date.lte.${value}`;
       case "endInitialAmount":
+        return `amount.lte.${value}`;
+      case "endCurrentAmount":
+        return `currentDebt.lte.${value}`;
       case "endPaidAmount":
-        return `${key}.lt.${value}`;
+        return `$paidAmount.lte.${value}`;
       case "memberID":
         if (Array.isArray(value)) {
           typesStr +=
@@ -222,6 +229,11 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
   });
 
   if (typesStr) mappedFilters.push(typesStr);
+  console.log(mappedFilters)
 
   return mappedFilters;
+}
+
+export function getPaymentFilterString({ ...filters }: PaymentsFilters) {
+  return [];
 }

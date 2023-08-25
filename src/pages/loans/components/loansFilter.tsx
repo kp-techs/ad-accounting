@@ -38,22 +38,22 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 
 									<div className="fields-container double-field">
 										<div className="field-container">
-											<label htmlFor="name" className="text">Nombre</label>
+											<label htmlFor="loanName" className="text">Nombre</label>
 											<div className="select">
 												<FastField
-													name="name"
+													name="loanName"
 													component={(props: any) => (
-														<SelectOptions {...props} table={"loans"} isCreatable={false} isMulti={true} />
+														<SelectOptions {...props} table={"incomes"} isCreatable={false} isMulti={true} isLoanIncome={true} />
 													)}
 												/>
 											</div>
 										</div>
 
 										<div className="field-container">
-											<label htmlFor="creditorID" className="text">Acreedor</label>
+											<label htmlFor="memberID" className="text">Acreedor</label>
 											<div className="select">
 												<FastField
-													name="creditorID"
+													name="memberID"
 													component={(props: any) => (
 														<SelectOptions {...props} table={"people"} isCreatable={false} isMulti={true} />
 													)}
@@ -86,12 +86,12 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 									<div className="fields-container double-field">
 										<div className="field-container double-field">
 											<label className="text">Desde</label>
-											<Field name="startAmount_initialAmount" type="number" className="field" />
+											<Field name="startInitialAmount" type="number" className="field" />
 										</div>
 										<div className="field-container">
 											<label className="text">Hasta</label>
 											<Field
-												name="endAmount_initialAmount"
+												name="endInitialAmount"
 												type="number"
 												className="field"
 												value={values.endInitialAmount || null}
@@ -107,12 +107,12 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 									<div className="fields-container double-field">
 										<div className="field-container">
 											<label className="text">Desde</label>
-											<Field name="startAmount_currentAmount" type="number" className="field" />
+											<Field name="startCurrentAmount" type="number" className="field" />
 										</div>
 										<div className="field-container">
 											<label className="text">Hasta</label>
 											<Field
-												name="endAmount_currentAmount"
+												name="endCurrentAmount"
 												type="number"
 												className="field"
 												value={values.endCurrentAmount || null}
@@ -128,12 +128,12 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 									<div className="fields-container double-field">
 										<div className="field-container">
 											<label className="text">Desde</label>
-											<Field name="startAmount_paidAmount" type="number" className="field" />
+											<Field name="startPaidAmount" type="number" className="field" />
 										</div>
 										<div className="field-container">
 											<label className="text">Hasta</label>
 											<Field
-												name="endAmount_paidAmount"
+												name="endPaidAmount"
 												type="number"
 												className="field"
 												value={values.endPaidAmount || null}

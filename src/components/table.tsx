@@ -18,6 +18,7 @@ type Props<T extends object, FT extends Filters> = {
 type TableAction<T> = {
   icon: IconType;
   action: (item: T) => void;
+  show?: (item: T) => boolean;
   iconSize?: number;
 };
 
@@ -65,6 +66,8 @@ function Table<T extends object, FT extends Filters>({
                       <td {...cell.getCellProps()} className="cell-table">
                         {cell.render("Cell")}
                       </td>
+
+
                     ))}
                     {Boolean(actions?.length) && (
                       <td>
@@ -72,7 +75,8 @@ function Table<T extends object, FT extends Filters>({
                           id="modify-container"
                           className="modifyButtons-container"
                         >
-                          {actions?.map(({ action, icon: Icon, iconSize }) => (
+
+                          {actions?.filter(action => action.show ? action.show(item.original) : true)?.map(({ action, icon: Icon, iconSize }) => (
                             <div
                               className="button"
                               onClick={() => action(item.original)}

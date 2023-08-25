@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { useTable } from "react-table";
 import { FiEdit } from "react-icons/fi";
@@ -64,6 +63,7 @@ function OutgoingsTable({ filters, isLoanVersion = false }: Props) {
         isOpen={activeModal === "EDIT"}
         onClose={closeModal}
         outgoing={activeOutgoing}
+        income={activeOutgoing?.incomes}
         isLoanVersion={isLoanVersion}
       />
 
@@ -79,13 +79,13 @@ function OutgoingsTable({ filters, isLoanVersion = false }: Props) {
           onClose={closeModal}
           id={activeOutgoing.id}
           tableName={"outgoings"}
-          onSucess={loadOuts}
+          onSucess={() => loadOuts(1, 15, filters)}
         />
       )}
 
       <Table
-        filters={filters}
         table={table}
+        filters={filters}
         loadData={loadOuts}
         count={outgoings.count}
         actions={actions}

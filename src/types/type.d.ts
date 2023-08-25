@@ -29,7 +29,7 @@ type OutgoingsFilters = {
   description: string | null;
   startAmount: number | null;
   endAmount: number | null;
-  loanID: number | null;
+  loanID: number | null | undefined;
 };
 
 type LoansFilters = {
@@ -46,6 +46,18 @@ type LoansFilters = {
   memberID: number[] | null;
 };
 
-type Filters = IncomesFilters | OutgoingsFilters | LoansFilters;
+type PaymentsFilters = {
+  beneficiaryID: number[] | null;
+  checkNumber: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  description: string | null;
+  startAmount: number | null;
+  endAmount: number | null;
+};
 
-type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | "NONE";
+
+
+type Filters = IncomesFilters | OutgoingsFilters | LoansFilters | PaymentsFilters;
+
+type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | 'LOANS' | "NONE";

@@ -75,6 +75,13 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           </>
         ) : null}
 
+        {outgoing?.description && (
+          <section className="side">
+            <p className="title">Descripción</p>
+            <p>{capitalize(outgoing?.description || '')}</p>
+          </section>
+        )}
+
         <section className="side">
           <p className="title">Creación</p>
           <div className="user-info">
@@ -88,7 +95,6 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           <section className="side">
             <p className="title">Última modificación</p>
             <div className="user-info">
-              <FaRegUserCircle size={30} />
               <p>
                 {capitalize(outgoing?.modifiedBy || "")}.{" "}
                 {formatLongDate(outgoing?.modifiedAt || null)}

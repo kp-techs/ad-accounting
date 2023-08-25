@@ -10,9 +10,7 @@ type Action = "ADD" | "FILTER";
 
 function Outgoings() {
   const [activeAction, setActiveAction] = useState<Action>();
-  const [filters, setFilters] = useState<OutgoingsFilters>(
-    outgoingsInitialValues
-  );
+  const [filters, setFilters] = useState(outgoingsInitialValues);
 
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
