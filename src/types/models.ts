@@ -32,8 +32,8 @@ export type TablePeople = Tables["people"]["Row"];
 export type TableMinistries = Tables["ministries"]["Row"];
 export type TableIncomeTypes = Tables["incomeTypes"]["Row"];
 export type TableOutgoingTypes = Tables["outgoingTypes"]["Row"];
-export type Options =
-  | TablePeople
-  | TableMinistries
-  | TableIncomeTypes
-  | TableOutgoingTypes;
+export type Option =
+  (TablePeople
+    | TableMinistries
+    | TableIncomeTypes
+    | TableOutgoingTypes) & { deletable?: boolean };

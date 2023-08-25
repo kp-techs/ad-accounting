@@ -17,6 +17,7 @@ export const outgoingsInitialValues: OutgoingsFilters = {
 export const outgoingTypeID = {
   loan: 25,
 };
+
 const today = moment().format();
 export const initialOutgoing: CreateOutgoing = {
   amount: 0,

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { TableOutgoing } from "../../../types/models";
-import { FC } from "react";
+import { TableIncome, TableOutgoing } from "../../../types/models";
+import { FC, useMemo } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { useSupabase } from "../../../hooks/useSupabase";
 import {
@@ -9,6 +9,7 @@ import {
   initialLoanVersion,
   initialOutgoing,
   outgoingTypeID,
+  outgoingsInitialValues,
 } from "../constants";
 import { FastField, Field, Form, Formik } from "formik";
 import moment from "moment";
@@ -21,6 +22,7 @@ type Props = {
   onClose: () => void;
   outgoing?: TableOutgoing;
   isLoanVersion?: boolean;
+  income?: TableIncome;
 };
 
 const OutsModal: FC<Props> = ({
@@ -28,9 +30,11 @@ const OutsModal: FC<Props> = ({
   onClose,
   outgoing,
   isLoanVersion = false,
+  income
 }) => {
   const { loadOuts, profile, loadLoans } = useAppData();
   const { supabase } = useSupabase();
+  const filters = useMemo(() => ({ ...outgoingsInitialValues, loanID: income?.id }), [income])
 
   return (
     <Modal
@@ -108,7 +112,12 @@ const OutsModal: FC<Props> = ({
               await supabase.from("outgoings").insert([values as any]);
             }
             resetForm();
-            loadOuts();
+            if (isLoanVersion && income) {
+              loadOuts(1, 5, filters);
+              loadLoans();
+            } else {
+              loadOuts();
+            }
           }}
         >
           {({ values, errors, touched }) => (
@@ -155,7 +164,7 @@ const OutsModal: FC<Props> = ({
                                 {...props}
                                 table={"incomes"}
                                 isCreatable={false}
-                                isLoan={true}
+                                isLoanOut={true}
                               />
                             )}
                           />

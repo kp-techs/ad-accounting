@@ -5,6 +5,7 @@ import {
   formatTableDate,
   formatMoney,
   capitalize,
+  getCreditorName,
 } from "../../../utils/helper";
 
 function useColumns() {
@@ -24,9 +25,9 @@ function useColumns() {
       },
       {
         Header: "Acreedor",
-        accessor: "people",
+        accessor: "memberID",
         // @ts-ignore
-        Cell: ({ row }) => capitalize(row.original.people?.name),
+        Cell: ({ row }) => getCreditorName(row.original),
       },
       {
         Header: "Monto Inicial",

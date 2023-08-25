@@ -66,16 +66,29 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
               <p>{capitalize(income?.eventName || "No especificado")}</p>
             </section>
           </>
+        ) : income?.type === incomeTypeID.loan ? (
+          <>
+            <section className="side">
+              <p className="title">Nombre</p>
+              <p>{capitalize(income?.loanName || "")}</p>
+            </section>
+            <section className="side">
+              <p className="title">Acreedor</p>
+              <p>{capitalize(income?.people.name || "")}</p>
+            </section>
+          </>
         ) : null}
-        <section className="side">
-          <p className="title">Comentario</p>
-          <p>{capitalize(income?.comment || "")}</p>
-        </section>
+        {income?.comment && (
+          <section className="side">
+            <p className="title">Comentario</p>
+            <p>{capitalize(income?.comment || "")}</p>
+          </section>
+        )}
 
         <section className="side">
           <p className="title">Creación</p>
           <div className="user-info">
-            <FaRegUserCircle size={30} />
+
             <p>
               {capitalize(income?.createdBy || "")}.{" "}
               {formatLongDate(income?.createdDate || null)}
@@ -86,7 +99,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           <section className="side">
             <p className="title">Última modificación</p>
             <div className="user-info">
-              <FaRegUserCircle size={30} />
+
               <p>
                 {capitalize(income?.updatedBy || "")}.{" "}
                 {formatLongDate(income?.updatedDate || null)}

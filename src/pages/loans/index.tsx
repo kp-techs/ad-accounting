@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa";
-// import FilterSection from "./components/loansFilter";
+import FilterSection from "./components/loansFilter";
 import { MdAttachMoney } from "react-icons/md";
 import IncomesModal from "../incomes/components/incomeModal";
 import OutsModal from "../outgoings/components/outsModal";
@@ -13,16 +13,15 @@ import { BsEye } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import LoanPaymentsModal from "./components/paymentTableModal";
-import { outgoingsInitialValues } from "../outgoings/constants";
 import DeleteModal from "../../components/deleteModal";
 import { TableIncome } from "../../types/models";
-import { filterInitialValues, incomeTypeID } from "../incomes/constants";
+import { loansInitialFilterValues } from "./constant";
 
 type Action = "ADD" | "PAY" | "FILTER";
 
 function Loans() {
   const [activeAction, setActiveAction] = useState<Action>();
-  const [filters, setFilters] = useState<IncomesFilters>(filterInitialValues);
+  const [filters, setFilters] = useState(loansInitialFilterValues);
   const [activeLoan, setActiveLoan] = useState<TableIncome>();
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE" | "PAY"
@@ -32,9 +31,9 @@ function Loans() {
     setActiveAction(action === activeAction ? undefined : action);
   }
 
-  const { incomes, loadIncomes, loadLoans } = useAppData();
+  const { loadLoans, loans } = useAppData();
   const columns = useColumns();
-  const table = useTable({ data: incomes.data, columns });
+  const table = useTable({ data: loans.data, columns });
 
   const actions = [
     {
@@ -68,7 +67,6 @@ function Loans() {
   };
 
   function onSucess() {
-    loadIncomes();
     loadLoans();
   }
 
@@ -117,14 +115,14 @@ function Loans() {
         isLoanVersion={true}
       />
 
-      {/* 
-      TO DO: reparar la seccion de filtros loanversion, en base a la seccion que ya tiene incomes.
+
       <FilterSection
         isActive={activeAction === "FILTER"}
         onClose={() => setActiveAction(undefined)}
         filters={filters}
         setFilters={setFilters}
-      /> */}
+      />
+
 
       {activeLoan && (
         <DeleteModal
@@ -133,6 +131,7 @@ function Loans() {
           id={activeLoan.id}
           tableName={"incomes"}
           onSucess={onSucess}
+          message="Este préstamo se eliminará permanentemente, y consigo, todo pago que pueda existir asociado al mismo. Esta acción no se puede deshacer."
         />
       )}
 
@@ -140,24 +139,19 @@ function Loans() {
         <LoanPaymentsModal
           isOpen={activeModal === "SEE"}
           onClose={closeModal}
-          filters={{
-            ...outgoingsInitialValues,
-            type: [25],
-            loanID: activeLoan.id,
-          }}
           income={activeLoan}
         />
       )}
 
-      {/* <div className="table-wrapper">
+      <div className="table-wrapper">
         <Table
-          filters={{ ...filters, type: [incomeTypeID.loan] }}
           table={table}
-          loadData={loadIncomes}
-          count={incomes.count}
+          filters={filters}
+          loadData={loadLoans}
+          count={loans.count}
           actions={actions}
         />
-      </div> */}
+      </div>
     </Wrapper>
   );
 }

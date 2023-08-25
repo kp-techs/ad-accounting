@@ -98,6 +98,7 @@ const IncomesModal: FC<Props> = ({
             }
 
             resetForm();
+            if (isLoanVersion) loadLoans();
             loadIncomes();
           }}
         >

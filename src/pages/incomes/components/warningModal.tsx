@@ -27,8 +27,6 @@ const WarningModal: FC<Props> = ({ isOpen, onClose, income, values, onConfirm })
     onClose();
     onConfirm();
   }
-
-  //TO DO: Terminar este modal de advertencia si intentan cambiar el tipo a un prestamo.
   return (
     <Modal
       ariaHideApp={false}

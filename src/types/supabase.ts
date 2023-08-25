@@ -90,14 +90,17 @@ export interface Database {
       }
       incomeTypes: {
         Row: {
+          deletable: boolean | null
           id: number
           name: string
         }
         Insert: {
+          deletable?: boolean | null
           id?: number
           name?: string
         }
         Update: {
+          deletable?: boolean | null
           id?: number
           name?: string
         }
@@ -184,14 +187,17 @@ export interface Database {
       }
       outgoingTypes: {
         Row: {
+          deletable: boolean | null
           id: number
           name: string | null
         }
         Insert: {
+          deletable?: boolean | null
           id?: number
           name?: string | null
         }
         Update: {
+          deletable?: boolean | null
           id?: number
           name?: string | null
         }
