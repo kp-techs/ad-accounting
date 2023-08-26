@@ -1,29 +1,26 @@
 import Modal from "react-modal";
-import React, { FC } from "react";
-import { Income } from "../../../types/models";
+import { FC } from "react";
+import { User } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
-import useAppData from "../../../hooks/useAppData";
 import styled from "styled-components";
+import useAppData from "../../../hooks/useAppData";
 import { customStyles } from "../../../utils/constants";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  income?: Income;
+  user?: User;
 };
 
-const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
+const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
   const { supabase } = useSupabase();
-  const { loadIncomes, loadLoans, loadOuts } = useAppData();
+  const { loadUsers } = useAppData();
 
-  async function deleteIncome() {
-    if (income) {
-      await supabase.from("outgoings").delete().eq("loanID", income.loanID);
-      await supabase.from("loans").delete().eq("id", income.loanID);
-      await supabase.from("incomes").delete().eq("id", income.id);
-      loadLoans();
-      loadOuts();
-      loadIncomes();
+  async function deleteUser() {
+    if (user) {
+      await supabase.from("users").update({ active: false }).eq("id", user.id);
+      await supabase.auth.admin.deleteUser(user.id);
+      loadUsers();
       onClose();
     }
   }
@@ -34,19 +31,18 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, income }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
-        <h3>¿Seguro que quieres eliminar este registro?</h3>
+        <h3>¿Seguro que desea eliminar a {user?.name || "este usuario"}?</h3>
         <p>
-          Este registro se eliminará permanentemente. Esta acción no se puede
+          Este usuario se eliminará permanentemente. Esta acción no se puede
           deshacer.
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
             Cancelar
           </button>
-          <button onClick={deleteIncome}>Confirmar</button>
+          <button onClick={deleteUser}>Confirmar</button>
         </div>
       </Wrapper>
     </Modal>
@@ -97,4 +93,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default DeleteModal;
+export default DeleteUserModal;

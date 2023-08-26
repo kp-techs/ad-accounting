@@ -32,6 +32,7 @@ const usersOption = [
 ];
 
 function Configuration() {
+	//to do: prevenir que se eliminen opciones que no deberian.
 	return (
 		<Wrapper>
 			<Tab tabs={usersOption} />

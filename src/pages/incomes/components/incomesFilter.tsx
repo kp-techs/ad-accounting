@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import SelectOptions from "../../../components/selectOptions";
 import { FastField, Field, Form, Formik } from "formik";
 import { filterInitialValues, incomeTypeID } from "../constants";
 import { GrFormClose } from "react-icons/gr";
+import useAppData from "../../../hooks/useAppData";
 
 
 type Props = {
@@ -28,6 +29,7 @@ const FilterSection: FC<Props> = ({
             setFilters(filterInitialValues);
           }}
           onSubmit={setFilters}
+
         >
           {({ values }) => (
             <Form>
@@ -60,7 +62,7 @@ const FilterSection: FC<Props> = ({
                       <label htmlFor="tithing-name">Diezmante</label>
                       <div className="select">
                         <FastField
-                          name="tithingID"
+                          name="memberID"
                           id="tithing-name"
                           component={(props: any) => (
                             <SelectOptions
@@ -98,7 +100,7 @@ const FilterSection: FC<Props> = ({
                             name="ministryID"
                             component={(props: any) => (
                               <SelectOptions
-                              isMulti={true}
+                                isMulti={true}
                                 {...props}
                                 table={"ministries"}
                                 isCreatable={false}

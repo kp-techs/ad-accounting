@@ -1,17 +1,21 @@
 import { outgoingTypeID } from "./../pages/outgoings/constants";
 import { incomeTypeID } from "../pages/incomes/constants";
-import { TableIncome, TableOutgoing, TableLoans } from "../types/models";
+import { TableIncome, TableOutgoing } from "../types/models";
 import moment from "moment";
 import "moment/locale/es";
 
 export function generateConcept({ type, ...income }: TableIncome) {
-  return type === incomeTypeID.tithe
-    ? `Diezmo: ${income.people?.name}`
-    : type === incomeTypeID.event
-    ? `${income.ministries?.name}: ${income.eventName}`
-    : type === incomeTypeID.loan
-    ? `${income.incomeTypes.name}: ${income.loanName}`
-    : income.incomeTypes.name;
+  try {
+    return type === incomeTypeID.tithe
+      ? `Diezmo: ${income.people?.name}`
+      : type === incomeTypeID.event
+        ? `${income.ministries?.name}: ${income.eventName}`
+        : type === incomeTypeID.loan
+          ? `${income.incomeTypes?.name}: ${income.loanName}`
+          : income.incomeTypes?.name;
+  } catch (error) {
+    return ''
+  }
 }
 
 export function formatMoney(amount: number | null) {
@@ -71,13 +75,13 @@ export function formatRelativeDate(date: string | null) {
 
 export function getIncomeFilterString({ ...filters }: IncomesFilters) {
   if (!filters) return [];
-  if (filters.tithingID?.length) {
+  if (filters.memberID?.length) {
     if (filters.type?.includes(incomeTypeID.tithe)) {
       filters.type = (filters.type || []).filter(
         (type) => type !== incomeTypeID.tithe
       );
     } else {
-      filters.tithingID = null;
+      filters.memberID = null;
     }
   }
   if (filters.ministryID?.length || filters.eventName?.length) {
@@ -104,11 +108,11 @@ export function getIncomeFilterString({ ...filters }: IncomesFilters) {
       case "startDate":
         return `date.gte.${value}`;
       case "endDate":
-        return `date.lt.${value}`;
+        return `date.lte.${value}`;
       case "endAmount":
-        return `amount.lt.${value}`;
+        return `amount.lte.${value}`;
       case "type":
-      case "tithingID":
+      case "memberID":
       case "ministryID":
         if (Array.isArray(value)) {
           typesStr +=
@@ -130,19 +134,17 @@ export function getBeneficiaryName(outgoing: TableOutgoing) {
   return outgoing.people?.name ?? "-";
 }
 
-export function getCreditorName(loan: TableLoans) {
-  return loan.people?.name ?? "-";
+export function getCreditorName(income: TableIncome) {
+  return capitalize(income.people?.name) ?? "-";
 }
 
 export function getOutgoingDescription(outgoing: TableOutgoing) {
   if (outgoing.type === outgoingTypeID.loan)
-    return `Préstamo: ${
-      outgoing.loans ? outgoing.loans.name : outgoing.description
-    }`;
+    return `Préstamo: ${outgoing.incomes ? outgoing.incomes.loanName : outgoing.description
+      }`;
   if (outgoing.outgoingTypes)
-    return `${outgoing.outgoingTypes.name}${
-      outgoing.description ? `: ${outgoing.description}` : ""
-    }`;
+    return `${outgoing.outgoingTypes.name}${outgoing.description ? `: ${outgoing.description}` : ""
+      }`;
   return "";
 }
 
@@ -162,9 +164,9 @@ export function getOutgoingFilterString({ ...filters }: OutgoingsFilters) {
       case "startDate":
         return `date.gte.${value}`;
       case "endDate":
-        return `date.lt.${value}`;
+        return `date.lte.${value}`;
       case "endAmount":
-        return `amount.lt.${value}`;
+        return `amount.lte.${value}`;
       case "type":
       case "beneficiaryID":
         if (Array.isArray(value)) {
@@ -173,6 +175,8 @@ export function getOutgoingFilterString({ ...filters }: OutgoingsFilters) {
             value.map((id: number) => `${key}.eq.${id}`).join(",");
         }
         return "";
+      case "loanID":
+        return `loanID.eq.${value}`;
       default:
         return "";
     }
@@ -192,22 +196,27 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
 
   const mappedFilters = entries.map(([key, value]) => {
     switch (key) {
+      case "loanName":
+        return `id.eq.${value}`
       case "description":
         return `${key}.ilike.%${value}%`;
-      case "startAmount_initialAmount":
-      case "startAmount_currentAmount":
-      case "startAmount_paidAmount":
+      case "startInitialAmount":
+        return `amount.gte.${value}`;
+      case "startCurrentAmount":
+        return `currentDebt.gte.${value}`;
+      case "startPaidAmount":
+        return `paidAmount.gte.${value}`;
       case "startDate":
-        return `${key}.gte.${value}`;
+        return `date.gte.${value}`;
       case "endDate":
-        return `date.lt.${value}`;
-      case "endAmount_initialAmount":
-      case "endAmount_currentAmount":
-      case "endAmount_paidAmount":
-      case "endAmount":
-        return `${key}.lt.${value}`;
-      case "loansNameID":
-      case "creditorID":
+        return `date.lte.${value}`;
+      case "endInitialAmount":
+        return `amount.lte.${value}`;
+      case "endCurrentAmount":
+        return `currentDebt.lte.${value}`;
+      case "endPaidAmount":
+        return `$paidAmount.lte.${value}`;
+      case "memberID":
         if (Array.isArray(value)) {
           typesStr +=
             (typesStr && value.length ? "," : "") +
@@ -220,6 +229,11 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
   });
 
   if (typesStr) mappedFilters.push(typesStr);
+  console.log(mappedFilters)
 
   return mappedFilters;
+}
+
+export function getPaymentFilterString({ ...filters }: PaymentsFilters) {
+  return [];
 }

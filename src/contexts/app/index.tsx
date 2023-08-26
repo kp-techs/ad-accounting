@@ -1,20 +1,20 @@
 import React, { createContext, FC, useState } from "react";
-import { TableIncome, TableLoans, TableOutgoing, User } from "../../types/models";
+import { TableIncome, TableOutgoing, User } from "../../types/models";
 
 const AppContext = createContext<AppContextType | null>(null);
 
 type IncomesData = {
-	data: TableIncome[];
-	count: number;
+  data: TableIncome[];
+  count: number;
 };
 
 type OutgoingsData = {
-	data: TableOutgoing[];
-	count: number;
+  data: TableOutgoing[];
+  count: number;
 };
 
 type LoansData = {
-  data: TableLoans[];
+  data: TableIncome[];
   count: number;
 }
 
@@ -32,11 +32,11 @@ type AppContextType = {
   setOuts: React.Dispatch<React.SetStateAction<OutgoingsData>>
 
   loans: LoansData;
-  setLoans:React.Dispatch<React.SetStateAction<LoansData>>
+  setLoans: React.Dispatch<React.SetStateAction<LoansData>>
 };
 
 type Props = {
-	children: JSX.Element;
+  children: JSX.Element;
 };
 
 export const AppProvider: FC<Props> = ({ children }) => {

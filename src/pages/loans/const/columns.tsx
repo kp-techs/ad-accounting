@@ -1,6 +1,6 @@
-import { TableLoans } from "../../../types/models";
 import { useMemo } from "react";
 import { Column } from "react-table";
+import { TableIncome } from "../../../types/models";
 import {
   formatTableDate,
   formatMoney,
@@ -9,7 +9,7 @@ import {
 } from "../../../utils/helper";
 
 function useColumns() {
-  const columns = useMemo<Column<TableLoans>[]>(
+  const columns = useMemo<Column<TableIncome>[]>(
     () => [
       {
         Header: "Fecha",
@@ -19,27 +19,27 @@ function useColumns() {
       },
       {
         Header: "Nombre",
-        accessor: "name",
+        accessor: "loanName",
         // @ts-ignore
-        Cell: ({ row }) => capitalize(row.original.name),
+        Cell: ({ row }) => capitalize(row.original.loanName),
       },
       {
         Header: "Acreedor",
-        accessor: "creditorID",
+        accessor: "memberID",
         // @ts-ignore
         Cell: ({ row }) => getCreditorName(row.original),
       },
       {
         Header: "Monto Inicial",
-        accessor: "initialLoanAmount",
+        accessor: "amount",
         // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.initialLoanAmount),
+        Cell: ({ row }) => formatMoney(row.original.amount),
       },
       {
         Header: "Restante",
-        accessor: "currentLoanAmount",
+        accessor: "currentDebt",
         // @ts-ignore
-        Cell: ({ row }) => formatMoney(row.original.currentLoanAmount),
+        Cell: ({ row }) => formatMoney(row.original.currentDebt),
       },
       {
         Header: "Monto Pagado",
@@ -52,12 +52,6 @@ function useColumns() {
         accessor: "status",
         // @ts-ignore
         Cell: ({ row }) => capitalize(row.original.status),
-      },
-      {
-        Header: "Acciones",
-        accessor: "description",
-        // @ts-ignore
-        Cell: ({ row }) => "",
       },
     ],
     []

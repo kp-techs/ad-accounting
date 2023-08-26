@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTable } from "react-table";
-import { Options } from "../../../types/models";
+import { Option } from "../../../types/models";
 import colsSchema from "../const/columnsOptions";
 import Table from "../../../components/table";
 import { useSupabase } from "../../../hooks/useSupabase";
@@ -18,7 +18,7 @@ function OptionsTable({ name }: Props) {
   const [data, setData] = useState<any>({});
 
   const [activeModal, setActiveModal] = useState<"DELETE" | "MODIFY">();
-  const [activeOption, setActiveOption] = useState<Options>();
+  const [activeOption, setActiveOption] = useState<Option>();
 
   const closeModal = () => {
     setActiveModal(undefined);
@@ -44,19 +44,20 @@ function OptionsTable({ name }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
 
-  const table = useTable<Options>({ columns, data: data.data || [] });
+  const table = useTable<Option>({ columns, data: data.data || [] });
 
   const actions = [
     {
       icon: AiOutlineDelete,
-      action: (option: Options) => {
+      action: (option: Option) => {
         setActiveModal("DELETE");
         setActiveOption(option);
       },
+      show: (option: Option) => option.deletable !== false
     },
     {
       icon: FiEdit,
-      action: (option: Options) => {
+      action: (option: Option) => {
         setActiveModal("MODIFY");
         setActiveOption(option);
       },

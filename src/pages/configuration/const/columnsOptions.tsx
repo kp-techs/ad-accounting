@@ -1,8 +1,8 @@
 import { Column } from "react-table";
-import { Options } from "../../../types/models";
+import { Option } from "../../../types/models";
 import { capitalize } from "../../../utils/helper";
 
-const colsSchema: Column<Options>[] = [
+const colsSchema: Column<Option>[] = [
   {
     Header: "Nombre",
     accessor: "name",

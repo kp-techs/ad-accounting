@@ -1,27 +1,24 @@
 import Modal from "react-modal";
-import { FC } from "react";
-import OutgoingsTable from "../../outgoings/components/table.old";
+import { FC, useMemo } from "react";
 import styled from "styled-components";
 import { GrFormClose } from "react-icons/gr";
 import { customStyles } from "../../../utils/constants";
-import { TableLoans } from "../../../types/models";
 import { capitalize, formatLongDate } from "../../../utils/helper";
+import { TableIncome } from "../../../types/models";
+
+import OutgoingsTable from "../../outgoings/components/table";
+import { outgoingsInitialValues } from "../../outgoings/constants";
 
 type Props = {
   isOpen: boolean;
+  income: TableIncome;
   onClose: () => void;
-  filters: OutgoingsFilters;
-  loan: TableLoans;
-  loanName?: string;
 };
 
-const LoanPaymentsModal: FC<Props> = ({
-  isOpen,
-  onClose,
-  filters,
-  loanName,
-  loan,
-}) => {
+
+const LoanPaymentsModal: FC<Props> = ({ isOpen, income, onClose }) => {
+  const filters = useMemo(() => ({ ...outgoingsInitialValues, loanID: income.id }), [income])
+
   return (
     <Modal
       ariaHideApp={false}
@@ -39,20 +36,17 @@ const LoanPaymentsModal: FC<Props> = ({
         <div className="title">
           <label>HISTORIAL DE PAGOS</label>
         </div>
-        <OutgoingsTable
-          filters={filters}
-          isLoanVersion={true}
-          loanName={loanName}
-        />
+        <OutgoingsTable filters={filters} isLoanVersion={true} />
         <section className="creation-data">
           <p>
-            Registro creado por {capitalize(loan.createdBy)}. <br />
-            El {formatLongDate(loan.createdAt)}
+            Registro creado por {capitalize(income.createdBy)}. <br />
+            El {formatLongDate(income.createdDate)}
           </p>
-          {loan.updateAt && (
+          {income.updatedDate && (
             <p>
-              Actualizado por úlima vez por {capitalize(loan.updateBy)}. <br />
-              El {formatLongDate(loan.updateAt)}
+              Actualizado por úlima vez por {capitalize(income.updatedBy)}.{" "}
+              <br />
+              El {formatLongDate(income.updatedDate)}
             </p>
           )}
         </section>

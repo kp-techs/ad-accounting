@@ -1,30 +1,40 @@
 import moment from "moment";
-import { CreateLoans } from "../../types/models";
+import { CreateIncome } from "../../types/models";
 import { date, number, object, string } from "yup";
 
 export const loansInitialFilterValues: LoansFilters = {
-  startAmount_currentAmount: 0,
-  endAmount_currentAmount: 0,
-  startAmount_initialAmount: 0,
-  endAmount_initialAmount: 0,
-  startAmount_paidAmount: 0,
-  endAmount_paidAmount: 0,
-  loansNameID: null,
-  creditorID: null,
-  description: "",
-  startDate: "",
-  endDate: "",
+  description: '',
+  loanName: '',
+  startCurrentAmount: 0,
+  startInitialAmount: 0,
+  startPaidAmount: 0,
+  startDate: '',
+  endDate: '',
+  endCurrentAmount: null,
+  endInitialAmount: null,
+  endPaidAmount: null,
+  memberID: null,
 };
 
+export const paymentsFilterValues: PaymentsFilters = {
+  beneficiaryID: null,
+  checkNumber: '',
+  startDate: '',
+  endDate: '',
+  description: '',
+  startAmount: 0,
+  endAmount: null,
+}
+
 const today = moment().format();
-export const initialLoanValues: CreateLoans = {
-  initialLoanAmount: 0,
-  currentLoanAmount: 0,
+export const initialLoanValues: CreateIncome = {
+  amount: 0,
+  currentDebt: 0,
   paidAmount: 0,
-  creditorID: null,
-  description: "",
+  memberID: null,
+  comment: "",
   date: today,
-  name: null,
+  loanName: null,
 };
 
 export const ValidationLoanPaymentForm = object({

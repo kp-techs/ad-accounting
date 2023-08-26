@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IncomesModal from "./components/incomeModal";
 import DetailsModal from "./components/detailsModal";
 import { FaPlus, FaFilter } from "react-icons/fa";
@@ -25,6 +25,7 @@ function Incomes() {
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE"
   >();
+
 
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);

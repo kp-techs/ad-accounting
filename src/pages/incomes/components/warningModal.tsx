@@ -1,33 +1,32 @@
 import Modal from "react-modal";
 import { FC } from "react";
+import { Income } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
-import useAppData from "../../../hooks/useAppData";
 import styled from "styled-components";
-import { Loans } from "../../../types/models";
 import { customStyles } from "../../../utils/constants";
+import { incomeTypeID } from "../constants";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  loan?: Loans;
+  onConfirm: () => void;
+  income: Income;
+  values: any;
 };
 
-const DeleteLoanModal: FC<Props> = ({ isOpen, onClose, loan }) => {
+const WarningModal: FC<Props> = ({ isOpen, onClose, income, values, onConfirm }) => {
   const { supabase } = useSupabase();
-  const { loadIncomes, loadLoans, loadOuts } = useAppData();
 
-  async function deleteLoan() {
-    if (loan) {
-      await supabase.from("outgoings").delete().eq("loanID", loan.id);
-      await supabase.from("incomes").delete().eq("loanID", loan.id);
-      await supabase.from("loans").delete().eq("id", loan.id);
-      loadLoans();
-      loadOuts();
-      loadIncomes();
-      onClose();
-    }
+  async function handleSubmit() {
+    await supabase.from('incomes').delete().eq('id', income.id);
+
+    if (values.type !== incomeTypeID.tithe) values.memberID = null;
+
+    await supabase.from('incomes').insert({ ...values, currentDebt: 0, paidAmount: 0, status: '', loanName: '' })
+
+    onClose();
+    onConfirm();
   }
-
   return (
     <Modal
       ariaHideApp={false}
@@ -37,16 +36,21 @@ const DeleteLoanModal: FC<Props> = ({ isOpen, onClose, loan }) => {
       contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
-        <h3>¿Seguro que quieres eliminar este registro?</h3>
+        <h3>¡CUIDADO!</h3>
         <p>
-          Este registro se eliminará permanentemente. Esta acción no se puede
-          deshacer.
+          Hay pagos asociados al préstamo <span>"{income.loanName}"</span>, al
+          <br /> cambiar el tipo de ingreso, se borrará definitivamente
+          <br /> todo pago relacionado con este préstamo.
+          <br />
+          ¿Está seguro de que desea continuar?
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
             Cancelar
           </button>
-          <button onClick={deleteLoan}>Confirmar</button>
+          <button className="submit" onClick={handleSubmit}>
+            Confirmar
+          </button>
         </div>
       </Wrapper>
     </Modal>
@@ -60,15 +64,24 @@ const Wrapper = styled.div`
 
   h3 {
     margin: 5px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    
   }
   p {
+    font-size:15px;
     margin: 0;
     margin-bottom: 20px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+  }
+  span {
+    font-style:italic;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
   }
 
   .buttons-container {
     display: flex;
     justify-content: center;
+    grid-area: right;
     gap: 15px;
 
     .cancel {
@@ -96,4 +109,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default DeleteLoanModal;
+export default WarningModal;

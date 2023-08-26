@@ -7,7 +7,9 @@ import Select from "react-select";
 type Props = FieldProps<any> & {
 	table: string;
 	isCreatable?: boolean;
-	isLoan?: boolean;
+	isLoanOut?: boolean;
+	isLoanIncome?: boolean;
+	handleLoanName?: boolean;
 	isMulti?: boolean;
 };
 
@@ -15,21 +17,25 @@ type Option = {
 	label: string;
 	value: number | string;
 };
-function SelectOptions({ form, field, table, isCreatable = true, isLoan = false, isMulti = false }: Props) {
+function SelectOptions({ form, field, table, isCreatable = true, isLoanOut = false, isLoanIncome = false, isMulti = false }: Props) {
 	const { supabase } = useSupabase();
 
 	const [options, setOptions] = useState<Option[]>([]);
 	useEffect(() => {
 		fetchOptions();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	async function fetchOptions() {
-		const { data } = isLoan
-			? await supabase.from(table).select(`*`).gt("currentLoanAmount", 0)
-			: await supabase.from(table).select(`*`);
+		const handleLoanName = isLoanOut || isLoanIncome;
 
-		const mapped = data?.map((item) => ({ label: item.name, value: item.id })) || [];
+		const { data } = isLoanOut
+			? await supabase.from(table).select('*').gt('currentDebt', 0)
+			: isLoanIncome
+				? await supabase.from(table).select().neq('loanName', '')
+				: await supabase.from(table).select(`*`);
+		const mapped = handleLoanName ? (data?.map((item) => ({ label: item.loanName, value: item.id })) || []) : (data?.map((item) => ({ label: item.name, value: item.id })) || [])
 		setOptions(mapped);
 	}
 

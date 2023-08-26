@@ -10,6 +10,7 @@ type Props = {
   id: number;
   tableName: string;
   onSucess: () => void;
+  message?: string;
 };
 
 const DeleteModal: FC<Props> = ({
@@ -18,6 +19,7 @@ const DeleteModal: FC<Props> = ({
   id,
   tableName,
   onSucess,
+  message
 }) => {
   const { supabase } = useSupabase();
 
@@ -38,8 +40,8 @@ const DeleteModal: FC<Props> = ({
       <Wrapper>
         <h3>¿Seguro que quieres eliminar este registro?</h3>
         <p>
-          Este registro se eliminará permanentemente. Esta acción no se puede
-          deshacer.
+          {message || `Este registro se eliminará permanentemente. Esta acción no se puede
+          deshacer.`}
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
@@ -56,13 +58,16 @@ const Wrapper = styled.div`
   width: 450px;
   text-align: center;
   margin: 10px;
-
+  font-family: Poppins, Arial, Helvetica, sans-serif;
+  
   h3 {
     margin: 5px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
   }
   p {
     margin: 0;
     margin-bottom: 20px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
   }
 
   .buttons-container {
