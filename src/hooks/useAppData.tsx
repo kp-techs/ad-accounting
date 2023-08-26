@@ -33,17 +33,18 @@ function useAppData() {
   } = context;
 
   const loadProfile = useCallback(async () => {
+    if (session === undefined) return
     if (session) {
       const data = await fetchProfile(session.user.id);
       setProfile(data);
     } else {
       setProfile(null);
     }
-  }, [session, setProfile]);
+  }, [session])
 
   useEffect(() => {
-    loadProfile();
-  }, [loadProfile]);
+    loadProfile()
+  }, []);
 
   async function loadIncomes(
     page: number = 1,

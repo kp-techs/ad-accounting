@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaRegUserCircle } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
@@ -48,7 +48,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
         </section>
         <section className="side">
           <p className="title">Tipo de egreso</p>
-          <p>{capitalize(outgoing?.outgoingTypes.name || "")}</p>
+          <p>{capitalize(outgoing?.outgoingTypes?.name || "")}</p>
         </section>
         <section className="side">
           <p className="title">
@@ -56,24 +56,31 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
               ? "Acreedor"
               : "Beneficiario"}
           </p>
-          <p>{capitalize(outgoing?.people.name || "")}</p>
+          <p>{capitalize(outgoing?.people?.name || "")}</p>
         </section>
         {outgoing?.type === outgoingTypeID.loan ? (
           <>
             <section className="side">
               <p className="title">Deuda inicial</p>
-              <p>{formatMoney(outgoing?.loans?.initialLoanAmount || null)}</p>
+              <p>{formatMoney(outgoing?.incomes.amount || null)}</p>
             </section>
             <section className="side">
               <p className="title">Deuda restante</p>
-              <p>{formatMoney(outgoing?.loans?.currentLoanAmount || null)}</p>
+              <p>{formatMoney(outgoing?.incomes.currentDebt || null)}</p>
             </section>
             <section className="side">
               <p className="title">Total abonado</p>
-              <p>{formatMoney(outgoing?.loans?.paidAmount || null)}</p>
+              <p>{formatMoney(outgoing?.incomes.paidAmount || null)}</p>
             </section>
           </>
         ) : null}
+
+        {outgoing?.description && (
+          <section className="side">
+            <p className="title">Descripción</p>
+            <p>{capitalize(outgoing?.description || '')}</p>
+          </section>
+        )}
 
         <section className="side">
           <p className="title">Creación</p>
@@ -88,7 +95,6 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           <section className="side">
             <p className="title">Última modificación</p>
             <div className="user-info">
-              <FaRegUserCircle size={30} />
               <p>
                 {capitalize(outgoing?.modifiedBy || "")}.{" "}
                 {formatLongDate(outgoing?.modifiedAt || null)}

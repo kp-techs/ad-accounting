@@ -10,7 +10,7 @@ type UserData = {
 
 type IncomesFilters = {
   type: number[] | null;
-  tithingID: number[] | null;
+  memberID: number[] | null;
   ministryID: number[] | null;
   eventName: string | null;
   comment: string | null;
@@ -29,23 +29,35 @@ type OutgoingsFilters = {
   description: string | null;
   startAmount: number | null;
   endAmount: number | null;
-  loanID: number | null;
+  loanID: number | null | undefined;
 };
 
 type LoansFilters = {
-  startAmount_currentAmount: number | null;
-  endAmount_currentAmount: number | null;
-  startAmount_initialAmount: number | null;
-  endAmount_initialAmount: number | null;
-  startAmount_paidAmount: number | null;
-  endAmount_paidAmount: number | null;
-  loansNameID: number[] | null;
-  creditorID: number[] | null;
   description: string | null;
+  loanName: string | null;
+  startCurrentAmount: number | null;
+  startInitialAmount: number | null;
+  startPaidAmount: number | null;
   startDate: string | null;
   endDate: string | null;
+  endCurrentAmount: number | null;
+  endInitialAmount: number | null;
+  endPaidAmount: number | null;
+  memberID: number[] | null;
 };
 
-type Filters = IncomesFilters | OutgoingsFilters | LoansFilters;
+type PaymentsFilters = {
+  beneficiaryID: number[] | null;
+  checkNumber: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  description: string | null;
+  startAmount: number | null;
+  endAmount: number | null;
+};
 
-type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | "NONE";
+
+
+type Filters = IncomesFilters | OutgoingsFilters | LoansFilters | PaymentsFilters;
+
+type ActivePage = "INCOME" | "OUTGOING" | "REPORTES" | 'LOANS' | "NONE";

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { Outgoing, TableOutgoing } from "../../../types/models";
-import { FC } from "react";
+import { TableIncome, TableOutgoing } from "../../../types/models";
+import { FC, useMemo } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { useSupabase } from "../../../hooks/useSupabase";
 import {
@@ -9,6 +9,7 @@ import {
   initialLoanVersion,
   initialOutgoing,
   outgoingTypeID,
+  outgoingsInitialValues,
 } from "../constants";
 import { FastField, Field, Form, Formik } from "formik";
 import moment from "moment";
@@ -21,7 +22,7 @@ type Props = {
   onClose: () => void;
   outgoing?: TableOutgoing;
   isLoanVersion?: boolean;
-  loanName?: string;
+  income?: TableIncome;
 };
 
 const OutsModal: FC<Props> = ({
@@ -29,10 +30,11 @@ const OutsModal: FC<Props> = ({
   onClose,
   outgoing,
   isLoanVersion = false,
-  loanName,
+  income
 }) => {
   const { loadOuts, profile, loadLoans } = useAppData();
   const { supabase } = useSupabase();
+  const filters = useMemo(() => ({ ...outgoingsInitialValues, loanID: income?.id }), [income])
 
   return (
     <Modal
@@ -58,30 +60,48 @@ const OutsModal: FC<Props> = ({
               delete values.people;
               // @ts-ignore
               delete values.outgoingTypes;
+
+              if (values.type === outgoingTypeID.loan) {
+
+                const x = (outgoing.amount || 0) - (values.amount || 0);
+                const paidAmount = (outgoing.incomes.paidAmount || 0) - x;
+                const current = (outgoing.incomes.amount || 0) - paidAmount;
+                const status = current <= 0 ? "Saldado" : "Pendiente";
+
+                await supabase
+                  .from("incomes")
+                  .update({
+                    paidAmount: paidAmount,
+                    currentDebt: current,
+                    status: status,
+                  })
+                  .eq("id", outgoing.loanID);
+              }
+
+              // @ts-ignore
+              delete values.incomes
+
               await supabase
                 .from("outgoings")
                 .update({ ...values, id: outgoing.id })
                 .eq("id", outgoing.id);
               onClose();
             } else {
+              if (isLoanVersion) values.type = outgoingTypeID.loan;
               if (values.loanID) {
-                const { data: loan } = await supabase
-                  .from("loans")
-                  .select()
-                  .eq("id", values.loanID)
-                  .single();
-                values.beneficiaryID = loan?.creditorID;
-                let status = "Pendiente";
-                if ((loan?.currentLoanAmount || 0) - (values.amount || 0) <= 0)
-                  status = "Saldado";
+                const { data: income } = await supabase.from('incomes').select().eq('id', values.loanID).single();
+                values.beneficiaryID = income?.memberID;
+                const status =
+                  (income?.currentDebt || 0) - (values.amount || 0) <= 0
+                    ? "Saldado"
+                    : "Pendiente";
+
                 await supabase
-                  .from("loans")
+                  .from("incomes")
                   .update({
-                    paidAmount: (loan?.paidAmount || 0) + (values.amount || 0),
-                    currentLoanAmount:
-                      (loan?.currentLoanAmount || 0) - (values.amount || 0),
-                    updateAt: moment().format(),
-                    updateBy: profile?.name,
+                    paidAmount: (income?.paidAmount || 0) + (values.amount || 0),
+                    currentDebt:
+                      (income?.currentDebt || 0) - (values.amount || 0),
                     status: status,
                   })
                   .eq("id", values.loanID);
@@ -92,7 +112,12 @@ const OutsModal: FC<Props> = ({
               await supabase.from("outgoings").insert([values as any]);
             }
             resetForm();
-            loadOuts();
+            if (isLoanVersion && income) {
+              loadOuts(1, 5, filters);
+              loadLoans();
+            } else {
+              loadOuts();
+            }
           }}
         >
           {({ values, errors, touched }) => (
@@ -103,7 +128,7 @@ const OutsModal: FC<Props> = ({
                     <div className="underline">
                       <label>
                         {outgoing
-                          ? `MODIFICAR PAGO: ${loanName}`
+                          ? `MODIFICAR PAGO: ${outgoing.incomes.loanName}`
                           : "AGREGAR PAGO"}
                       </label>
                     </div>
@@ -137,9 +162,9 @@ const OutsModal: FC<Props> = ({
                             component={(props: any) => (
                               <SelectOptions
                                 {...props}
-                                table={"loans"}
+                                table={"incomes"}
                                 isCreatable={false}
-                                isLoan={true}
+                                isLoanOut={true}
                               />
                             )}
                           />

@@ -1,12 +1,14 @@
 import { createClient, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { TableIncome, TableLoans, TableOutgoing } from "../types/models";
+import { TableIncome, TableOutgoing } from "../types/models";
 import { Database } from "../types/supabase";
 import {
   getIncomeFilterString,
   getLoanFilterString,
   getOutgoingFilterString,
+  getPaymentFilterString,
 } from "../utils/helper";
+import { incomeTypeID } from "../pages/incomes/constants";
 
 export const supabase = createClient<Database>(
   process.env.REACT_APP_SUPABASE_URL || "",
@@ -14,7 +16,7 @@ export const supabase = createClient<Database>(
 );
 
 export const useSupabase = () => {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   useEffect(() => {
     supabase.auth.getSession().then((response) => {
@@ -42,7 +44,9 @@ export async function fetchIncomes(
 
   let query = supabase
     .from("incomes")
-    .select(`*, incomeTypes(*), ministries(*),  people(*)`, { count: "exact" })
+    .select(`*, incomeTypes(*), ministries(*),  people(*)`, {
+      count: "exact",
+    })
     .order("date", { ascending: false })
     .range(from, to);
 
@@ -86,7 +90,7 @@ export async function fetchOuts(
 
   let query = supabase
     .from("outgoings")
-    .select(`*, outgoingTypes(*), people(*), loans(*)`, {
+    .select(`*, outgoingTypes(*), people(*), incomes(*)`, {
       count: "exact",
     })
     .order("date", { ascending: false })
@@ -113,12 +117,11 @@ export async function fetchLoans(
   const to = from + size;
 
   let query = supabase
-    .from("loans")
-    .select(`*, people(*), incomes(*)`, {
+    .from("incomes")
+    .select("*, people(*)", {
       count: "exact",
     })
-    .order("date", { ascending: false })
-    .range(from, to);
+    .range(from, to).eq('type', incomeTypeID.loan);
 
   const mappedFilters = getLoanFilterString(filters);
   mappedFilters.forEach((filter) => {
@@ -127,7 +130,35 @@ export async function fetchLoans(
     }
   });
 
-  const { data, count } = await query.returns<TableLoans[]>();
+  const { data, count } = await query.returns<TableIncome[]>();
+
+  return { data: data || [], count: count || 0 };
+}
+
+export async function fetchPayments(
+  page: number,
+  size: number,
+  filters: PaymentsFilters,
+  loanID: number,
+) {
+  const from = (page - 1) * size;
+  const to = from + size;
+
+  let query = supabase
+    .from("outgoings")
+    .select("*", {
+      count: "exact",
+    })
+    .range(from, to).eq('type', incomeTypeID.loan);
+
+  const mappedFilters = getPaymentFilterString(filters);
+  mappedFilters.forEach((filter) => {
+    if (filter) {
+      query = query.or(filter);
+    }
+  });
+
+  const { data, count } = await query.returns<TableOutgoing[]>();
 
   return { data: data || [], count: count || 0 };
 }

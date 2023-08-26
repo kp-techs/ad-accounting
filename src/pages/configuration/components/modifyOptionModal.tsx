@@ -3,12 +3,12 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { useSupabase } from "../../../hooks/useSupabase";
 import { customStyles } from "../../../utils/constants";
-import { Options } from "../../../types/models";
+import { Option } from "../../../types/models";
 
 type Props = {
 	isOpen: boolean;
 	onClose: () => void;
-	option: Options;
+	option: Option;
 	tableName: string;
 	onSucess: () => void;
 };
