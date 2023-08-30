@@ -1,4 +1,4 @@
-import { Auth, ForgottenPassword } from "@supabase/auth-ui-react";
+import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";

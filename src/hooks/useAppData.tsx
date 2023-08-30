@@ -44,7 +44,8 @@ function useAppData() {
 
   useEffect(() => {
     loadProfile()
-  }, []);
+
+  }, [session]);
 
   async function loadIncomes(
     page: number = 1,

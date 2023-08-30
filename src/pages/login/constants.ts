@@ -1,6 +1,5 @@
 export const customVariables = {
   sign_in: {
-    //inicia session
     email_label: undefined,
     password_label: undefined,
     email_input_placeholder: "Usuario",
