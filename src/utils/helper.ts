@@ -229,7 +229,6 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
   });
 
   if (typesStr) mappedFilters.push(typesStr);
-  console.log(mappedFilters)
 
   return mappedFilters;
 }
