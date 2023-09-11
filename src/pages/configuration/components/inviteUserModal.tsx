@@ -23,7 +23,7 @@ const InviteUserModal = ({ isOpen, onClose }: Props) => {
 	const handleInvitation = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		await supabase.auth.admin.inviteUserByEmail(email, {
-			redirectTo: "https://ad-accounting.vercel.app/create-new_user",
+			redirectTo: "https://ad-accounting-delta.vercel.app/create-new_user",
 			data: { role, invitedBy, message }
 		});
 		onClose();

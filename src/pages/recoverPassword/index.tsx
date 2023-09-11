@@ -16,7 +16,7 @@ const RecoverPassword = () => {
 				initialValues={{ email: "" }}
 				onSubmit={async (values) => {
 					const res = await supabase.auth.resetPasswordForEmail(values.email, {
-						redirectTo: "https://ad-accounting.vercel.app/create-new_user"
+						redirectTo: "https://ad-accounting-delta.vercel.app/create-new_user"
 					});
 
 					setLoading(true);
