@@ -132,19 +132,6 @@ function UsersTable() {
                           </div>
                         );
                       })}
-                      <div id="modifyButtons-container">
-                        <div className="button">
-                          <div
-                            className="button"
-                            onClick={() => {
-                              setCurrentUser(user.original);
-                              toggleModal();
-                            }}
-                          >
-                            <SlUserUnfollow size={20} />
-                          </div>
-                        </div>
-                      </div>
                     </tr>
                   </div>
                 );
@@ -322,6 +309,31 @@ const Wrapper = styled.section`
       cursor: pointer;
       gap: 10px;
     }
+  }
+
+  @media only screen and (max-width:700px){
+    span {
+      font-size:14px
+    }
+
+    thead {
+      tr {
+        grid-template-columns: 1fr 2fr 1fr 1fr;
+        th {
+          font-size: 14px;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        grid-template-columns: 1fr 2fr 1fr 1fr;
+td {
+  font-size: 12px;
+}
+      }
+    }
+
   }
 `;
 

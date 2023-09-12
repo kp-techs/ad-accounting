@@ -116,5 +116,25 @@ const Wrapper = styled.div`
     margin:0;
     padding:0;
   }}
+
+  @media only screen and (max-width:700px){
+
+    thead {
+      tr {
+        th {
+          font-size: 14px;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+td {
+  font-size: 12px;
+}
+      }
+    }
+
+  }
 `;
 export default LoanPaymentsModal;

@@ -21,7 +21,7 @@ const usersOption = [
 	},
 	{
 		id: "incomeTypes",
-		name: "Types of Income",
+		name: "Income Types",
 		content: <OptionsTable name="incomeTypes" />
 	},
 	{

@@ -46,6 +46,7 @@ const Wrapper = styled.div`
     gap: 15px;
     height: 60px;
     border-bottom: 1px solid gray;
+    overflow:scroll;
   }
 
   .tab-content {
@@ -65,6 +66,12 @@ const Wrapper = styled.div`
       border-bottom: 2px solid #5a61e6;
       cursor: pointer;
     }
+  }
+
+  @media only screen and (max-width:700px){
+  button {
+    font-size:14px;
+  }
   }
 `;
 export default Tab;
