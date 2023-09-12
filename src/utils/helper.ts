@@ -7,7 +7,7 @@ import "moment/locale/es";
 export function generateConcept({ type, ...income }: TableIncome) {
   try {
     return type === incomeTypeID.tithe
-      ? `Diezmo: ${income.people?.name}`
+      ? `Tithe: ${income.people?.name}`
       : type === incomeTypeID.event
         ? `${income.ministries?.name}: ${income.eventName}`
         : type === incomeTypeID.loan
@@ -20,11 +20,11 @@ export function generateConcept({ type, ...income }: TableIncome) {
 
 export function formatMoney(amount: number | null) {
   if (amount) {
-    const number = new Intl.NumberFormat("es-DO", {
+    const number = new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 2,
       minimumFractionDigits: 2,
     }).format(amount);
-    return `RD$ ${number}`;
+    return `$${number}`;
   }
   return "—";
 }
@@ -36,7 +36,6 @@ export function capitalize(str: string | null) {
 
 export function formatTableDate(date: string | null) {
   if (!date) return "—";
-  moment.locale("es-do");
   const momentDate = moment(date);
   const daysPassed = moment().diff(moment(date, "YYYYMMDD"), "days");
   const yearsPassed = moment().diff(moment(date, "YYYYMMDD"), "year");
@@ -45,31 +44,29 @@ export function formatTableDate(date: string | null) {
     const newDate = momentDate.fromNow();
     return capitalize(newDate);
   } else if (daysPassed === 0) {
-    return "Hoy";
+    return "Today";
   } else if (daysPassed < 7) {
     const day = momentDate.format("dddd");
     return capitalize(day);
   } else if (yearsPassed === 0) {
-    return momentDate.format("D [de] MMMM");
+    return momentDate.format("MMMM Do");
   } else {
-    return momentDate.format("DD/MM/YY");
+    return momentDate.format("L");
   }
 }
 
 export function formatDate(date: string | null) {
-  if (date) return moment(date).format("DD [de] MMMM, YYYY");
+  if (date) return moment(date).format("MMMM Do YYYY");
   return "—";
 }
 
 export function formatLongDate(date: string | null) {
   if (!date) return "—";
-  moment.locale("es");
-  return moment(date).format("DD [de] MMMM YYYY, hh:mm A");
+  return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 }
 
 export function formatRelativeDate(date: string | null) {
   if (!date) return "—";
-  moment.locale("es-do");
   return capitalize(moment(date).fromNow());
 }
 
@@ -140,7 +137,7 @@ export function getCreditorName(income: TableIncome) {
 
 export function getOutgoingDescription(outgoing: TableOutgoing) {
   if (outgoing.type === outgoingTypeID.loan)
-    return `Préstamo: ${outgoing.incomes ? outgoing.incomes.loanName : outgoing.description
+    return `Loan: ${outgoing.incomes ? outgoing.incomes.loanName : outgoing.description
       }`;
   if (outgoing.outgoingTypes)
     return `${outgoing.outgoingTypes.name}${outgoing.description ? `: ${outgoing.description}` : ""

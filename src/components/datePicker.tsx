@@ -1,6 +1,6 @@
 import { FieldProps } from "formik";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import "react-Datepicker/dist/react-Datepicker.css";
 import { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
 registerLocale("es", es);

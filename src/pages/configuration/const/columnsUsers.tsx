@@ -4,23 +4,23 @@ import { capitalize, formatRelativeDate } from "../../../utils/helper";
 
 const colsSchema: Column<User>[] = [
   {
-    Header: "Nombre",
+    Header: "Name",
     accessor: "name",
     // @ts-ignore
     Cell: ({ row }) => capitalize(row.original.name),
   },
   {
-    Header: "Correo",
+    Header: "Email",
     accessor: "email",
   },
   {
-    Header: "Rol",
+    Header: "Role",
     accessor: "role",
     // @ts-ignore
     Cell: ({ row }) => capitalize(row.original.role),
   },
   {
-    Header: "Última sesión",
+    Header: "Last sing in",
     accessor: "last_sign_in_at",
     // @ts-ignore
     Cell: ({ row }) => formatRelativeDate(row.original.last_sign_in_at),

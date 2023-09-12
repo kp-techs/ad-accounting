@@ -12,43 +12,43 @@ function useColumns() {
   const columns = useMemo<Column<TableIncome>[]>(
     () => [
       {
-        Header: "Fecha",
+        Header: "Date",
         accessor: "date",
         // @ts-ignore
         Cell: ({ row }) => formatTableDate(row.original.date),
       },
       {
-        Header: "Nombre",
+        Header: "Loan Name",
         accessor: "loanName",
         // @ts-ignore
         Cell: ({ row }) => capitalize(row.original.loanName),
       },
       {
-        Header: "Acreedor",
+        Header: "Creditor",
         accessor: "memberID",
         // @ts-ignore
         Cell: ({ row }) => getCreditorName(row.original),
       },
       {
-        Header: "Monto Inicial",
+        Header: "Initial Amount",
         accessor: "amount",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.amount),
       },
       {
-        Header: "Restante",
+        Header: "Current Debt",
         accessor: "currentDebt",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.currentDebt),
       },
       {
-        Header: "Monto Pagado",
+        Header: "Paid Amount",
         accessor: "paidAmount",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.paidAmount),
       },
       {
-        Header: "Estado",
+        Header: "Status",
         accessor: "status",
         // @ts-ignore
         Cell: ({ row }) => capitalize(row.original.status),

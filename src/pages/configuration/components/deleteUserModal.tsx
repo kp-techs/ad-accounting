@@ -33,16 +33,15 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
       style={customStyles}
     >
       <Wrapper>
-        <h3>¿Seguro que desea eliminar a {user?.name || "este usuario"}?</h3>
+        <h3>Are you sure you want to delete {user?.name || "this user"}?</h3>
         <p>
-          Este usuario se eliminará permanentemente. Esta acción no se puede
-          deshacer.
+          This user will be deleted immediately. You can't undo this action.
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
-            Cancelar
+            Cancel
           </button>
-          <button onClick={deleteUser}>Confirmar</button>
+          <button onClick={deleteUser}>Delete</button>
         </div>
       </Wrapper>
     </Modal>

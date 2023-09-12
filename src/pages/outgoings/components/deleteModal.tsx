@@ -30,8 +30,8 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
           (income?.paidAmount || 0) - (outgoing.amount || 0);
         let newCurrent = (income?.amount || 0) - newPaidLoanAmount;
 
-        let newStatus = "Pendiente";
-        if (newCurrent <= 0) newStatus = "Saldado";
+        let newStatus = "Outstanding";
+        if (newCurrent <= 0) newStatus = "Paid Off";
 
         await supabase
           .from("incomes")
@@ -58,19 +58,17 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
-        <h3>¿Seguro que quieres eliminar este registro?</h3>
+        <h3>Are you sure you want to delete this record?</h3>
         <p>
-          Este registro se eliminará permanentemente. Esta acción no se puede
-          deshacer.
+          This record will be permanently deleted. This action can not be undone.
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
-            Cancelar
+            Cancel
           </button>
-          <button onClick={deleteOutgoing}>Confirmar</button>
+          <button onClick={deleteOutgoing}>Delete</button>
         </div>
       </Wrapper>
     </Modal>

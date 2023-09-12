@@ -43,9 +43,9 @@ const RolModal: FC<Props> = ({ isOpen, onClose, user, newValue }) => {
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
-            Cancelar
+            Cancel
           </button>
-          <button onClick={switchRol}>Confirmar</button>
+          <button onClick={switchRol}>Confirme</button>
         </div>
       </Wrapper>
     </Modal>

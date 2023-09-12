@@ -42,11 +42,9 @@ const ModifyOptionModal: FC<Props> = ({
 			contentLabel="Formulario para modificar opciones"
 		>
 			<Wrapper>
-				<h3>¿Desea modificar "{option.name}"?</h3>
+				<h3>Are you sure you want to modify {option.name}'s name?</h3>
 				<p>
-					Al modificar este registro, se modicará en todo registro en el que se
-					este utilizando. Si está seguro de proceder, introduzca el nuevo
-					valor:
+				When you modify this registry, it is modified in any registry in which it is used. If you are sure to proceed, enter the new name:
 				</p>
 				<form onSubmit={(e) => e.preventDefault()}>
 					<input
@@ -56,10 +54,10 @@ const ModifyOptionModal: FC<Props> = ({
 							setNewValue(e.target.value);
 						}}
 					/>
-					{error && <label>Debe especificar un nuevo valor</label>}
+					{error && <label>You must specify a new name</label>}
 					<div className="buttons-container">
 						<button className="cancel" onClick={onClose}>
-							Cancelar
+							Cancel
 						</button>
 						<button
 							onClick={() => {
@@ -70,7 +68,7 @@ const ModifyOptionModal: FC<Props> = ({
 								}
 							}}
 						>
-							Confirmar
+							Confirme
 						</button>
 					</div>
 				</form>

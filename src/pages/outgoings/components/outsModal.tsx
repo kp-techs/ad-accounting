@@ -42,7 +42,6 @@ const OutsModal: FC<Props> = ({
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Formulario para registrar los egresos"
     >
       <Wrapper>
         <Formik
@@ -66,7 +65,7 @@ const OutsModal: FC<Props> = ({
                 const x = (outgoing.amount || 0) - (values.amount || 0);
                 const paidAmount = (outgoing.incomes.paidAmount || 0) - x;
                 const current = (outgoing.incomes.amount || 0) - paidAmount;
-                const status = current <= 0 ? "Saldado" : "Pendiente";
+                const status = current <= 0 ? "Paid Off" : "Outstanding";
 
                 await supabase
                   .from("incomes")
@@ -93,8 +92,8 @@ const OutsModal: FC<Props> = ({
                 values.beneficiaryID = income?.memberID;
                 const status =
                   (income?.currentDebt || 0) - (values.amount || 0) <= 0
-                    ? "Saldado"
-                    : "Pendiente";
+                    ? "Paid Off"
+                    : "Outstanding";
 
                 await supabase
                   .from("incomes")
@@ -128,15 +127,15 @@ const OutsModal: FC<Props> = ({
                     <div className="underline">
                       <label>
                         {outgoing
-                          ? `MODIFICAR PAGO: ${outgoing.incomes.loanName}`
-                          : "AGREGAR PAGO"}
+                          ? `MODIFY PAYMENT: ${outgoing.incomes.loanName}`
+                          : "ADD NEW PAYMENT"}
                       </label>
                     </div>
                   ) : (
                     <div className="selectType-container selectOutgoingType underline">
                       <>
                         <div>
-                          <label htmlFor="selectOutgoingType">Tipo</label>
+                          <label htmlFor="selectOutgoingType">Type</label>
                         </div>
                         <FastField
                           id="selectOutgoingType"
@@ -156,7 +155,7 @@ const OutsModal: FC<Props> = ({
                     outgoing ? null : (
                       <div className=" field-line">
                         <div>
-                          <label>Nombre</label>
+                          <label>Name</label>
                           <FastField
                             name="loanID"
                             component={(props: any) => (
@@ -173,7 +172,7 @@ const OutsModal: FC<Props> = ({
                     )
                   ) : (
                     <section className="field-line">
-                      <label htmlFor="beneficiary">Beneficiario</label>
+                      <label htmlFor="beneficiary">Beneficiary</label>
                       <FastField
                         name="beneficiaryID"
                         id="beneficiary"
@@ -191,28 +190,28 @@ const OutsModal: FC<Props> = ({
 
                   <div className="fields-container field-line">
                     <div>
-                      <label>No. Cheque</label>
+                      <label>Check Number</label>
                       <Field name="checkNumber" type="text" className="field" />
                       {errors.checkNumber && touched.checkNumber && (
                         <div style={{ color: "red" }}>{errors.checkNumber}</div>
                       )}
                     </div>
                     <div>
-                      <label htmlFor="description">Descripción</label>
+                      <label htmlFor="description">Description</label>
                       <Field name="description" type="text" className="field" />
                     </div>
                   </div>
 
                   <div className="fields-container field-line">
                     <div>
-                      <label>Fecha</label>
+                      <label>Date</label>
                       <Field name="date" type="date" className="field" />
                       {errors.date && touched.date && (
                         <div style={{ color: "red" }}>{errors.date}</div>
                       )}{" "}
                     </div>
                     <div>
-                      <label>Monto</label>
+                      <label>Amount</label>
                       <Field className="field" name="amount" type="number" />
                       {errors.amount && touched.amount && (
                         <div style={{ color: "red" }}>{errors.amount}</div>
@@ -229,10 +228,10 @@ const OutsModal: FC<Props> = ({
                         initialOutgoing.type = null;
                       }}
                     >
-                      {outgoing ? "Cancelar" : "Cerrar"}
+                      {outgoing ? "Cancel" : "Close"}
                     </button>
                     <button type="submit">
-                      {outgoing ? "Actualizar" : "Guardar"}
+                      {outgoing ? "Update" : "Save"}
                     </button>
                   </div>
                 </div>

@@ -7,9 +7,9 @@ function ErrorPage() {
 		<Wrapper>
 			<div className="container">
 				<h1>404</h1>
-				<h3>Página no encontrada</h3>
-				<p>La página que estas buscando no existe o ha ocurrido un error.</p>
-				<button onClick={()=>navigate('/')}>Volver al Inicio</button>
+				<h3>Page not found</h3>
+				<p>The page requested could not be found.</p>
+				<button onClick={()=>navigate('/')}>Back to home</button>
 				<div className="shapeUp shape">
 					<img src="./assets/images/DottedShape.svg" />
 				</div>

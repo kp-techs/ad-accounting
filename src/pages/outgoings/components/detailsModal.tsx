@@ -32,28 +32,27 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Modal para ver detalles"
     >
       <Wrapper>
         <div className="concept-container">
           <h3>{description}</h3>
         </div>
         <section className="side">
-          <p className="title">Monto</p>
+          <p className="title">Amount</p>
           <p>{formatMoney(outgoing?.amount || null)}</p>
         </section>
         <section className="side">
-          <p className="title">Fecha</p>
+          <p className="title">Date</p>
           <p>{formatDate(outgoing?.date || null)}</p>
         </section>
         <section className="side">
-          <p className="title">Tipo de egreso</p>
+          <p className="title">Type of outgoing</p>
           <p>{capitalize(outgoing?.outgoingTypes?.name || "")}</p>
         </section>
         <section className="side">
           <p className="title">
             {outgoing?.type === outgoingTypeID.loan
-              ? "Acreedor"
+              ? "Creditor"
               : "Beneficiario"}
           </p>
           <p>{capitalize(outgoing?.people?.name || "")}</p>
@@ -61,15 +60,15 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
         {outgoing?.type === outgoingTypeID.loan ? (
           <>
             <section className="side">
-              <p className="title">Deuda inicial</p>
+              <p className="title">Initial Debt</p>
               <p>{formatMoney(outgoing?.incomes.amount || null)}</p>
             </section>
             <section className="side">
-              <p className="title">Deuda restante</p>
+              <p className="title">Current Debt</p>
               <p>{formatMoney(outgoing?.incomes.currentDebt || null)}</p>
             </section>
             <section className="side">
-              <p className="title">Total abonado</p>
+              <p className="title">Paid Amount</p>
               <p>{formatMoney(outgoing?.incomes.paidAmount || null)}</p>
             </section>
           </>
@@ -77,13 +76,13 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
 
         {outgoing?.description && (
           <section className="side">
-            <p className="title">Descripción</p>
+            <p className="title">Description</p>
             <p>{capitalize(outgoing?.description || '')}</p>
           </section>
         )}
 
         <section className="side">
-          <p className="title">Creación</p>
+          <p className="title">Created</p>
           <div className="user-info">
             <p>
               {capitalize(outgoing?.createdBy || "")}.{" "}
@@ -93,7 +92,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
         </section>
         {outgoing?.modifiedAt !== null && (
           <section className="side">
-            <p className="title">Última modificación</p>
+            <p className="title">Last modification</p>
             <div className="user-info">
               <p>
                 {capitalize(outgoing?.modifiedBy || "")}.{" "}

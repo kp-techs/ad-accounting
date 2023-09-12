@@ -4,7 +4,7 @@ import { capitalize } from "../../../utils/helper";
 
 const colsSchema: Column<Option>[] = [
   {
-    Header: "Nombre",
+    Header: "Name",
     accessor: "name",
     // @ts-ignore
     Cell: ({ row }) => capitalize(row.original.name),

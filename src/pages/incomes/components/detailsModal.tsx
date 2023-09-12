@@ -39,11 +39,11 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           <h3>{concept}</h3>
         </div>
         <section className="side">
-          <p className="title">Monto</p>
+          <p className="title">Amount</p>
           <p>{formatMoney(income?.amount || null)}</p>
         </section>
         <section className="side">
-          <p className="title">Fecha</p>
+          <p className="title">Date</p>
           <p>{formatDate(income?.date || null)}</p>
         </section>
         <section className="side">
@@ -52,41 +52,41 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
         </section>
         {income?.type === incomeTypeID.tithe ? (
           <section className="side">
-            <p className="title">Diezmante</p>
+            <p className="title">Tithing</p>
             <p>{capitalize(income.people.name || "")}</p>
           </section>
         ) : income?.type === incomeTypeID.event ? (
           <>
             <section className="side">
-              <p className="title">Ministerio</p>
+              <p className="title">Ministry</p>
               <p>{capitalize(income.ministries.name || "")}</p>
             </section>
             <section className="side">
-              <p className="title">Actividad</p>
-              <p>{capitalize(income?.eventName || "No especificado")}</p>
+              <p className="title">Event Name</p>
+              <p>{capitalize(income?.eventName || "")}</p>
             </section>
           </>
         ) : income?.type === incomeTypeID.loan ? (
           <>
             <section className="side">
-              <p className="title">Nombre</p>
+              <p className="title">Name</p>
               <p>{capitalize(income?.loanName || "")}</p>
             </section>
             <section className="side">
-              <p className="title">Acreedor</p>
+              <p className="title">Creditor</p>
               <p>{capitalize(income?.people.name || "")}</p>
             </section>
           </>
         ) : null}
         {income?.comment && (
           <section className="side">
-            <p className="title">Comentario</p>
+            <p className="title">Comment</p>
             <p>{capitalize(income?.comment || "")}</p>
           </section>
         )}
 
         <section className="side">
-          <p className="title">Creación</p>
+          <p className="title">Created</p>
           <div className="user-info">
 
             <p>
@@ -97,7 +97,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
         </section>
         {income?.updatedDate !== null && (
           <section className="side">
-            <p className="title">Última modificación</p>
+            <p className="title">Last modification</p>
             <div className="user-info">
 
               <p>

@@ -3,7 +3,6 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSupabase } from "../../hooks/useSupabase";
-import { customVariables } from "./constants";
 import RecoverPassword from "../recoverPassword";
 import { useState } from "react";
 
@@ -25,20 +24,17 @@ if (session) navigate("/");
           {forgottenPassword ? 
             <RecoverPassword /> :
             <>
-             <h1>INICIO</h1>
+             <h1>LOGIN</h1>
           <Auth
             supabaseClient={supabase}
             showLinks={false}
             providers={[]}
-            localization={{
-              variables: customVariables,
-            }}
             appearance={{
               theme: ThemeSupa,
               className: { button: "button", input: "input" },
             }}
               />
-              <p className="link" onClick={()=> setForgottenPassword(true)}>¿Olvidó su contraseña?</p>
+              <p className="link" onClick={()=> setForgottenPassword(true)}>Forgot Password?</p>
                 </>
         
         }

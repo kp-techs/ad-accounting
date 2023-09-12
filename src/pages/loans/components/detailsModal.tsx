@@ -24,41 +24,39 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
       ariaHideApp={false}
       isOpen={isOpen}
       onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Modal para ver detalles"
-    >
+      style={customStyles}>
       <Wrapper>
         <div className="concept-container">
           <h3>{capitalize(income.loanName || "")}</h3>
         </div>
 
         <section className="side">
-          <p className="title">Fecha</p>
+          <p className="title">Date</p>
           <p>{formatDate(income.date || "—")}</p>
         </section>
 
         <section className="side">
-          <p className="title">Acreedor</p>
+          <p className="title">Creditor</p>
           <p>{capitalize(income.people.name || "")}</p>
         </section>
 
         <section className="side">
-          <p className="title">Deuda Inicial</p>
+          <p className="title">Initial Amount</p>
           <p>{formatMoney(income.amount || null)}</p>
         </section>
 
         <section className="side">
-          <p className="title">Deuda Restante</p>
+          <p className="title">Current Debt</p>
           <p>{formatMoney(income.currentDebt || null)}</p>
         </section>
 
         <section className="side">
-          <p className="title">Total Pagado</p>
+          <p className="title">Paid Amount</p>
           <p>{formatMoney(income.paidAmount || null)}</p>
         </section>
 
         <section className="side">
-          <p className="title">Creación</p>
+          <p className="title">Created</p>
           <div className="user-info">
             <FaRegUserCircle size={30} />
             <p>
@@ -69,7 +67,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
         </section>
         {income.updatedDate !== null && (
           <section className="side">
-            <p className="title">Última modificación</p>
+            <p className="title">Last modification</p>
             <div className="user-info">
               <FaRegUserCircle size={30} />
               <p>

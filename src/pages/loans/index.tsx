@@ -78,7 +78,7 @@ function Loans() {
             onClick={() => setActiveModal("EDIT/ADD")}
             className={"button nav-button"}
           >
-            <span>Nuevo</span>
+            <span>New</span>
             <FaPlus size={18} />
           </div>
         )}
@@ -87,7 +87,7 @@ function Loans() {
             onClick={() => setActiveModal("PAY")}
             className={"button nav-button"}
           >
-            <span>Pagar</span>
+            <span>Pay</span>
             <MdAttachMoney size={22} />
           </div>
         )}
@@ -97,7 +97,7 @@ function Loans() {
             className={"button nav-button"}
           >
             <FaFilter size={18} />
-            <span>Filtrar </span>
+            <span>Filter </span>
           </div>
         )}
       </nav>
@@ -131,7 +131,7 @@ function Loans() {
           id={activeLoan.id}
           tableName={"incomes"}
           onSucess={onSucess}
-          message="Este préstamo se eliminará permanentemente, y consigo, todo pago que pueda existir asociado al mismo. Esta acción no se puede deshacer."
+          message="This loan will be permanently eliminated, as well as any payment that may exist associated with it. This action cannot be undone."
         />
       )}
 

@@ -77,7 +77,7 @@ function UsersTable() {
                             <td {...cell.getCellProps()}>
                               {cell.render("Cell")}
                             </td>
-                            {cell.column.Header === "Rol" ? (
+                            {cell.column.Header === "Role" ? (
                               <Menu
                                 menuButton={(props) => {
                                   return (
@@ -97,15 +97,15 @@ function UsersTable() {
                                 <MenuItem className="menu-item">
                                   <div
                                     onClick={() => {
-                                      if (cell.value === "Usuario") {
-                                        setNewValue("Administrador");
+                                      if (cell.value === "User") {
+                                        setNewValue("Admin");
                                         setCurrentUser(user.original);
                                         toggleRolModal();
                                       }
                                     }}
                                   >
-                                    Administrador
-                                    {cell.value === "Administrador" ? (
+                                    Admin
+                                    {cell.value === "Admin" ? (
                                       <BsCheck />
                                     ) : null}
                                   </div>
@@ -113,16 +113,16 @@ function UsersTable() {
                                 <MenuItem
                                   className="menu-item"
                                   onClick={() => {
-                                    if (cell.value === "Administrador") {
-                                      setNewValue("Usuario");
+                                    if (cell.value === "Admin") {
+                                      setNewValue("Admin");
                                       setCurrentUser(user.original);
                                       toggleRolModal();
                                     }
                                   }}
                                 >
                                   <div>
-                                    Usuario
-                                    {cell.value === "Usuario" ? (
+                                    User
+                                    {cell.value === "User" ? (
                                       <BsCheck />
                                     ) : null}
                                   </div>
@@ -158,7 +158,7 @@ function UsersTable() {
       <footer>
         <div className="add-button" onClick={toggleModal}>
           <button>
-            <span>Nuevo usuario</span>
+            <span>New User</span>
             <SlUserFollow />
           </button>
         </div>

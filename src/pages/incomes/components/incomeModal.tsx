@@ -45,7 +45,6 @@ const IncomesModal: FC<Props> = ({
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
         <Formik
@@ -74,7 +73,7 @@ const IncomesModal: FC<Props> = ({
               if (values.type === incomeTypeID.loan) {
                 if (values.amount && income.paidAmount) values.currentDebt =
                   values.amount - income.paidAmount;
-                if (values.currentDebt) values.status = (values.currentDebt <= 0) ? 'Saldado' : 'Pendiente';
+                if (values.currentDebt) values.status = (values.currentDebt <= 0) ? 'Paid Off' : 'Outstanding';
               }
 
               await supabase
@@ -113,14 +112,14 @@ const IncomesModal: FC<Props> = ({
                   {isLoanVersion ? (
                     <div className="underline">
                       <label>
-                        {income ? "MODIFICAR PRESTAMO" : "NUEVO PRESTAMO"}
+                        {income ? "MODIFY LOAN" : "NEW LOAN"}
                       </label>
                     </div>
                   ) : (
                     <div className="selectType-container selectIncomeType underline">
                       <>
                         <div>
-                          <label htmlFor="selectIncomeType">Concepto</label>
+                          <label htmlFor="selectIncomeType">Concept</label>
                         </div>
                         <FastField
                           id="selectIncomeType"
@@ -139,7 +138,7 @@ const IncomesModal: FC<Props> = ({
                   )}
                   {values.type === incomeTypeID.tithe ? (
                     <section className="field-line">
-                      <label htmlFor="tithingName">Diezmante</label>
+                      <label htmlFor="tithingName">Tithing</label>
                       <FastField
                         name="memberID"
                         id="tithingName"
@@ -157,20 +156,19 @@ const IncomesModal: FC<Props> = ({
                       className="fields-container field-line"
                     >
                       <div>
-                        <label htmlFor="event-name">Nombre</label>
+                        <label htmlFor="event-name">Name</label>
                         <Field
                           id="event-name"
                           className="field"
                           type="text"
                           name="eventName"
-                          placeholder="Congreso Estruendo"
                         />
                         {errors.eventName && touched.eventName && (
                           <div style={{ color: "red" }}>{errors.eventName}</div>
                         )}
                       </div>
                       <div>
-                        <label htmlFor="ministry-name">Ministerio</label>
+                        <label htmlFor="ministry-name">Ministry</label>
                         <FastField
                           id="ministry-name"
                           type="text"
@@ -189,7 +187,7 @@ const IncomesModal: FC<Props> = ({
                   ) : values.type === incomeTypeID.loan || isLoanVersion ? (
                     <section className="field-line fields-container">
                       <div>
-                        <label htmlFor="loanName">Nombre</label>
+                        <label htmlFor="loanName">Name</label>
                         <Field
                           id="loanName"
                           className="field"
@@ -201,7 +199,7 @@ const IncomesModal: FC<Props> = ({
                         )}
                       </div>
                       <div>
-                        <label htmlFor="memberID">Acreedor</label>
+                        <label htmlFor="memberID">Creditor</label>
                         <FastField
                           type="number"
                           name="memberID"
@@ -218,14 +216,14 @@ const IncomesModal: FC<Props> = ({
 
                   <div className="fields-container field-line">
                     <div>
-                      <label>Fecha</label>
-                      <Field name="date" type="date" className="field" />
+                      <label>Date</label>
+                      <Field name="Date" type="date" className="field" />
                       {errors.date && touched.date && (
                         <div style={{ color: "red" }}>{errors.date}</div>
                       )}
                     </div>
                     <div>
-                      <label>Monto</label>
+                      <label>Amount</label>
                       <Field className="field" name="amount" type="number" />
                       {errors.amount && touched.amount && (
                         <div style={{ color: "red" }}>{errors.amount}</div>
@@ -236,8 +234,8 @@ const IncomesModal: FC<Props> = ({
                   <div className="field-line field-comment">
                     <label htmlFor="comment">
                       {values.type === incomeTypeID.loan
-                        ? "Descripción"
-                        : "Comentario"}
+                        ? "Description"
+                        : "Comment"}
                     </label>
                     <FastField
                       className="comment"
@@ -251,7 +249,7 @@ const IncomesModal: FC<Props> = ({
                   {!income && values.type === incomeTypeID.tithe ? (
                     <div className="toggle">
                       <SwitchButton on={on} onClick={() => setOn(!on)} />
-                      <label>Mantener selección</label>
+                      <label>Keep selection</label>
                     </div>
                   ) : null}
                   <div className="buttons-container">
@@ -262,10 +260,10 @@ const IncomesModal: FC<Props> = ({
                         initialIncome.type = null;
                       }}
                     >
-                      {income ? "Cancelar" : "Cerrar"}
+                      {income ? "Cancel" : "Close"}
                     </button>
                     <button type="submit">
-                      {income ? "Actualizar" : "Guardar"}
+                      {income ? "Update" : "Save"}
                     </button>
                   </div>
                 </div>

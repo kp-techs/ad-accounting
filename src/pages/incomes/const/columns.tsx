@@ -11,7 +11,7 @@ function useColumns() {
   const columns = useMemo<Column<TableIncome>[]>(
     () => [
       {
-        Header: "Fecha",
+        Header: "Date",
         accessor: "date",
         // @ts-ignore
         Cell: ({ row }) => formatTableDate(row.original.date),
@@ -23,7 +23,7 @@ function useColumns() {
         Cell: ({ row }) => generateConcept(row.original),
       },
       {
-        Header: "Monto",
+        Header: "Amount",
         accessor: "amount",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.amount),

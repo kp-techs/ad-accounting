@@ -38,12 +38,12 @@ const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 						<Form>
 							<div className="log-container">
 								<div className="log">
-									<h1>NUEVO USUARIO</h1>
+									<h1>NEW USER</h1>
 									<div className="field-container">
 										<div className="img-container">
 										<img src="assets/images/user-icon.svg" className="input-icon" />
 										</div>
-										<Field required type="text" placeholder="Nombre" name="name" className="user-icon" />
+										<Field required type="text" placeholder="Name" name="name" className="user-icon" />
 									</div>
 
 									<div className="field-container">
@@ -54,7 +54,7 @@ const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 											required
 											autocomplete="new-password"
 											type="password"
-											placeholder="Contraseña"
+											placeholder="Password"
 											name="password"
 											className="password-icon"
 										/>
@@ -67,14 +67,14 @@ const CreateUserForm: FC<Props> = ({ isActive, userInfo, setUserInfo }) => {
 										<Field
 											required
 											type="password"
-											placeholder="Repetir contraseña"
+											placeholder="Confirme password"
 											name="confirmPassword"
 											className="password-icon"
 										/>
 									</div>
 
 									<div className="button-container">
-										<button type='submit' className="button">Guardar</button>
+										<button type='submit' className="button">Save</button>
 									</div>
 									
 									<div className="errors">

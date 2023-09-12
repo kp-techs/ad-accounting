@@ -4,8 +4,6 @@ import SelectOptions from "../../../components/selectOptions";
 import { FastField, Field, Form, Formik } from "formik";
 import { filterInitialValues, incomeTypeID } from "../constants";
 import { GrFormClose } from "react-icons/gr";
-import useAppData from "../../../hooks/useAppData";
-
 
 type Props = {
   isActive: boolean;
@@ -41,7 +39,7 @@ const FilterSection: FC<Props> = ({
               <section className="container">
                 <div className="slide-container">
                   <div className="field-title">
-                    <label htmlFor="selectIncomeType">Tipo de ingreso</label>
+                    <label htmlFor="selectIncomeType">Type of Income</label>
                   </div>
                   <div className="select">
                     <FastField
@@ -59,7 +57,7 @@ const FilterSection: FC<Props> = ({
                   </div>
                   {values.type?.includes(incomeTypeID.tithe) ? (
                     <section>
-                      <label htmlFor="tithing-name">Diezmante</label>
+                      <label htmlFor="tithing-name">Tithing</label>
                       <div className="select">
                         <FastField
                           name="memberID"
@@ -82,7 +80,7 @@ const FilterSection: FC<Props> = ({
                       className="field-container double-field"
                     >
                       <div>
-                        <label htmlFor="event-name">Nombre</label>
+                        <label htmlFor="event-name">Name</label>
                         <Field
                           id="event-name"
                           className="field"
@@ -92,7 +90,7 @@ const FilterSection: FC<Props> = ({
                         />
                       </div>
                       <div>
-                        <label htmlFor="event-name">Ministerio</label>
+                        <label htmlFor="event-name">Ministry</label>
                         <div className="select">
                           <FastField
                             id="ministery-name"
@@ -115,13 +113,13 @@ const FilterSection: FC<Props> = ({
 
                 <div className="slide-container">
                   <div className="field-title">
-                    <label>Rango de fecha</label>
+                    <label>Date range</label>
                   </div>
 
                   <div className="fields-container double-field">
                     <div className="field-container">
                       <Field
-                        title="Fecha inicial"
+                        title="Initial Date"
                         name="startDate"
                         type="date"
                         className="field"
@@ -129,7 +127,7 @@ const FilterSection: FC<Props> = ({
                     </div>
                     <div className="field-container">
                       <Field
-                        title="Fecha final"
+                        title="Date final"
                         name="endDate"
                         type="date"
                         className="field"
@@ -140,12 +138,12 @@ const FilterSection: FC<Props> = ({
 
                 <div className="slide-container">
                   <div className="field-title">
-                    <label>Rango de monto</label>
+                    <label>Amount range</label>
                   </div>
                   <div className="fields-container double-field">
                     <div className="field-container">
                       <Field
-                        title="Monto inicial"
+                        title="Initial amount"
                         name="startAmount"
                         type="number"
                         className="field"
@@ -153,7 +151,7 @@ const FilterSection: FC<Props> = ({
                     </div>
                     <div className="field-container">
                       <Field
-                        title="Monto final"
+                        title="End amount"
                         name="endAmount"
                         type="number"
                         className="field"
@@ -165,14 +163,14 @@ const FilterSection: FC<Props> = ({
 
                 <div className="slide-container">
                   <div className="field-title">
-                    <label htmlFor="comment">Comentario</label>
+                    <label htmlFor="comment">Comment</label>
                   </div>
                   <Field className="field" name="comment" type="text" />
                 </div>
               </section>
               <div className="buttons-container">
-                <button type="submit">Aplicar</button>
-                <button type="reset">Limpiar</button>
+                <button type="submit">Apply</button>
+                <button type="reset">Clean</button>
               </div>
             </Form>
           )}

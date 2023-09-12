@@ -25,7 +25,6 @@ const LoanPaymentsModal: FC<Props> = ({ isOpen, income, onClose }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
         <div className="close">
@@ -34,19 +33,19 @@ const LoanPaymentsModal: FC<Props> = ({ isOpen, income, onClose }) => {
           </button>
         </div>
         <div className="title">
-          <label>HISTORIAL DE PAGOS</label>
+          <label>PAYMENTS</label>
         </div>
         <OutgoingsTable filters={filters} isLoanVersion={true} />
         <section className="creation-data">
           <p>
-            Registro creado por {capitalize(income.createdBy)}. <br />
-            El {formatLongDate(income.createdDate)}
+          Record created by {capitalize(income.createdBy)}. <br />
+{formatLongDate(income.createdDate)}
           </p>
           {income.updatedDate && (
             <p>
-              Actualizado por úlima vez por {capitalize(income.updatedBy)}.{" "}
+              Last time updated by {capitalize(income.updatedBy)}.{" "}
               <br />
-              El {formatLongDate(income.updatedDate)}
+              {formatLongDate(income.updatedDate)}
             </p>
           )}
         </section>

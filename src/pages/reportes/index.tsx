@@ -3,7 +3,7 @@ import styled from "styled-components";
 function Reporte() {
   return (
     <Wrapper>
-      <h1>Página para desplegar reportes</h1>
+      <h1>No available</h1>
     </Wrapper>
   );
 }

@@ -30,15 +30,14 @@ const RecoverPassword = () => {
 			>
 				<Form>
 					<div className="log">
-						<h1 className="title">¿Olvidó su contraseña?</h1>
+						<h1 className="title">Forgot Password?</h1>
 						<div className="text-container">
 							<p>
 								{submitted
-									? `El correo de reestablecer contraseña ya ha sido enviado. 
-                    Si aún no ha recibido ningún correo, revise en Spam o verifique el correo introducido, y envíe de nuevo.`
-									: `No se preocupe, suele pasar. Por favor, ingrese su dirección de correo electrónico. 
-                    A la mayor brevedad, le enviaremos un correo para que pueda reestablecer su contraseña.`}
-							</p>
+						? `The reset password email has already been sent.
+						If you have not received any email yet, check spam or verify the email entered, and send again.`
+:`Don't worry, it usually happens. Please enter your email address.
+						And a email will be sent, so you can reset your password.`}</p>
 						</div>
 
 						<div className="field-container">
@@ -46,7 +45,7 @@ const RecoverPassword = () => {
 								<img src="assets/images/email.svg" className="input-icon" />
 							</div>
 
-							<Field required type="email" placeholder="Correo electrónico" name="email" />
+							<Field required type="email" placeholder="email" name="email" />
 						</div>
 
 						<div className="button-container">
@@ -54,13 +53,13 @@ const RecoverPassword = () => {
 								{isLoading ? (
 									<img className="loading" src="assets/images/preloader.gif" />
 								) : submitted ? (
-									"Enviar otra vez"
+									"Send again"
 								) : (
-									"Enviar enlace"
+									"Send link"
 								)}
 							</button>
 							<button className="button" onClick={() => navigate("/")}>
-								Cancelar
+								Cancel
 							</button>
 						</div>
 					</div>

@@ -6,27 +6,27 @@ import UsersTable from "./components/usersTable";
 const usersOption = [
 	{
 		id: "users",
-		name: "Usuarios",
+		name: "Users",
 		content: <UsersTable />
 	},
 	{
 		id: "members",
-		name: "Miembros",
+		name: "Members",
 		content: <OptionsTable name="people" />
 	},
 	{
 		id: "ministries",
-		name: "Ministerios",
+		name: "Ministries",
 		content: <OptionsTable name="ministries" />
 	},
 	{
 		id: "incomeTypes",
-		name: "Tipos de ingresos",
+		name: "Types of Income",
 		content: <OptionsTable name="incomeTypes" />
 	},
 	{
 		id: "outgoingTypes",
-		name: "Tipo de egresos",
+		name: "Types of Outgoings",
 		content: <OptionsTable name="outgoingTypes" />
 	}
 ];

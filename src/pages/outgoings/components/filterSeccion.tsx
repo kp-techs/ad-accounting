@@ -38,7 +38,7 @@ const FilterSection: FC<Props> = ({
               <section className="container">
                 <div className="slide-container">
                   <div className="field-title">
-                    <label htmlFor="selectType">Tipo de egreso</label>
+                    <label htmlFor="selectType">Type of outgoing</label>
                   </div>
                   <div className="select">
                     <FastField
@@ -58,13 +58,13 @@ const FilterSection: FC<Props> = ({
 
                 <div className="slide-container">
                   <div className="field-title">
-                    <label>Rango de fecha</label>
+                    <label>Date Range</label>
                   </div>
 
                   <div className="fields-container double-field">
                     <div className="field-container">
                       <Field
-                        title="Fecha inicial"
+                        title="Start Date"
                         name="startDate"
                         type="date"
                         className="field"
@@ -72,7 +72,7 @@ const FilterSection: FC<Props> = ({
                     </div>
                     <div className="field-container">
                       <Field
-                        title="Fecha final"
+                        title="End Date"
                         name="endDate"
                         type="date"
                         className="field"
@@ -83,7 +83,7 @@ const FilterSection: FC<Props> = ({
 
                 <div className="slide-container">
                   <div className="field-title">
-                    <label>Rango de monto</label>
+                    <label>Amount Range</label>
                   </div>
                   <div className="fields-container double-field">
                     <div className="field-container">
@@ -108,14 +108,14 @@ const FilterSection: FC<Props> = ({
 
                 <div className="slide-container">
                   <div className="field-title">
-                    <label htmlFor="description">Descripción</label>
+                    <label htmlFor="description">Description</label>
                   </div>
                   <Field className="field" name="description" type="text" />
                 </div>
               </section>
               <div className="buttons-container">
-                <button type="submit">Aplicar</button>
-                <button type="reset">Limpiar</button>
+                <button type="submit">Apply</button>
+                <button type="reset">Clean</button>
               </div>
             </Form>
           )}

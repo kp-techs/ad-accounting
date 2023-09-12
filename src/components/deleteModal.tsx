@@ -40,14 +40,13 @@ const DeleteModal: FC<Props> = ({
       <Wrapper>
         <h3>¿Seguro que quieres eliminar este registro?</h3>
         <p>
-          {message || `Este registro se eliminará permanentemente. Esta acción no se puede
-          deshacer.`}
+          {message || `This record will be permanently deleted. This action can not be undone.`}
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
-            Cancelar
+            Cancel
           </button>
-          <button onClick={deleteItem}>Confirmar</button>
+          <button onClick={deleteItem}>Confirme</button>
         </div>
       </Wrapper>
     </Modal>

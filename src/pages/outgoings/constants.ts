@@ -48,17 +48,17 @@ export const initialLoanVersion: CreateOutgoing = {
 };
 
 export const ValidationOutgoingForm = object({
-  date: date().required("Favor especificar la fecha"),
+  date: date().required("Must specify the date"),
   amount: number()
-    .min(1, "Favor especificar el monto")
-    .required("Favor especificar el monto"),
-  type: number().required("Favor especificar el tipo de egreso"),
+    .min(1, "Must specify the amount")
+    .required("Must specify the amount"),
+  type: number().required("Must specify the outgoing's type"),
   beneficiaryID: number()
     .nullable()
     .when("type", {
       is: !outgoingTypeID.loan,
       then: () =>
-        number().required("Favor especificar el nombre del beneficiario"),
+        number().required("Must specify the beneficiary's name"),
     }),
-  checkNumber: string().required("Favor especificar el número de cheque"),
+  checkNumber: string().required("Must specify the check's number"),
 });

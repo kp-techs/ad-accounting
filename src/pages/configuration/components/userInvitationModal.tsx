@@ -34,41 +34,41 @@ const UserInvitationModal = ({ isOpen, onClose }: Props) => {
 				<div>
 					<form className="form-widget" onSubmit={handleInvitation}>
 						<div className="head-modal">
-							<h3>Invitar usuario</h3>
+							<h3>Invite a new user</h3>
 						</div>
 						<section className="body-modal">
 							<div className="form-field">
-								<label htmlFor="email">Correo</label>
+								<label htmlFor="email">Email</label>
 								<input
 									id="email"
 									type="email"
-									placeholder="Correo Electronico"
+									placeholder="email"
 									required={true}
 									onChange={(e) => setEmail(e.target.value)}
 								/>
 							</div>
 							<div className="form-field">
-								<label>Rol</label>
+								<label>Role</label>
 								<select
 									onChange={(e) => {
 										setRole(e.target.value);
 									}}
 								>
-									<option value="Usuario">Usuario</option>
-									<option value="Administrador">Administrador</option>
+									<option value="User">User</option>
+									<option value="Admin">Admin</option>
 								</select>
 							</div>
 							<div className="form-field">
-								<label>Mensaje</label>
+								<label>Message</label>
 								<textarea
-									placeholder="Personalizar mensaje de invitación"
+									placeholder="Customize invitation message"
 									onChange={(e) => setMessage(e.target.value)}
 								/>
 							</div>
 						</section>
 						<div className="foo-modal">
-							<button>Cancelar</button>
-							<button>Enviar</button>
+							<button>Cancel</button>
+							<button>Send</button>
 						</div>
 					</form>
 				</div>

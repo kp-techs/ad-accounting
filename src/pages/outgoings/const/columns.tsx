@@ -12,29 +12,29 @@ function useColumns() {
   const columns = useMemo<Column<TableOutgoing>[]>(
     () => [
       {
-        Header: "Fecha",
+        Header: "Date",
         accessor: "date",
         // @ts-ignore
         Cell: ({ row }) => formatTableDate(row.original.date),
       },
       {
-        Header: "Cheque",
+        Header: "Check Number",
         accessor: "checkNumber",
       },
       {
-        Header: "Beneficiario",
+        Header: "Beneficiary",
         accessor: "beneficiaryID",
         // @ts-ignore
         Cell: ({ row }) => getBeneficiaryName(row.original),
       },
       {
-        Header: "Descripción",
+        Header: "Description",
         accessor: "description",
         // @ts-ignore
         Cell: ({ row }) => getOutgoingDescription(row.original),
       },
       {
-        Header: "Monto",
+        Header: "Amount",
         accessor: "amount",
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.amount),

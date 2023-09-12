@@ -40,9 +40,9 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
         </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
-            Cancelar
+            Cancel
           </button>
-          <button onClick={deleteUser}>Confirmar</button>
+          <button onClick={deleteUser}>Confirme</button>
         </div>
       </Wrapper>
     </Modal>

@@ -44,15 +44,15 @@ function Home() {
       </section>
       <section className="resumen">
         <div className="shortcut" onClick={() => navigate('/incomes')}>
-          <p className="title">INGRESOS</p>
+          <p className="title">INCOMES</p>
           <p>{totalValues.income}</p>
         </div>
         <div className="shortcut" onClick={() => navigate('/outgoings')}>
-          <p className="title">EGRESOS</p>
+          <p className="title">OUTGOINGS</p>
           <p>{totalValues.outgoing}</p>
         </div>
         <div className="shortcut" onClick={() => navigate('/loans')}>
-          <p className="title">PRESTAMOS</p>
+          <p className="title">LOANS</p>
           <p>{totalValues.loan}</p>
         </div>
         <div>
@@ -61,7 +61,7 @@ function Home() {
         </div>
       </section>
       <section className="chart-container">
-        <p>Las gráficas aún no están disponibles.</p>
+        <p>Charts not availables.</p>
       </section>
     </Wrapper>
   );

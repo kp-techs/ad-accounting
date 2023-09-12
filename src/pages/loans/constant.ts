@@ -38,17 +38,17 @@ export const initialLoanValues: CreateIncome = {
 };
 
 export const ValidationLoanPaymentForm = object({
-  date: date().required("Favor especificar la fecha"),
+  date: date().required("Must specify the date"),
   amount: number()
-    .min(1, "Favor especificar el monto")
-    .required("Favor especificar el monto"),
+    .min(1, "Must specify the amount")
+    .required("Must specify the amount"),
 });
 
 export const ValidationLoanForm = object({
-  name: string().required("Favor especificar el nombre del préstamo"),
-  date: date().required("Favor especificar la fecha"),
+  name: string().required("Must specify the loan's name"),
+  date: date().required("Must specify the date"),
   initialLoanAmount: number()
-    .min(1, "Favor especificar el monto")
-    .required("Favor especificar el monto"),
-  creditorID: number().required("Favor especificar acreedor"),
+    .min(1, "Must specify the amount")
+    .required("Must specify the amount"),
+  creditorID: number().required("Must specify the creditor name"),
 });

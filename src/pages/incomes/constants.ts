@@ -57,41 +57,41 @@ export const filterInitialValues: IncomesFilters = {
 };
 
 export const ValidationIncomeForm = object({
-  date: date().required("Favor especificar la fecha"),
+  date: date().required("Must specify the date"),
   amount: number()
-    .min(1, "Favor especificar el monto")
-    .required("Favor especificar el monto"),
-  type: number().required("Favor especificar el tipo de ingreso"),
+    .min(1, "Must specify the amount")
+    .required("Must specify the amount"),
+  type: number().required("Must specify the income's type"),
   memberID: number()
     .nullable()
     .when("type", {
       is: incomeTypeID.tithe,
-      then: () => number().required("Favor especificar el nombre del miembro"),
+      then: () => number().required("Must specify the member's name"),
     }),
   ministryID: number()
     .nullable()
     .when("type", {
       is: incomeTypeID.event,
       then: () =>
-        number().required("Favor especificar el nombre del ministerio"),
+        number().required("Must specify the ministry's name"),
     }),
   eventName: string().when("type", {
     is: incomeTypeID.event,
-    then: () => string().required("Favor especificar el nombre del evento"),
+    then: () => string().required("Must specify the event's name"),
   }),
   loanName: string().when("type", {
     is: incomeTypeID.loan,
-    then: () => string().required("Favor especificar el nombre del préstamo"),
+    then: () => string().required("Must specify the loan's name"),
   }),
 });
 
 export const ValidationLoanVersionForm = object({
-  date: date().required("Favor especificar la fecha"),
+  date: date().required("Must specify the date"),
   amount: number()
-    .min(1, "Favor especificar el monto")
-    .required("Favor especificar el monto"),
+    .min(1, "Must specify the amount")
+    .required("Must specify the amount"),
   loanName: string().when("type", {
     is: incomeTypeID.loan,
-    then: () => string().required("Favor especificar el nombre del préstamo"),
+    then: () => string().required("Must specify the loan's name"),
   }),
 });

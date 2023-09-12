@@ -33,12 +33,12 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 							<section className="container">
 								<div className="slide-container">
 									<div className="field-title">
-										<label className="title">Préstamo</label>
+										<label className="title">LOAN</label>
 									</div>
 
 									<div className="fields-container double-field">
 										<div className="field-container">
-											<label htmlFor="loanName" className="text">Nombre</label>
+											<label htmlFor="loanName" className="text">Name</label>
 											<div className="select">
 												<FastField
 													name="loanName"
@@ -50,7 +50,7 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 										</div>
 
 										<div className="field-container">
-											<label htmlFor="memberID" className="text">Acreedor</label>
+											<label htmlFor="memberID" className="text">Creditor</label>
 											<div className="select">
 												<FastField
 													name="memberID"
@@ -65,31 +65,31 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 
 								<div className="slide-container">
 									<div className="field-title">
-										<label className="title">Fecha</label>
+										<label className="title">Date</label>
 									</div>
 									<div className="fields-container double-field">
 										<div className="field-container">
-											<label className="text">Desde</label>
-											<Field title="Fecha inicial" name="startDate" type="date" className="field" />
+											<label className="text">Since</label>
+											<Field title="Date inicial" name="startDate" type="date" className="field" />
 										</div>
 										<div className="field-container">
-											<label className="text">Hasta</label>
-											<Field title="Fecha final" name="endDate" type="date" className="field" />
+											<label className="text">Until</label>
+											<Field title="Date final" name="endDate" type="date" className="field" />
 										</div>
 									</div>
 								</div>
 
 								<div className="slide-container">
 									<div className="field-title">
-										<label className="title">Monto Inicial</label>
+										<label className="title">Initial Amount</label>
 									</div>
 									<div className="fields-container double-field">
 										<div className="field-container double-field">
-											<label className="text">Desde</label>
+											<label className="text">Since</label>
 											<Field name="startInitialAmount" type="number" className="field" />
 										</div>
 										<div className="field-container">
-											<label className="text">Hasta</label>
+											<label className="text">Until</label>
 											<Field
 												name="endInitialAmount"
 												type="number"
@@ -102,15 +102,15 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 
 								<div className="slide-container">
 									<div className="field-title">
-										<label className="title">Monto Adeudado</label>
+										<label className="title">Current Amount</label>
 									</div>
 									<div className="fields-container double-field">
 										<div className="field-container">
-											<label className="text">Desde</label>
+											<label className="text">Since</label>
 											<Field name="startCurrentAmount" type="number" className="field" />
 										</div>
 										<div className="field-container">
-											<label className="text">Hasta</label>
+											<label className="text">Until</label>
 											<Field
 												name="endCurrentAmount"
 												type="number"
@@ -123,15 +123,15 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 
 								<div className="slide-container">
 									<div className="field-title">
-										<label className="title">Monto Pagado</label>
+										<label className="title">Paid Amount</label>
 									</div>
 									<div className="fields-container double-field">
 										<div className="field-container">
-											<label className="text">Desde</label>
+											<label className="text">Since</label>
 											<Field name="startPaidAmount" type="number" className="field" />
 										</div>
 										<div className="field-container">
-											<label className="text">Hasta</label>
+											<label className="text">Until</label>
 											<Field
 												name="endPaidAmount"
 												type="number"
@@ -144,8 +144,8 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 
 							</section>
 							<div className="buttons-container">
-								<button type="submit">Aplicar</button>
-								<button type="reset">Limpiar</button>
+								<button type="submit">Apply</button>
+								<button type="reset">Clean</button>
 							</div>
 							<div className="separation-line" />
 						</Form>

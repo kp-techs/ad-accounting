@@ -33,23 +33,21 @@ const WarningModal: FC<Props> = ({ isOpen, onClose, income, values, onConfirm })
       isOpen={isOpen}
       onRequestClose={onClose}
       style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
-        <h3>¡CUIDADO!</h3>
+        <h3>WARNING!</h3>
         <p>
-          Hay pagos asociados al préstamo <span>"{income.loanName}"</span>, al
-          <br /> cambiar el tipo de ingreso, se borrará definitivamente
-          <br /> todo pago relacionado con este préstamo.
+          There are payments associated with the <span>"{income.loanName}"</span>, 
+          <br /> if you change the type of income, all payments related
+          <br /> to this loan will be definitively eliminated.
           <br />
-          ¿Está seguro de que desea continuar?
-        </p>
+          Are you sure you want to continue? </p>
         <div className="buttons-container">
           <button className="cancel" onClick={onClose}>
-            Cancelar
+            Cancel
           </button>
           <button className="submit" onClick={handleSubmit}>
-            Confirmar
+            Confirme
           </button>
         </div>
       </Wrapper>

@@ -25,7 +25,7 @@ function Outgoings() {
             className={"button nav-button"}
           >
             <FaPlus size={20} />
-            <span>Agregar</span>
+            <span>Add</span>
           </div>
         )}
         {(activeAction === "FILTER" || !activeAction) && (
@@ -34,7 +34,7 @@ function Outgoings() {
             className={"button nav-button"}
           >
             <FaFilter size={20} />
-            <span>Filtrar </span>
+            <span>Filter </span>
           </div>
         )}
       </nav>
