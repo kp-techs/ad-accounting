@@ -217,7 +217,7 @@ const IncomesModal: FC<Props> = ({
                   <div className="fields-container field-line">
                     <div>
                       <label>Date</label>
-                      <Field name="Date" type="date" className="field" />
+                      <Field name="date" type="date" className="field" />
                       {errors.date && touched.date && (
                         <div style={{ color: "red" }}>{errors.date}</div>
                       )}
