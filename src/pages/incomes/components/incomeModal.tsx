@@ -262,7 +262,9 @@ const IncomesModal: FC<Props> = ({
                     >
                       {income ? "Cancel" : "Close"}
                     </button>
-                    <button type="submit">
+                    <button type="submit" onClick={()=>{
+                      console.log(errors)
+                    }}>
                       {income ? "Update" : "Save"}
                     </button>
                   </div>
@@ -394,6 +396,16 @@ const Wrapper = styled.div`
     grid-template: "left right" 25px/1fr;
     padding: 5px;
     height: 40px;
+  }
+
+  @media only screen and (max-width:700px){ 
+    width: 100vw;
+
+    button {
+      font-size: 12px;
+      width: 30px;
+      height: 10px;
+    }
   }
     `;
 

@@ -102,6 +102,16 @@ const Wrapper = styled.section`
   .table-wrapper {
     overflow: hidden;
   }
+
+  @media only screen and (max-width:700px){ 
+    span {
+      display:none;
+    }
+     nav {
+      gap:5px;
+      height:30px
+     }
+  }
 `;
 
 export default Outgoings;

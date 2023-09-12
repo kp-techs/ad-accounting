@@ -91,5 +91,6 @@ const Wrapper = styled.div`
       }
     }
   }
+
 `;
 export default DeleteUserModal;

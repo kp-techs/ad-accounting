@@ -222,6 +222,26 @@ const Wrapper = styled.section`
   .line {
     border-bottom: 1px solid #fff;
   }
+
+  @media only screen and (max-width:700px){
+
+    thead {
+      tr {
+        th {
+          font-size: 14px;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+td {
+  font-size: 12px;
+}
+      }
+    }
+
+  }
 `;
 
 export default Table;

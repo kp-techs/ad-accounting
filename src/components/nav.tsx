@@ -6,9 +6,7 @@ import { Link } from "react-router-dom";
 
 function Nav() {
 	const location = useLocation();
-
 	const { profile } = useAppData();
-
 	useEffect(() => {}, [location]);
 
 	return (
@@ -102,8 +100,6 @@ const Wrapper = styled.div`
 	box-sizing: border-box;
 	gap: 80px;
 	flex-direction: row;
-	height: 100%;
-	width: 100%;
 	margin: 0;
 
 	a {

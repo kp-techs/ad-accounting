@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSupabase } from "../../hooks/useSupabase";
 import RecoverPassword from "../recoverPassword";
 import { useState } from "react";
+import { customVariables } from "./constants";
 
 function Login() {
 
@@ -29,6 +30,9 @@ if (session) navigate("/");
             supabaseClient={supabase}
             showLinks={false}
             providers={[]}
+            localization={{
+              variables: customVariables,
+            }}
             appearance={{
               theme: ThemeSupa,
               className: { button: "button", input: "input" },

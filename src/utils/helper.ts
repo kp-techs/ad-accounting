@@ -20,11 +20,11 @@ export function generateConcept({ type, ...income }: TableIncome) {
 
 export function formatMoney(amount: number | null) {
   if (amount) {
-    const number = new Intl.NumberFormat("en-IN", {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 2,
+    const number = new Intl.NumberFormat("en-US", {
+      style: 'currency',
+      currency: 'USD',
     }).format(amount);
-    return `$${number}`;
+    return `${number}`;
   }
   return "—";
 }
@@ -49,7 +49,7 @@ export function formatTableDate(date: string | null) {
     const day = momentDate.format("dddd");
     return capitalize(day);
   } else if (yearsPassed === 0) {
-    return momentDate.format("MMMM Do");
+    return capitalize(momentDate.format("MMMM Do"));
   } else {
     return momentDate.format("L");
   }

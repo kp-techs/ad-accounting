@@ -36,12 +36,11 @@ function App() {
 const Wrapper = styled.div`
   display: grid;
   grid-template:
-    "header" 170px
-    "content" 1fr / 1fr;
+    "header" auto
+    "content" 1fr / auto;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 10px);
   box-sizing: border-box;
-  background-image: url(assets/images/imagen-fondo.png);
 `;
 
 export default App;

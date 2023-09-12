@@ -39,7 +39,7 @@ function Home() {
   return (
     <Wrapper>
       <section className="top-container">
-        <p>¡Hola, {profile?.name || 'bienvenido devuelta'}!</p>
+        <p>Hi, {profile?.name || 'welcome back'}!</p>
         <div className="separation-line" />
       </section>
       <section className="resumen">
@@ -121,6 +121,29 @@ font-family: Poppins;
       cursor: pointer
     }
 	}
+
+  @media only screen and (max-width:700px){
+    p {
+      font-size: 12px;
+    }
+    .resumen {
+      display: grid;
+      grid-template: repeat(2, 1fr) auto/ auto ;
+      gap: 20px;
+      
+      div {
+    .title {
+      font-size: 10px;
+      font-weight: normal;
+    }
+    p {
+      margin: 0;
+      font-size: 12px;
+      font-weight: bold;
+    }}
+    }
+
+  }
 `;
 
 export default Home;

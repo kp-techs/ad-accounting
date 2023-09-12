@@ -57,7 +57,7 @@ export const filterInitialValues: IncomesFilters = {
 };
 
 export const ValidationIncomeForm = object({
-  date: date().required("Must specify the date"),
+  date: date().required("Must specify the date."),
   amount: number()
     .min(1, "Must specify the amount")
     .required("Must specify the amount"),

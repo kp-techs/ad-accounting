@@ -263,6 +263,11 @@ const Wrapper = styled.section`
 		margin: 0;
 		padding: 0;
 	}
+	@media only screen and (max-width:700px){ 
+		.container {
+		  flex-direction: column;
+		}
+	 }
 `;
 
 export default FilterSection;

@@ -272,6 +272,12 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  @media only screen and (max-width:700px){ 
+    .container {
+      flex-direction: column;
+    }
+  }
 `;
 
 export default FilterSection;
