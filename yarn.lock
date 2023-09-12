@@ -2380,7 +2380,7 @@
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/react" "*"
-    Date-fns "^2.0.1"
+    date-fns "^2.0.1"
     react-popper "^2.2.5"
 
 "@types/react-dom@^18.0.0", "@types/react-dom@^18.2.4":
@@ -4022,9 +4022,9 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-Date-fns@^2.0.1, Date-fns@^2.30.0:
+date-fns@^2.0.1, date-fns@^2.30.0:
   version "2.30.0"
-  resolved "https://registry.yarnpkg.com/Date-fns/-/Date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
   integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
   dependencies:
     "@babel/runtime" "^7.21.0"
@@ -4071,7 +4071,7 @@ deep-equal@^2.0.5:
     get-intrinsic "^1.2.1"
     is-arguments "^1.1.1"
     is-array-buffer "^3.0.2"
-    is-Date-object "^1.0.5"
+    is-date-object "^1.0.5"
     is-regex "^1.1.4"
     is-shared-array-buffer "^1.0.2"
     isarray "^2.0.5"
@@ -4502,7 +4502,7 @@ es-to-primitive@^1.2.1:
   integrity sha512-QCOllgZJtaUo9miYBcLChTUaHNjJF3PYs1VidD7AwiEj1kYxKeQTctLAezAOH5ZKRH0g2IgPn6KwB4IT8iRpvA==
   dependencies:
     is-callable "^1.1.4"
-    is-Date-object "^1.0.1"
+    is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
 es5-ext@^0.10.35, es5-ext@^0.10.50:
@@ -5769,9 +5769,9 @@ is-core-module@^2.13.0, is-core-module@^2.9.0:
   dependencies:
     has "^1.0.3"
 
-is-Date-object@^1.0.1, is-Date-object@^1.0.5:
+is-date-object@^1.0.1, is-date-object@^1.0.5:
   version "1.0.5"
-  resolved "https://registry.yarnpkg.com/is-Date-object/-/is-Date-object-1.0.5.tgz#0841d5536e724c25597bf6ea62e1bd38298df31f"
+  resolved "https://registry.yarnpkg.com/is-date-object/-/is-date-object-1.0.5.tgz#0841d5536e724c25597bf6ea62e1bd38298df31f"
   integrity sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ==
   dependencies:
     has-tostringtag "^1.0.0"
@@ -8244,7 +8244,7 @@ react-Datepicker@^4.12.0:
   dependencies:
     "@popperjs/core" "^2.11.8"
     classnames "^2.2.6"
-    Date-fns "^2.30.0"
+    date-fns "^2.30.0"
     prop-types "^15.7.2"
     react-onclickoutside "^6.12.2"
     react-popper "^2.3.0"
@@ -10137,7 +10137,7 @@ which-builtin-type@^1.1.3:
     function.prototype.name "^1.1.5"
     has-tostringtag "^1.0.0"
     is-async-function "^2.0.0"
-    is-Date-object "^1.0.5"
+    is-date-object "^1.0.5"
     is-finalizationregistry "^1.0.2"
     is-generator-function "^1.0.10"
     is-regex "^1.1.4"
