@@ -2373,9 +2373,9 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
-"@types/react-Datepicker@^4.11.2":
+"@types/react-datepicker@^4.11.2":
   version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@types/react-Datepicker/-/react-Datepicker-4.15.0.tgz#24a9c03e79ab4b232b346edd006cfb6060b0fb43"
+  resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-4.15.0.tgz#24a9c03e79ab4b232b346edd006cfb6060b0fb43"
   integrity sha512-kr10s8ex4+MmCJmzdhA9kfmoMQBmsW5uDYDlH+8f/PgStrp7rRaz23Y/cvTiMgvESVq8ujDh4SOo6jlSwEw13g==
   dependencies:
     "@popperjs/core" "^2.9.2"
@@ -3366,7 +3366,7 @@ browserslist@^4.0.0, browserslist@^4.14.5, browserslist@^4.18.1, browserslist@^4
     caniuse-lite "^1.0.30001517"
     electron-to-chromium "^1.4.477"
     node-releases "^2.0.13"
-    upDate-browserslist-db "^1.0.11"
+    update-browserslist-db "^1.0.11"
 
 bser@2.1.1:
   version "2.1.1"
@@ -6078,7 +6078,7 @@ jest-cli@^27.5.1:
     import-local "^3.0.2"
     jest-config "^27.5.1"
     jest-util "^27.5.1"
-    jest-valiDate "^27.5.1"
+    jest-validate "^27.5.1"
     prompts "^2.0.1"
     yargs "^16.2.0"
 
@@ -6105,7 +6105,7 @@ jest-config@^27.5.1:
     jest-resolve "^27.5.1"
     jest-runner "^27.5.1"
     jest-util "^27.5.1"
-    jest-valiDate "^27.5.1"
+    jest-validate "^27.5.1"
     micromatch "^4.0.4"
     parse-json "^5.2.0"
     pretty-format "^27.5.1"
@@ -6344,7 +6344,7 @@ jest-resolve@^27.4.2, jest-resolve@^27.5.1:
     jest-haste-map "^27.5.1"
     jest-pnp-resolver "^1.2.2"
     jest-util "^27.5.1"
-    jest-valiDate "^27.5.1"
+    jest-validate "^27.5.1"
     resolve "^1.20.0"
     resolve.exports "^1.1.0"
     slash "^3.0.0"
@@ -6476,9 +6476,9 @@ jest-util@^29.6.3:
     graceful-fs "^4.2.9"
     picomatch "^2.2.3"
 
-jest-valiDate@^27.5.1:
+jest-validate@^27.5.1:
   version "27.5.1"
-  resolved "https://registry.yarnpkg.com/jest-valiDate/-/jest-valiDate-27.5.1.tgz#9197d54dc0bdb52260b8db40b46ae668e04df067"
+  resolved "https://registry.yarnpkg.com/jest-validate/-/jest-validate-27.5.1.tgz#9197d54dc0bdb52260b8db40b46ae668e04df067"
   integrity sha512-thkNli0LYTmOI1tDB3FI1S1RTp/Bqyd9pTarJwL87OIBFuqEb5Apv5EaApEudYg4g86e3CT6kM0RowkhtEnCBQ==
   dependencies:
     "@jest/types" "^27.5.1"
@@ -8237,16 +8237,16 @@ react-app-polyfill@^3.0.0:
     regenerator-runtime "^0.13.9"
     whatwg-fetch "^3.6.2"
 
-react-Datepicker@^4.12.0:
-  version "4.16.0"
-  resolved "https://registry.yarnpkg.com/react-Datepicker/-/react-Datepicker-4.16.0.tgz#b9dd389bb5611a1acc514bba1dd944be21dd877f"
-  integrity sha512-hNQ0PAg/LQoVbDUO/RWAdm/RYmPhN3cz7LuQ3hqbs24OSp69QCiKOJRrQ4jk1gv1jNR5oYu8SjjgfDh8q6Q1yw==
+react-datepicker@^4.12.0:
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-4.17.0.tgz#1b3eb5d1d60709e991e4c46b049e97911993193c"
+  integrity sha512-z50H44XbnkYlns7gVHzHK4jWAzLfvQehh5Lvindb09J97yVJKIbsmHs98D0f77tdZc3dSYM7oAqsFY55dBeOGQ==
   dependencies:
     "@popperjs/core" "^2.11.8"
     classnames "^2.2.6"
     date-fns "^2.30.0"
     prop-types "^15.7.2"
-    react-onclickoutside "^6.12.2"
+    react-onclickoutside "^6.13.0"
     react-popper "^2.3.0"
 
 react-dev-utils@^12.0.1:
@@ -8337,7 +8337,7 @@ react-modal@^3.16.1:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
-react-onclickoutside@^6.12.2:
+react-onclickoutside@^6.13.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.13.0.tgz#e165ea4e5157f3da94f4376a3ab3e22a565f4ffc"
   integrity sha512-ty8So6tcUpIb+ZE+1HAhbLROvAIJYyJe/1vRrrcmW+jLsaM+/powDRqxzo6hSh9CuRZGSL1Q8mvcF5WRD93a0A==
@@ -9791,9 +9791,9 @@ upath@^1.2.0:
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
   integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
 
-upDate-browserslist-db@^1.0.11:
+update-browserslist-db@^1.0.11:
   version "1.0.11"
-  resolved "https://registry.yarnpkg.com/upDate-browserslist-db/-/upDate-browserslist-db-1.0.11.tgz#9a2a641ad2907ae7b3616506f4b977851db5b940"
+  resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.11.tgz#9a2a641ad2907ae7b3616506f4b977851db5b940"
   integrity sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==
   dependencies:
     escalade "^3.1.1"
@@ -9819,9 +9819,9 @@ use-isomorphic-layout-effect@^1.1.2:
   resolved "https://registry.yarnpkg.com/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.1.2.tgz#497cefb13d863d687b08477d9e5a164ad8c1a6fb"
   integrity sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==
 
-utf-8-valiDate@^5.0.2:
+utf-8-validate@^5.0.2:
   version "5.0.10"
-  resolved "https://registry.yarnpkg.com/utf-8-valiDate/-/utf-8-valiDate-5.0.10.tgz#d7d10ea39318171ca982718b6b96a8d2442571a2"
+  resolved "https://registry.yarnpkg.com/utf-8-validate/-/utf-8-validate-5.0.10.tgz#d7d10ea39318171ca982718b6b96a8d2442571a2"
   integrity sha512-Z6czzLq4u8fPOyx7TU6X3dvUZVvoJmxSQ+IcrlmagKhilxlhZgxPK6C5Jqbkw1IDUmFTM+cz9QDnnLTwDz/2gQ==
   dependencies:
     node-gyp-build "^4.3.0"
@@ -10072,7 +10072,7 @@ websocket@^1.0.34:
     debug "^2.2.0"
     es5-ext "^0.10.50"
     typedarray-to-buffer "^3.1.5"
-    utf-8-valiDate "^5.0.2"
+    utf-8-validate "^5.0.2"
     yaeti "^0.0.6"
 
 whatwg-encoding@^1.0.5:
@@ -10190,9 +10190,9 @@ workbox-background-sync@6.6.1:
     idb "^7.0.1"
     workbox-core "6.6.1"
 
-workbox-broadcast-upDate@6.6.1:
+workbox-broadcast-update@6.6.1:
   version "6.6.1"
-  resolved "https://registry.yarnpkg.com/workbox-broadcast-upDate/-/workbox-broadcast-upDate-6.6.1.tgz#0fad9454cf8e4ace0c293e5617c64c75d8a8c61e"
+  resolved "https://registry.yarnpkg.com/workbox-broadcast-update/-/workbox-broadcast-update-6.6.1.tgz#0fad9454cf8e4ace0c293e5617c64c75d8a8c61e"
   integrity sha512-fBhffRdaANdeQ1V8s692R9l/gzvjjRtydBOvR6WCSB0BNE2BacA29Z4r9/RHd9KaXCPl6JTdI9q0bR25YKP8TQ==
   dependencies:
     workbox-core "6.6.1"
@@ -10225,7 +10225,7 @@ workbox-build@6.6.1:
     tempy "^0.6.0"
     upath "^1.2.0"
     workbox-background-sync "6.6.1"
-    workbox-broadcast-upDate "6.6.1"
+    workbox-broadcast-update "6.6.1"
     workbox-cacheable-response "6.6.1"
     workbox-core "6.6.1"
     workbox-expiration "6.6.1"
