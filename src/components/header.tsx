@@ -22,7 +22,6 @@ function Header() {
       <nav>
         <div className="logo button" onClick={() => navigate("/")}>
           <img
-            alt="logo de las Asambleas de Dios"
             src="assets/images/AD-logo.png"
           />
         </div>
@@ -44,14 +43,14 @@ function Header() {
             </div>
             <MenuItem className="menu-item" onClick={toggleModal}>
               <FiEdit />
-              <div>Editar perfil </div>
+              <div>Edit profile </div>
             </MenuItem>
             <MenuItem
               className="menu-item"
               onClick={() => supabase.auth.signOut()}
             >
               <MdLogout />
-              <div> Cerrar sesión</div>
+              <div>Log out</div>
             </MenuItem>
           </Menu>
         </div>

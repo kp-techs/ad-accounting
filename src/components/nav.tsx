@@ -14,7 +14,7 @@ function Nav() {
 	return (
 		<Wrapper>
 			<div className="link-container">
-				<Link to={`/incomes`}>Ingresos</Link>
+				<Link to={`/incomes`}>Incomes</Link>
 
 				<svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
@@ -28,7 +28,7 @@ function Nav() {
 				<div className="separate-line"></div>
 			</div>
 			<div className="link-container">
-				<Link to={`/outgoings`}>Egresos</Link>
+				<Link to={`/outgoings`}>Outgoings</Link>
 				<svg
 					width="48"
 					height="32"
@@ -63,7 +63,7 @@ function Nav() {
 				<div className="separate-line"></div>
 			</div>
 			<div className="link-container">
-				<Link to={`/loans`}>Préstamos</Link>
+				<Link to={`/loans`}>Loans</Link>
 				<svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
 						d="M0.5 32L25 0L47.5 32H0.5Z"
@@ -72,13 +72,13 @@ function Nav() {
 					/>
 				</svg>
 			</div>
-			{profile?.role === "Administrador" ? (
+			{profile?.role === "Admin" ? (
 				<>
 					<div className="separation">
 						<div className="separate-line"></div>
 					</div>
 					<div className="link-container">
-						<Link to={`/configuration`}>Configuración</Link>
+						<Link to={`/configuration`}>Settings</Link>
 						<svg
 							width="48"
 							height="32"

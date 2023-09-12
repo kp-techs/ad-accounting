@@ -4,7 +4,7 @@ import HighchartsReact from 'highcharts-react-official'
 
 const options = {
   title: {
-    text: 'INGRESOS Y EGRESOS'
+    text: 'INCOMES AND OUTGOINGS'
   },
   series: [{
     data: [1, 2, 3,5,6,10,2]

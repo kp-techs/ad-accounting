@@ -76,7 +76,7 @@ function SelectOptions({ form, field, table, isCreatable = true, isLoanOut = fal
 			value={options.filter((op) => field.value?.includes(op.value))}
 			options={options}
 			className=""
-			placeholder="Seleccionar..."
+			placeholder="Select..."
 			classNamePrefix="select"
 		/>
 	);

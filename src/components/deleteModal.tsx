@@ -38,7 +38,7 @@ const DeleteModal: FC<Props> = ({
       contentLabel="Formulario para registrar ingresos"
     >
       <Wrapper>
-        <h3>¿Seguro que quieres eliminar este registro?</h3>
+        <h3>Are you sure you want to delete this record?</h3>
         <p>
           {message || `This record will be permanently deleted. This action can not be undone.`}
         </p>
