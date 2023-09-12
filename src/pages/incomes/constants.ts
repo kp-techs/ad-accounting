@@ -3,9 +3,9 @@ import { object, string, date, number } from "yup";
 import moment from "moment";
 
 export const incomeTypeID = {
-  tithe: 2,
-  event: 13,
-  loan: 21,
+  tithe: 4,
+  event: 2,
+  loan: 1,
 };
 
 const today = moment().format();
