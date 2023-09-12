@@ -356,6 +356,28 @@ const Wrapper = styled.section`
     padding: 5px;
     height: 40px;
   }
+  @media only screen and (max-width:700px){ 
+    width: 80vw;
+
+    button {
+      font-size: 12px;
+      width: 30px;
+      height: 10px;
+    }
+
+    .fields-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;}
+  }
+
+  .selectType-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+  }}
 `;
 
 export default OutsModal;
