@@ -70,11 +70,11 @@ const FilterSection: FC<Props> = ({ isActive, filters, onClose, setFilters }) =>
 									<div className="fields-container double-field">
 										<div className="field-container">
 											<label className="text">Since</label>
-											<Field title="Date inicial" name="startDate" type="date" className="field" />
+											<Field title="Start Date" name="startDate" type="date" className="field" />
 										</div>
 										<div className="field-container">
 											<label className="text">Until</label>
-											<Field title="Date final" name="endDate" type="date" className="field" />
+											<Field title="End Date" name="endDate" type="date" className="field" />
 										</div>
 									</div>
 								</div>
