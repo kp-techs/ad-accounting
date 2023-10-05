@@ -236,3 +236,8 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
 export function getPaymentFilterString({ ...filters }: PaymentsFilters) {
   return [];
 }
+
+export function getLAvatar(name:any){
+console.log(name)
+return 'AS'
+}

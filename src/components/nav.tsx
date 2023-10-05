@@ -1,135 +1,108 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components"
+import EditProfileModal from "../pages/configuration/components/userOptionsModal";
+import useToggle from "../hooks/useToggle";
+import { Menu, MenuItem } from "@szhsin/react-menu";
+import { FiEdit, FiMenu, FiSettings } from "react-icons/fi";
+import UserInformation from "../pages/configuration/components/userInformation";
+import { MdLogout } from "react-icons/md";
+import { CiMenuBurger } from "react-icons/ci";
+import { RiSettings3Line, RiSettings4Line } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { useSupabase } from "../hooks/useSupabase";
+import { CAvatar } from "@coreui/react";
 import useAppData from "../hooks/useAppData";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+   getLAvatar
+} from "../utils/helper";
+import { SlMenu } from "react-icons/sl";
 
-function Nav() {
-	const location = useLocation();
-
-	const { profile } = useAppData();
-
-	useEffect(() => {}, [location]);
-
-	return (
-		<Wrapper>
-			<div className="link-container">
-				<Link to={`/incomes`}>Ingresos</Link>
-
-				<svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M0.5 32L25 0L47.5 32H0.5Z"
-						fill={`${location.pathname === "/incomes" ? "#7D7D7D" : "none"}`}
-						fill-opacity="0.2"
-					/>
-				</svg>
-			</div>
-			<div className="separation">
-				<div className="separate-line"></div>
-			</div>
-			<div className="link-container">
-				<Link to={`/outgoings`}>Egresos</Link>
-				<svg
-					width="48"
-					height="32"
-					viewBox="0 0 48 32"
-					fill={`${location.pathname === "/outgoings" ? "#7D7D7D" : "none"}`}
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<path d="M0.5 32L25 0L47.5 32H0.5Z" fill="#7d7d7d0" fill-opacity="0.2" />
-				</svg>
-			</div>
-
-			{/* <div className="separation">
-        <div className="separate-line"></div>
-      </div>
-      <div className="link-container">
-        <Link to={`/reportes`}>Reportes</Link>
-        <svg
-          width="48"
-          height="32"
-          viewBox="0 0 48 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0.5 32L25 0L47.5 32H0.5Z"
-            fill={`${location.pathname === "/reportes" ? "#7D7D7D" : "none"}`}
-            fill-opacity="0.2"
-          />
-        </svg>
-      </div> */}
-			<div className="separation">
-				<div className="separate-line"></div>
-			</div>
-			<div className="link-container">
-				<Link to={`/loans`}>Préstamos</Link>
-				<svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M0.5 32L25 0L47.5 32H0.5Z"
-						fill={`${location.pathname === "/loans" ? "#7D7D7D" : "none"}`}
-						fill-opacity="0.2"
-					/>
-				</svg>
-			</div>
-			{profile?.role === "Administrador" ? (
-				<>
-					<div className="separation">
-						<div className="separate-line"></div>
-					</div>
-					<div className="link-container">
-						<Link to={`/configuration`}>Configuración</Link>
-						<svg
-							width="48"
-							height="32"
-							viewBox="0 0 48 32"
-							fill={`${location.pathname === "/configuration" ? "#7D7D7D" : "none"}`}
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path d="M0.5 32L25 0L47.5 32H0.5Z" fill="#7d7d7d0" fill-opacity="0.2" />
-						</svg>
-					</div>
-				</>
-			) : null}
-		</Wrapper>
-	);
+type Props = {
+   togglePanel: () => void;
 }
 
-const Wrapper = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	box-sizing: border-box;
-	gap: 80px;
-	flex-direction: row;
-	height: 100%;
-	width: 100%;
-	margin: 0;
 
-	a {
-		font-size: 24px;
-		&:active {
-			color: #ffffff;
-			background-color: #273b6c55;
-			backdrop-filter: blur(40px);
-			border-radius: 20px;
-		}
-	}
-	.link-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		align-items: center;
-		height: 100%;
-	}
-	.separation {
-		padding-top: 20px;
-		height: 100%;
-		.separate-line {
-			border: 1px solid black;
-			height: 50px;
-		}
-	}
-`;
+function Nav({ togglePanel }: Props) {
+   const [isModalOpen, toggleModal] = useToggle();
+   const navigate = useNavigate();
+   const { supabase } = useSupabase();
+   const { profile } = useAppData();
+   const [avatar, setAvatarName] = useState('');
+
+   useEffect(() => {
+      togglePanel();
+      setAvatarName(getLAvatar(profile?.name))
+   }, [])
+
+   return (
+      <Wrapper>
+         <EditProfileModal isOpen={isModalOpen} onClose={toggleModal} />
+         <div className="header-toggle" onClick={togglePanel}>
+            <CiMenuBurger size={25} />
+         </div>
+         <div className="header-options">
+            <div className="profile-menu option">
+               <Menu
+                  menuButton={
+                     <div className="button">
+                        <CAvatar color="warning" textColor="white" >{avatar}</CAvatar>
+                     </div>
+                  }
+               >
+                  <div className="profile-info">
+                     <UserInformation />
+                  </div>
+                  <MenuItem className="menu-item" onClick={toggleModal}>
+                     <FiEdit />
+                     <div>Editar perfil </div>
+                  </MenuItem>
+                  <MenuItem
+                     className="menu-item"
+                     onClick={() => supabase.auth.signOut()}
+                  >
+                     <MdLogout />
+                     <div> Cerrar sesión</div>
+                  </MenuItem>
+               </Menu>
+            </div>
+
+         </div>
+      </Wrapper>
+   )
+}
+
+const Wrapper = styled.nav`
+   display: grid;
+   grid-template-columns: auto 1fr;
+    width: 100%;
+    height: 55px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+   border:1px solid #cdcdcd ;
+   border-left:0 ;
+
+   
+   .header-toggle {
+      display: grid;
+      cursor: pointer;
+      height: 100%;
+      place-content: center;
+      padding: 10px;
+   }
+.header-options {
+   height: 100%;
+   display: flex;
+   justify-content: right;
+   box-sizing: border-box;
+   gap: 10px;
+   margin: 0 25px;
+}
+   .option {
+      height: 100%;
+      display: grid;
+      place-content: center;
+   }
+   `
 
 export default Nav;
+

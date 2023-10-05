@@ -24,7 +24,7 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
         const { data: income } = await supabase
           .from("incomes")
           .select()
-          .eq("id", outgoing.loanID)
+          .eq("id", outgoing.loanID||0)
           .single();
         let newPaidLoanAmount =
           (income?.paidAmount || 0) - (outgoing.amount || 0);
@@ -42,7 +42,7 @@ const DeleteModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
             updatedBy: profile?.name,
             updatedDate: moment().format(),
           })
-          .eq("id", outgoing.loanID);
+          .eq("id", outgoing.loanID||0);
       }
 
       await supabase.from("outgoings").delete().eq("id", outgoing.id);

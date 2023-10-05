@@ -30,11 +30,15 @@ const usersOption = [
 		content: <OptionsTable name="outgoingTypes" />
 	}
 ];
-
-function Configuration() {
+type Props = {
+	table: string
+}
+function Configuration({ table }: Props) {
 	return (
 		<Wrapper>
-			<Tab tabs={usersOption} />
+			{table === 'users' ? <UsersTable /> :
+				<OptionsTable name={table} />
+			}
 		</Wrapper>
 	);
 }

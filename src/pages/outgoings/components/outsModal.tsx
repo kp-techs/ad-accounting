@@ -75,7 +75,7 @@ const OutsModal: FC<Props> = ({
                     currentDebt: current,
                     status: status,
                   })
-                  .eq("id", outgoing.loanID);
+                  .eq("id", outgoing.loanID||0);
               }
 
               // @ts-ignore

@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import styled from "styled-components";
-import Nav from "./nav";
+import Nav from "./oldnav";
 import { FaUserCircle } from "react-icons/fa";
 import { FiEdit, FiMenu } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";

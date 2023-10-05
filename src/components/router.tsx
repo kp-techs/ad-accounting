@@ -5,8 +5,8 @@ import ErrorPage from "../pages/error";
 import App from "../App";
 import Login from "../pages/login";
 import Home from "../pages/home";
-// import Reporte from "../pages/reportes";
 import Configuration from "../pages/configuration";
+import Reporte from "../pages/reportes";
 import CreateUser from "../pages/createUser";
 import RecoverPassword from "../pages/recoverPassword";
 import { createGlobalStyle } from "styled-components";
@@ -23,23 +23,39 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/incomes",
+        path: "/ingresos",
         element: <Incomes />,
       },
       {
-        path: "/outgoings",
+        path: "/egresos",
         element: <Outgoings />,
       },
-      // {
-      //   path: "/reportes",
-      //   element: <Reporte />,
-      // },
       {
-        path: "/configuration",
-        element: <Configuration />,
+        path: "/reportes",
+        element: <Reporte />,
       },
       {
-        path: "/loans",
+        path: "/configuracion/usuarios",
+        element: <Configuration table="users" />,
+      },
+      {
+        path: "/configuracion/miembros",
+        element: <Configuration table='people'/>,
+      },
+      {
+        path: "/configuracion/ministerios",
+        element: <Configuration table="ministries" />,
+      },
+      {
+        path: "/configuracion/tipos-de-ingresos",
+        element: <Configuration table="incomeTypes" />,
+      },
+      {
+        path: "/configuracion/tipos-de-egresos",
+        element: <Configuration table="outgoingTypes" />,
+      },
+      {
+        path: "/prestamos",
         element: <Loans />,
       }
     ],
