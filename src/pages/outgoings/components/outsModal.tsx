@@ -16,6 +16,7 @@ import moment from "moment";
 import SelectOptions from "../../../components/selectOptions";
 import { ValidationLoanPaymentForm } from "../../loans/constant";
 import { customStyles } from "../../../utils/constants";
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
   isOpen: boolean;
@@ -35,15 +36,9 @@ const OutsModal: FC<Props> = ({
   const { loadOuts, profile, loadLoans } = useAppData();
   const { supabase } = useSupabase();
   const filters = useMemo(() => ({ ...outgoingsInitialValues, loanID: income?.id }), [income])
-
+  
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Formulario para registrar los egresos"
-    >
+    <CModal size='lg' visible={isOpen} onClose={onClose}>
       <Wrapper>
         <Formik
           initialValues={
@@ -75,7 +70,7 @@ const OutsModal: FC<Props> = ({
                     currentDebt: current,
                     status: status,
                   })
-                  .eq("id", outgoing.loanID||0);
+                  .eq("id", outgoing.loanID || 0);
               }
 
               // @ts-ignore
@@ -122,138 +117,123 @@ const OutsModal: FC<Props> = ({
         >
           {({ values, errors, touched }) => (
             <Form>
-              <section className="form-content">
-                <div className="top-modal">
-                  {isLoanVersion ? (
-                    <div className="underline">
-                      <label>
-                        {outgoing
-                          ? `MODIFICAR PAGO: ${outgoing.incomes.loanName}`
-                          : "AGREGAR PAGO"}
-                      </label>
+              <CModalHeader>
+                <CModalTitle>{outgoing ? "ACTUALIZAR" : "AGREGAR"} {isLoanVersion ? `${(outgoing?.incomes.loanName || '').toUpperCase()}` : 'EGRESO'}</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                {isLoanVersion ? null :
+                  <div className=" field-line">
+                    <div>
+                      <label htmlFor="selectOutgoingType">Tipo</label>
                     </div>
-                  ) : (
-                    <div className="selectType-container selectOutgoingType underline">
-                      <>
-                        <div>
-                          <label htmlFor="selectOutgoingType">Tipo</label>
-                        </div>
+                    <FastField
+                      id="selectOutgoingType"
+                      name="type"
+                      component={(props: any) => (
+                        <SelectOptions {...props} table={"outgoingTypes"} />
+                      )}
+                    />
+                    {errors.type && touched.type && (
+                      <div style={{ color: "red" }}>{errors.type}</div>
+                    )}
+                  </div>
+                }
+                {values.type === outgoingTypeID.loan ? (
+                  outgoing ? null : (
+                    <div className=" field-line">
+                      <div>
+                        <label>Nombre</label>
                         <FastField
-                          id="selectOutgoingType"
-                          name="type"
+                          name="loanID"
                           component={(props: any) => (
-                            <SelectOptions {...props} table={"outgoingTypes"} />
+                            <SelectOptions
+                              {...props}
+                              table={"incomes"}
+                              isCreatable={false}
+                              isLoanOut={true}
+                            />
                           )}
                         />
-                        <div></div>
-                      </>
-                      {errors.type && touched.type && (
-                        <div style={{ color: "red" }}>{errors.type}</div>
-                      )}
-                    </div>
-                  )}
-                  {values.type === outgoingTypeID.loan ? (
-                    outgoing ? null : (
-                      <div className=" field-line">
-                        <div>
-                          <label>Nombre</label>
-                          <FastField
-                            name="loanID"
-                            component={(props: any) => (
-                              <SelectOptions
-                                {...props}
-                                table={"incomes"}
-                                isCreatable={false}
-                                isLoanOut={true}
-                              />
-                            )}
-                          />
-                        </div>
                       </div>
-                    )
-                  ) : (
-                    <section className="field-line">
-                      <label htmlFor="beneficiary">Beneficiario</label>
-                      <FastField
-                        name="beneficiaryID"
-                        id="beneficiary"
-                        component={(props: any) => (
-                          <SelectOptions {...props} table={"people"} />
-                        )}
-                      />
-                      {errors.beneficiaryID && touched.beneficiaryID && (
-                        <div style={{ color: "red" }}>
-                          {errors.beneficiaryID}
-                        </div>
+                    </div>
+                  )
+                ) : (
+                  <section className="field-line">
+                    <label htmlFor="beneficiary">Beneficiario</label>
+                    <FastField
+                      name="beneficiaryID"
+                      id="beneficiary"
+                      component={(props: any) => (
+                        <SelectOptions {...props} table={"people"} />
                       )}
-                    </section>
-                  )}
+                    />
+                    {errors.beneficiaryID && touched.beneficiaryID && (
+                      <div style={{ color: "red" }}>
+                        {errors.beneficiaryID}
+                      </div>
+                    )}
+                  </section>
+                )}
 
-                  <div className="fields-container field-line">
-                    <div>
-                      <label>No. Cheque</label>
-                      <Field name="checkNumber" type="text" className="field" />
-                      {errors.checkNumber && touched.checkNumber && (
-                        <div style={{ color: "red" }}>{errors.checkNumber}</div>
-                      )}
-                    </div>
-                    <div>
-                      <label htmlFor="description">Descripción</label>
-                      <Field name="description" type="text" className="field" />
-                    </div>
+                <div className="fields-container field-line">
+                  <div>
+                    <label>No. Cheque</label>
+                    <Field name="checkNumber" type="text" className="field" />
+                    {errors.checkNumber && touched.checkNumber && (
+                      <div style={{ color: "red" }}>{errors.checkNumber}</div>
+                    )}
                   </div>
-
-                  <div className="fields-container field-line">
-                    <div>
-                      <label>Fecha</label>
-                      <Field name="date" type="date" className="field" />
-                      {errors.date && touched.date && (
-                        <div style={{ color: "red" }}>{errors.date}</div>
-                      )}{" "}
-                    </div>
-                    <div>
-                      <label>Monto</label>
-                      <Field className="field" name="amount" type="number" />
-                      {errors.amount && touched.amount && (
-                        <div style={{ color: "red" }}>{errors.amount}</div>
-                      )}
-                    </div>
+                  <div>
+                    <label htmlFor="description">Descripción</label>
+                    <Field name="description" type="text" className="field" />
                   </div>
                 </div>
 
-                <div className="foo-modal">
-                  <div className="buttons-container">
-                    <button
-                      onClick={() => {
-                        onClose();
-                        initialOutgoing.type = null;
-                      }}
-                    >
-                      {outgoing ? "Cancelar" : "Cerrar"}
-                    </button>
-                    <button type="submit">
-                      {outgoing ? "Actualizar" : "Guardar"}
-                    </button>
+                <div className="fields-container field-line">
+                  <div>
+                    <label>Fecha</label>
+                    <Field name="date" type="date" className="field" />
+                    {errors.date && touched.date && (
+                      <div style={{ color: "red" }}>{errors.date}</div>
+                    )}{" "}
+                  </div>
+                  <div>
+                    <label>Monto</label>
+                    <Field className="field" name="amount" type="number" />
+                    {errors.amount && touched.amount && (
+                      <div style={{ color: "red" }}>{errors.amount}</div>
+                    )}
                   </div>
                 </div>
-              </section>
+              </CModalBody>
+
+              <CModalFooter>
+                <div className="buttons-container">
+                  <CButton color="secondary"
+                    size="sm"
+                    onClick={() => {
+                      onClose();
+                      initialOutgoing.type = null;
+                    }}
+                  >
+                    {income ? "Cancelar" : "Cerrar"}
+                  </CButton>
+                  <CButton color="warning" type="submit" size="sm" className="ms-2">
+                    {income ? "Actualizar" : "Guardar"}
+                  </CButton>
+                </div>
+              </CModalFooter>
             </Form>
           )}
         </Formik>
       </Wrapper>
-    </Modal>
+    </CModal>
   );
 };
 
 const Wrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  gap: 15px;
-  width: 700px;
-
   label {
-    color: #ffffff;
+    color: #000000;
     font-family: Poppins;
     font-weight: 400;
     font-size: 18px;
@@ -330,32 +310,8 @@ const Wrapper = styled.section`
   }
   .buttons-container {
     display: flex;
-    grid-area: right;
-    gap: 15px;
-
-    button {
-      width: 93px;
-      height: 30px;
-      text-align: center;
-      justify-content: center;
-      font-size: 16px;
-      box-sizing: border-box;
-      background-color: #eeeeee;
-      border-radius: 5px;
-      font-family: Poppins, Arial, Helvetica, sans-serif;
-      border: 0;
-      cursor: pointer;
-      &:active {
-        background-color: #a4a4a494;
-      }
-    }
-  }
-
-  .foo-modal {
-    display: grid;
-    grid-template: "left right" 25px/1fr;
-    padding: 5px;
     height: 40px;
+    justify-content: end;
   }
 `;
 

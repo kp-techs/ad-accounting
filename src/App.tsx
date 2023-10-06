@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
-import Content from "./components/content";
-import Header from "./components/header";
 import { AppProvider } from "./contexts/app";
 import { useSupabase } from "./hooks/useSupabase";
 import Sidebar from "./components/sidebar";

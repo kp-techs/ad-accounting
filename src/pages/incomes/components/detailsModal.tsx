@@ -13,6 +13,7 @@ import {
   generateConcept,
 } from "../../../utils/helper";
 import { customStyles } from "../../../utils/constants";
+import { CModal, CModalBody, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
   isOpen: boolean;
@@ -27,17 +28,14 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
   }
 
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Modal para ver detalles"
-    >
+    <CModal visible={isOpen} onClose={onClose}>
       <Wrapper>
-        <div className="concept-container">
-          <h3>{concept}</h3>
-        </div>
+        <CModalHeader>
+          <CModalTitle>
+            {concept}
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
         <section className="side">
           <p className="title">Monto</p>
           <p>{formatMoney(income?.amount || null)}</p>
@@ -108,11 +106,9 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
           </section>
         )}
 
-        <button onClick={onClose}>
-          <GrClose />
-        </button>
+        </CModalBody>
       </Wrapper>
-    </Modal>
+    </CModal>
   );
 };
 
@@ -148,12 +144,10 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  button {
-    top: 15px;
-    right: 15px;
-    position: absolute;
-    background-color: transparent;
-    border: 0px;
+  .buttons-container {
+    display: flex;
+    height: 40px;
+    justify-content: end;
   }
 `;
 export default DetailsModal;

@@ -9,6 +9,11 @@ const colsSchema: Column<Option>[] = [
     // @ts-ignore
     Cell: ({ row }) => capitalize(row.original.name),
   },
+  {
+    Header: 'Acciones',
+    Cell: '',
+    id: 'actions'
+  }
 ];
 
 export default colsSchema;

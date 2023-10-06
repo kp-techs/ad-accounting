@@ -35,7 +35,7 @@ const _nav = [
    to:'/reportes',
    icon: <BsBarChart size={20} color="rgb(44 56 74 / 95%)" />,
    badge:{
-      color:'info',
+      color:'warning',
       text:'NUEVO'
    }
 },

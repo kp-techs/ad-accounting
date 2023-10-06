@@ -24,6 +24,11 @@ const colsSchema: Column<User>[] = [
     accessor: "last_sign_in_at",
     // @ts-ignore
     Cell: ({ row }) => formatRelativeDate(row.original.last_sign_in_at),
+  }, 
+  {
+    Header: 'Acciones',
+    Cell: '',
+    id: 'actions'
   },
 ];
 

@@ -72,6 +72,7 @@ function Loans() {
 
   return (
     <Wrapper>
+      <h4>PRESTAMOS</h4>
       <nav>
         {!activeAction && (
           <div
@@ -164,7 +165,15 @@ const Wrapper = styled.section`
     height: 48px;
     display: flex;
     gap: 30px;
+    border-bottom:1px solid #000;
+    margin-bottom: 15px;
   }
+  span {
+    font-family: "Poppins";
+    font-size: 15px;
+    text-align: center;
+  }
+
   select {
     width: 500px;
     border-radius: 20px;
@@ -191,11 +200,7 @@ const Wrapper = styled.section`
       border-radius: 5px;
     }
   }
-  span {
-    font-family: "Poppins";
-    font-size: 18px;
-    text-align: center;
-  }
+
 
   .table-wrapper {
     overflow: hidden;
