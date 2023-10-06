@@ -213,14 +213,7 @@ place-content: center;
   padding: 0 15px;
 }
 
-.menu-container {
-  background-color: #ffffff;
-  ul {
-    li {
-      text-decoration: :none;
-    }
-  }
-}
+
 `;
 
 export default UsersTable;
