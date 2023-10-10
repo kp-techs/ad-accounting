@@ -13,14 +13,12 @@ function App() {
   const navigate = useNavigate();
   const { supabase } = useSupabase();
   const [isPanelOpen, togglePanel] = useToggle();
-  const [isLinksMenuOpen, toggleLinks] = useToggle();
 
   useEffect(() => {
-    console.log(isLinksMenuOpen)
     supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {
         navigate("/login");
-      } 
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -28,13 +26,14 @@ function App() {
   return (
     <AppProvider>
       <Wrapper>
-        <Sidebar isOpen={isPanelOpen} isLinksMenuOpen={isLinksMenuOpen} toggleLinks={toggleLinks} />
+        <Sidebar isOpen={isPanelOpen} toggle={togglePanel} />
         <MainContent>
           <>
-            <Nav togglePanel={togglePanel} isLinksMenuOpen={isLinksMenuOpen} toggleLinks={toggleLinks} />
+            <Nav togglePanel={togglePanel} />
+
             <main className="outlet-container">
               <section className="outlet">
-            <Outlet />
+                <Outlet />
               </section>
             </main>
           </>
@@ -66,7 +65,15 @@ const Wrapper = styled.div`
   }
 
   @media only screen and (max-width:700px){  
-    grid-template-columns: auto;
+    display: flex;
+
+      .outlet-container {
+        padding: 10px;
+
+        .outlet {
+          padding: 10px;
+        }
+      }
   }
 `;
 

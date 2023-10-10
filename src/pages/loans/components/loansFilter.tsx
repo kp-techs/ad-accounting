@@ -263,6 +263,30 @@ const Wrapper = styled.section`
 		margin: 0;
 		padding: 0;
 	}
+
+	@media only screen and (max-width:700px){  
+    label,button,input {
+      font-size: 13px;
+    }
+	 
+	 .container {
+		flex-direction: column;
+	 }
+
+	 .field-title {
+		label {
+			font-size: 15px;
+		}
+	 }
+
+	 .buttons-container {
+		button {
+			font-size: 14px;
+			width: 70px;
+		}
+	 }
+
+  }
 `;
 
 export default FilterSection;

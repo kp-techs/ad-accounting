@@ -104,7 +104,7 @@ const IncomesModal: FC<Props> = ({
                 loadIncomes();
               }} />}
               <CModalHeader>
-                <CModalTitle>{income ? "ACTUALIZAR" : "AGREGAR"} {isLoanVersion ? 'PRESTAMO' : 'INGRESO'}</CModalTitle>
+                <CModalTitle className="sm">{income ? "ACTUALIZAR" : "AGREGAR"} {isLoanVersion ? 'PRESTAMO' : 'INGRESO'}</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 {isLoanVersion ? (
@@ -353,6 +353,16 @@ const Wrapper = styled.div`
     display: flex;
     height: 40px;
     justify-content: end;
+  }
+
+
+  @media only screen and (max-width:700px) { 
+    label {
+      font-size: 15px;
+    }
+    .sm {
+      font-size: 17px;
+    }
   }
   `
 

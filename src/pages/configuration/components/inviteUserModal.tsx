@@ -125,5 +125,15 @@ const Wrapper = styled.div`
   .send {
 	padding: 4px 19.06px;
   }
+
+  @media only screen and (max-width:700px){  
+    p {
+      font-size: 13px;
+    }
+
+    button {
+      font-size: 13px;
+    }
+  }
 `;
 export default InviteUserModal;

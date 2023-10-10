@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import useAppData from "../hooks/useAppData";
-import { CSidebarNav } from '@coreui/react'
+import { CBadge, CNavGroup, CNavItem, CNavTitle, CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
 import navigation from '../_nav'
 import { AppSidebarNav } from "./AppSidebarNav";
 import SimpleBar from 'simplebar-react'
@@ -11,31 +11,35 @@ import useToggle from "../hooks/useToggle";
 
 type Props = {
    isOpen: boolean
-   isLinksMenuOpen:boolean;
-   toggleLinks: () => void;
+   toggle: () => void;
+
 }
-function Sidebar({ isOpen , isLinksMenuOpen,  toggleLinks}: Props) {
-   const {profile} = useAppData();
+function Sidebar({ isOpen, toggle }: Props) {
+   const { profile } = useAppData();
    const location = useLocation();
 
 
-   useEffect(() => { 
+   useEffect(() => {
    }, [location]);
+
+
+   function handleHide() {
+      if (isOpen) toggle()
+   }
 
    return (
       <Wrapper>
-         <div className={`sidebar sidebar-${isOpen ? 'show' : 'hidden'}`}>
-            <div className="sidebar-brand">
-               <img src="assets/images/AD-logo.png" className="brand" />
-               <img src="assets/images/logo-title.png" className="brand-name" />
-            </div>
+         <CSidebar visible={isOpen} onHide={handleHide}>
+            <CSidebarBrand>
+               <div className="sidebar-brand">
+                  <img src="assets/images/AD-logo.png" className="brand" />
+                  <img src="assets/images/logo-title.png" className="brand-name" />
+               </div>
+            </CSidebarBrand>
             <CSidebarNav>
-               <SimpleBar>
-                  <AppSidebarNav items={navigation} />
-               </SimpleBar>
+               <AppSidebarNav items={navigation} />
             </CSidebarNav>
-         </div>
-
+         </CSidebar>
       </Wrapper>
    );
 }
@@ -44,17 +48,7 @@ const Wrapper = styled.div`
    font-family: Poppins, Arial, Helvetica, sans-serif;
    border:1px solid #cdcdcd;
    background-color:#ffffff;
-   display: block;
-
-   .sidebar-show{
-      width: 250px;
-      display: block;
-   }
-
-   .sidebar-hidden {
-      display: none;
-      width: 0;
-   } 
+   /* display: block; */
 
    .sidebar-brand {
       display: flex;
@@ -128,8 +122,14 @@ const Wrapper = styled.div`
    } 
 
 
-   @media only screen and (max-width:700px){ 
-      display: none;
+   @media only screen and (max-width:700px) { 
+      .sidebar-show {
+         position: absolute;
+         z-index:999;
+         background-color: #ffffff;
+         border:1px solid #cdcdcd;
+         height: 100%;
+      }
    }
 `;
 

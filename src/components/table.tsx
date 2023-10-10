@@ -136,12 +136,18 @@ const Wrapper = styled.section`
     justify-content: right;
   }
   .no-data {
-  height: 550px;
   display: grid;
   place-content: center;
   }
 
-  @media only screen and (max-width:700px) { overflow:scroll}
+  @media only screen and (max-width:700px) { 
+    overflow:scroll;
+
+    table {
+      font-size: small;
+    }
+
+  }
 
 `;
 

@@ -42,6 +42,7 @@ const ModifyOptionModal: FC<Props> = ({
           </CModalTitle>
         </CModalHeader>
         <CModalBody>
+			<section className="container">
 				<p>
 					Al modificar este registro, se modicará en todo registro en el que se
 					este utilizando. Si está seguro de proceder, introduzca el nuevo
@@ -76,6 +77,7 @@ const ModifyOptionModal: FC<Props> = ({
 					</div>
 							</CModalFooter>
 				</form>
+				</section>
 			</CModalBody>
 			</Wrapper>
 		</CModal>
@@ -83,7 +85,7 @@ const ModifyOptionModal: FC<Props> = ({
 };
 
 const Wrapper = styled.div`
-	width: 450px;
+	max-width: 450px;
 	margin: 10px;
 
 	h3 {
@@ -114,6 +116,11 @@ const Wrapper = styled.div`
 		padding: 2px 8px;
 		box-sizing: border-box;
 		color: #2f2f2f;
+		margin-bottom: 5px;
+	}
+	.container {
+		box-sizing: border-box;
+		padding: 1px;
 	}
 
 	.buttons-container {
@@ -125,6 +132,20 @@ const Wrapper = styled.div`
 
   .cancel {
     margin-right: 8px;
+  }
+
+  @media only screen and (max-width:700px){  
+    h3 {
+      font-size: 14px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+
+    button {
+      font-size: 13px;
+    }
   }
 
 `;

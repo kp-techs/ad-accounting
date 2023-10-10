@@ -118,7 +118,7 @@ const OutsModal: FC<Props> = ({
           {({ values, errors, touched }) => (
             <Form>
               <CModalHeader>
-                <CModalTitle>{outgoing ? "ACTUALIZAR" : "AGREGAR"} {isLoanVersion ? `${(outgoing?.incomes.loanName || '').toUpperCase()}` : 'EGRESO'}</CModalTitle>
+                <CModalTitle className="sm">{outgoing ? "ACTUALIZAR" : "AGREGAR"} {isLoanVersion ? `${(outgoing?.incomes.loanName || '').toUpperCase()}` : 'EGRESO'}</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 {isLoanVersion ? null :
@@ -210,6 +210,7 @@ const OutsModal: FC<Props> = ({
               <CModalFooter>
                 <div className="buttons-container">
                   <CButton color="secondary"
+                  className="cancel"
                     size="sm"
                     onClick={() => {
                       onClose();
@@ -312,6 +313,19 @@ const Wrapper = styled.section`
     display: flex;
     height: 40px;
     justify-content: end;
+  }
+
+  .cancel {
+    padding: 0 12px;
+  }
+
+  @media only screen and (max-width:700px) { 
+    label {
+      font-size: 15px;
+    }
+    .sm {
+      font-size: 17px;
+    }
   }
 `;
 

@@ -179,6 +179,13 @@ const Wrapper = styled.section`
   .table-wrapper {
     overflow: hidden;
   }
+
+  @media only screen and (max-width:700px){  
+    h4 {
+      font-size: 16px;
+    }
+    span {font-size: 13px;}
+  }
 `;
 
 export default Incomes;

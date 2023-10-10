@@ -31,7 +31,7 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
     <CModal visible={isOpen} onClose={onClose}>
       <Wrapper>
         <CModalHeader>
-          <CModalTitle>
+          <CModalTitle className="sm">
             {concept}
           </CModalTitle>
         </CModalHeader>
@@ -117,7 +117,6 @@ const Wrapper = styled.div`
   font-size: 14px;
   color: #000000b1;
   padding: 10px;
-
   display: grid;
   gap: 10px;
 
@@ -148,6 +147,14 @@ const Wrapper = styled.div`
     display: flex;
     height: 40px;
     justify-content: end;
+  }
+
+  @media only screen and (max-width:700px) { 
+    font-size: 12px;
+
+    .sm {
+      font-size: 16px;
+    }
   }
 `;
 export default DetailsModal;

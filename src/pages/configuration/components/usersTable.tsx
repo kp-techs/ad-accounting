@@ -99,7 +99,7 @@ function UsersTable() {
                             {cell.column.Header === "Rol" ? (
                               <div className="menu-container">
                                 <CDropdown>
-                                  <CDropdownToggle className="bg-wh">{cell.value}</CDropdownToggle>
+                                  <CDropdownToggle size="sm" className="bg-wh">{cell.value}</CDropdownToggle>
                                   <CDropdownMenu>
                                     <CDropdownItem component='button' onClick={() => {
                                       if (cell.value === "Usuario") {
@@ -149,7 +149,7 @@ function UsersTable() {
       <footer>
         <div className="add-button" onClick={()=> setActiveModal('INVITE')}>
           {/* Este modal esta mal */}
-          <CButton color="secondary" id="new-user">
+          <CButton size="sm" color="secondary" id="new-user">
             Nuevo usuario
             <SlUserFollow />
           </CButton>
@@ -208,6 +208,14 @@ place-content: center;
   gap: 5px;
 }
 
+@media only screen and (max-width:700px) { 
+    overflow:scroll;
+
+    table {
+      font-size: small;
+    }
+
+  }
 `;
 
 export default UsersTable;
