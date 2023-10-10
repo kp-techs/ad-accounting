@@ -2,12 +2,10 @@ import styled from "styled-components"
 import EditProfileModal from "../pages/configuration/components/userOptionsModal";
 import useToggle from "../hooks/useToggle";
 import { Menu, MenuItem } from "@szhsin/react-menu";
-import { FiEdit, FiMenu, FiSettings } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
 import UserInformation from "../pages/configuration/components/userInformation";
 import { MdLogout } from "react-icons/md";
 import { CiMenuBurger } from "react-icons/ci";
-import { RiSettings3Line, RiSettings4Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
 import { useSupabase } from "../hooks/useSupabase";
 import { CAvatar } from "@coreui/react";
 import useAppData from "../hooks/useAppData";
@@ -15,7 +13,6 @@ import { useEffect, useState } from "react";
 import {
    getLAvatar
 } from "../utils/helper";
-import { SlMenu } from "react-icons/sl";
 
 type Props = {
    togglePanel: () => void;
@@ -23,8 +20,7 @@ type Props = {
 
 
 function Nav({ togglePanel }: Props) {
-   const [isModalOpen, toggleModal] = useToggle();
-   const navigate = useNavigate();
+   const [isModalOpen, setModalOpen] = useState<"EDIT">();
    const { supabase } = useSupabase();
    const { profile } = useAppData();
    const [avatar, setAvatarName] = useState('');
@@ -36,7 +32,7 @@ function Nav({ togglePanel }: Props) {
 
    return (
       <Wrapper>
-         <EditProfileModal isOpen={isModalOpen} onClose={toggleModal} />
+         <EditProfileModal isOpen={isModalOpen === 'EDIT'} onClose={() => setModalOpen(undefined)} />
          <div className="header-toggle" onClick={togglePanel}>
             <CiMenuBurger size={25} />
          </div>
@@ -44,25 +40,26 @@ function Nav({ togglePanel }: Props) {
             <div className="profile-menu option">
                <Menu
                   menuButton={
-                     <div className="button">
-                        <CAvatar color="warning" textColor="white" >{avatar}</CAvatar>
-                     </div>
+                     <CAvatar className="avatar" color="warning" textColor="white">{avatar}</CAvatar>
                   }
                >
-                  <div className="profile-info">
-                     <UserInformation />
+                  <div className="profile-option-wrapper">
+                     <div className="profile-info">
+                        <UserInformation />
+                     </div>
+                     <MenuItem className="menu-item" onClick={ () => setModalOpen('EDIT')
+}>
+                        <FiEdit />
+                        <div>Editar perfil </div>
+                     </MenuItem>
+                     <MenuItem
+                        className="menu-item"
+                        onClick={() => supabase.auth.signOut()}
+                     >
+                        <MdLogout />
+                        <div> Cerrar sesión</div>
+                     </MenuItem>
                   </div>
-                  <MenuItem className="menu-item" onClick={toggleModal}>
-                     <FiEdit />
-                     <div>Editar perfil </div>
-                  </MenuItem>
-                  <MenuItem
-                     className="menu-item"
-                     onClick={() => supabase.auth.signOut()}
-                  >
-                     <MdLogout />
-                     <div> Cerrar sesión</div>
-                  </MenuItem>
                </Menu>
             </div>
 
@@ -80,7 +77,10 @@ const Wrapper = styled.nav`
     background-color: #ffffff;
    border:1px solid #cdcdcd ;
    border-left:0 ;
-
+   
+ .avatar {
+   cursor: pointer;
+ }
    
    .header-toggle {
       display: grid;
@@ -96,6 +96,21 @@ const Wrapper = styled.nav`
    box-sizing: border-box;
    gap: 10px;
    margin: 0 25px;
+}
+
+.profile-option-wrapper {
+ background-color: #ffffff ; 
+box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
+ border-radius: 5px;
+ padding: 5px;
+}
+
+.menu-item {
+   text-decoration: none;
+   display: flex;
+   align-items: center;
+   gap: 5px;
+   padding: 3px;
 }
    .option {
       height: 100%;

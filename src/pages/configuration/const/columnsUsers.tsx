@@ -17,7 +17,7 @@ const colsSchema: Column<User>[] = [
     Header: "Rol",
     accessor: "role",
     // @ts-ignore
-    Cell: ({ row }) => capitalize(row.original.role),
+    Cell: '',
   },
   {
     Header: "Última sesión",

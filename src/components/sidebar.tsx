@@ -6,6 +6,7 @@ import { CSidebarNav } from '@coreui/react'
 import navigation from '../_nav'
 import { AppSidebarNav } from "./AppSidebarNav";
 import SimpleBar from 'simplebar-react'
+import useToggle from "../hooks/useToggle";
 
 
 type Props = {
@@ -13,10 +14,11 @@ type Props = {
 }
 function Sidebar({ isOpen }: Props) {
    const location = useLocation();
+   const [isLinksMenuOpen, toggleLinksMenu] = useToggle(); 
+   
 
-   const { profile } = useAppData();
-
-   useEffect(() => { }, [location]);
+   useEffect(() => { 
+   }, [location]);
 
    return (
       <Wrapper>
@@ -39,20 +41,15 @@ const Wrapper = styled.div`
    font-family: Poppins, Arial, Helvetica, sans-serif;
    border:1px solid #cdcdcd;
    background-color:#ffffff;
-   width: 250px;
-
-   .sidebar {
-      width: 16rem;
-      background-color: transparent;
-      
-   }
-
+   
    .sidebar-show{
+      width: 250px;
       display: block;
    }
 
    .sidebar-hidden {
       display: none;
+      width: 0;
    } 
 
    .sidebar-brand {

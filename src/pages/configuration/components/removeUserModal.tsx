@@ -16,6 +16,8 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
   const { supabase } = useSupabase();
   const { loadUsers } = useAppData();
 
+
+
   async function deleteUser() {
     if (user) {
       await supabase.from("users").update({ active: false }).eq("id", user.id);
@@ -36,7 +38,7 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
         <CModalBody>
           <h1>¿Seguro que desea eliminar a {user?.name || "este usuario"}?</h1>
           <p>
-            Este usuario se eliminaráaaa permanentemente. <br/> Esta acción no se puede
+            Este usuario se eliminará permanentemente. <br/> Esta acción no se puede
             deshacer.
           </p>
         </CModalBody>

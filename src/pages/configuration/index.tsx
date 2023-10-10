@@ -1,35 +1,7 @@
 import styled from "styled-components";
-import Tab from "../../components/tab";
 import OptionsTable from "./components/optionsTable";
 import UsersTable from "./components/usersTable";
 
-const usersOption = [
-	{
-		id: "users",
-		name: "Usuarios",
-		content: <UsersTable />
-	},
-	{
-		id: "members",
-		name: "Miembros",
-		content: <OptionsTable name="people" />
-	},
-	{
-		id: "ministries",
-		name: "Ministerios",
-		content: <OptionsTable name="ministries" />
-	},
-	{
-		id: "incomeTypes",
-		name: "Tipos de ingresos",
-		content: <OptionsTable name="incomeTypes" />
-	},
-	{
-		id: "outgoingTypes",
-		name: "Tipo de egresos",
-		content: <OptionsTable name="outgoingTypes" />
-	}
-];
 type Props = {
 	table: string
 }

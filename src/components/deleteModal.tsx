@@ -20,6 +20,7 @@ const DeleteModal: FC<Props> = ({
   onSucess,
   message
 }) => {
+
   const { supabase } = useSupabase();
 
   async function deleteItem() {
@@ -42,7 +43,7 @@ const DeleteModal: FC<Props> = ({
             {message}
           </p>) : (<>
             <p>
-              Este registro se eliminará permanentementes.
+              Este registro se eliminará permanentemente.
               <br/>
               Esta acción no se puede
               deshacer.

@@ -43,15 +43,15 @@ function Home() {
         <div className="separation-line" />
       </section>
       <section className="resumen">
-        <div className="shortcut" onClick={() => navigate('/incomes')}>
+        <div className="shortcut" onClick={() => navigate('/ingresos')}>
           <p className="title">INGRESOS</p>
           <p>{totalValues.income}</p>
         </div>
-        <div className="shortcut" onClick={() => navigate('/outgoings')}>
+        <div className="shortcut" onClick={() => navigate('/egresos')}>
           <p className="title">EGRESOS</p>
           <p>{totalValues.outgoing}</p>
         </div>
-        <div className="shortcut" onClick={() => navigate('/loans')}>
+        <div className="shortcut" onClick={() => navigate('/prestamos')}>
           <p className="title">PRESTAMOS</p>
           <p>{totalValues.loan}</p>
         </div>
@@ -92,7 +92,9 @@ font-family: Poppins;
   padding: 10px;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 600px;
   box-sizing: border-box;
 }
 	.resumen {
@@ -121,6 +123,30 @@ font-family: Poppins;
       cursor: pointer
     }
 	}
+
+  @media only screen and (max-width:700px){
+    p {
+      font-size: 12px;
+    }
+    .resumen {
+      display: grid;
+      grid-template: repeat(2, 1fr) auto/ auto ;
+      gap: 20px;
+      
+      div {
+    .title {
+      font-size: 10px;
+      font-weight: normal;
+    }
+    p {
+      margin: 0;
+      font-size: 12px;
+      font-weight: bold;
+    }}
+    }
+
+  }
+  
 `;
 
 export default Home;

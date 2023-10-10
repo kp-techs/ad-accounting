@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
-import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import { BsCheck } from "react-icons/bs";
 import { useTable } from "react-table";
 import styled from "styled-components";
@@ -8,26 +7,27 @@ import NoInfo from "../../../components/noInfo";
 import useAppData from "../../../hooks/useAppData";
 import { User } from "../../../types/models";
 import colsSchema from "../const/columnsUsers";
-import useToggle from "../../../hooks/useToggle";
 import RolModal from "./rolModal";
 import DeleteUserModal from "./removeUserModal";
 import InviteUserModal from "./inviteUserModal";
-import { CButton, CTable, CTableBody, CTableHead } from "@coreui/react";
-import { Menu, MenuItem } from "@szhsin/react-menu";
+import { CButton, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CTable, CTableBody, CTableHead } from "@coreui/react";
+
 
 function UsersTable() {
   const { users, loadUsers } = useAppData();
   const columns = useMemo(() => colsSchema, []);
-  const [isModalOpen, toggleModal] = useToggle();
-  const [isInvitationModalOpen, toggleInvitationModal] = useToggle();
-  const [isRolModalOpen, toggleRolModal] = useToggle();
   const [currentUser, setCurrentUser] = useState<User>();
   const [newValue, setNewValue] = useState("");
+
+  const [activeModal, setActiveModal] = useState<
+     "ROLE" | "DELETE" | "INVITE"
+  >();
 
   useEffect(() => {
     loadUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   const table = useTable<User>({ columns, data: users });
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
@@ -36,24 +36,27 @@ function UsersTable() {
   return (
     <Wrapper>
       <InviteUserModal
-        isOpen={isInvitationModalOpen}
-        onClose={toggleInvitationModal}
+        isOpen={activeModal === 'INVITE'}
+        onClose={() => setActiveModal(undefined)}
       />
-      <DeleteUserModal
-        isOpen={isModalOpen}
-        onClose={toggleModal}
-        user={currentUser}
-      />
+      {currentUser &&
+        <DeleteUserModal
+          isOpen={activeModal === 'DELETE'}
+          onClose={() => setActiveModal(undefined)}
+          user={currentUser}
+        />
+      }
+
       <RolModal
-        isOpen={isRolModalOpen}
-        onClose={toggleRolModal}
+        isOpen={activeModal === 'ROLE'}
+        onClose={() => setActiveModal(undefined)}
         user={currentUser}
         newValue={newValue}
       />
       {users ? (
         <div className="table-container">
           <CTable {...getTableProps()}>
-          <CTableHead color="secondary">
+            <CTableHead color="secondary">
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
@@ -79,7 +82,7 @@ function UsersTable() {
                                 className="button"
                                 onClick={() => {
                                   setCurrentUser(user.original);
-                                  toggleModal();
+                                  setActiveModal('DELETE')
                                 }}
                               >
                                 <SlUserUnfollow size={20} />
@@ -95,59 +98,37 @@ function UsersTable() {
                             {cell.render("Cell")}
                             {cell.column.Header === "Rol" ? (
                               <div className="menu-container">
-                              <Menu
-                                menuButton={(props) => {
-                                  return (
-                                    <div className="modifyRol">
-                                      {props.open ? (
-                                        <LuChevronUp id="modifyRol" size={20} />
-                                      ) : (
-                                        <LuChevronDown
-                                          id="modifyRol"
-                                          size={20}
-                                        />
-                                      )}
-                                    </div>
-                                  );
-                                }}
-                              >
-                                <MenuItem className="menu-item">
-                                  <div className=""
-                                    onClick={() => {
+                                <CDropdown>
+                                  <CDropdownToggle className="bg-wh">{cell.value}</CDropdownToggle>
+                                  <CDropdownMenu>
+                                    <CDropdownItem component='button' onClick={() => {
                                       if (cell.value === "Usuario") {
                                         setNewValue("Administrador");
                                         setCurrentUser(user.original);
-                                        toggleRolModal();
+                                        setActiveModal('ROLE')
+                                      } else {
+                                        setNewValue("Usuario");
+                                        setCurrentUser(user.original);
+                                        setActiveModal('ROLE')
                                       }
-                                    }}
-                                  >
-                                    Administrador
-                                    {cell.value === "Administrador" ? (
-                                      <BsCheck />
-                                    ) : null}
-                                  </div>
-                                </MenuItem>
-                                <MenuItem
-                                  className="menu-item"
-                                  onClick={() => {
-                                    if (cell.value === "Administrador") {
-                                      setNewValue("Usuario");
-                                      setCurrentUser(user.original);
-                                      toggleRolModal();
-                                    }
-                                  }}
-                                >
-                                  <div>
-                                    Usuario
-                                    {cell.value === "Usuario" ? (
-                                      <BsCheck />
-                                    ) : null}
-                                  </div>
-                                </MenuItem>
-                              </Menu>
+                                    }}>
+                                      {cell.value} <BsCheck />
+                                    </CDropdownItem>
+                                    <CDropdownItem component='button' onClick={() => {
+                                      if (cell.value === "Usuario") {
+                                        setNewValue("Administrador");
+                                        setCurrentUser(user.original);
+                                        setActiveModal('ROLE')
+                                      } else {
+                                        setNewValue("Usuario");
+                                        setCurrentUser(user.original);
+                                        setActiveModal('ROLE')
+                                      }
+                                    }}>{cell.value === 'Usuario' ? 'Administrador' : 'Usuario'}</CDropdownItem>
+                                  </CDropdownMenu>
+                                </CDropdown>
                               </div>
                             ) : null}
-                            { }
                           </td>
 
                         </>
@@ -166,9 +147,10 @@ function UsersTable() {
         </div>
       )}
       <footer>
-        <div className="add-button" onClick={toggleInvitationModal}>
-          <CButton color="secondary">
-            Nuevo usuario <span></span>
+        <div className="add-button" onClick={()=> setActiveModal('INVITE')}>
+          {/* Este modal esta mal */}
+          <CButton color="secondary" id="new-user">
+            Nuevo usuario
             <SlUserFollow />
           </CButton>
         </div>
@@ -197,6 +179,13 @@ table {
   cursor: pointer;
 }
 
+.bg-wh {
+  color: #000000;
+  background-color: #ffffff;
+  border: 0;
+  margin: 0;
+}
+
 .pagination-container {
   display: flex;
   justify-content: right;
@@ -208,11 +197,16 @@ place-content: center;
 }
 .modifyRol {
   display: inline;
+  background-color: aliceblue;
 }
 .button {
   padding: 0 15px;
 }
-
+#new-user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
 `;
 

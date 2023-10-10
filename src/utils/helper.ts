@@ -238,6 +238,5 @@ export function getPaymentFilterString({ ...filters }: PaymentsFilters) {
 }
 
 export function getLAvatar(name:any){
-console.log(name)
 return 'AS'
 }

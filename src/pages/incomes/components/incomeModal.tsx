@@ -1,4 +1,3 @@
-import Modal from "react-modal";
 import styled from "styled-components";
 import { FC, useState } from "react";
 import { Formik, Field, Form, FastField } from "formik";
@@ -7,7 +6,6 @@ import { useSupabase } from "../../../hooks/useSupabase";
 import { TableIncome } from "../../../types/models";
 import useAppData from "../../../hooks/useAppData";
 import SelectOptions from "../../../components/selectOptions";
-
 import {
   initialIncome,
   incomeTypeID,
@@ -17,7 +15,6 @@ import {
 } from "../constants";
 import Textarea from "../../../components/textarea";
 import moment from "moment";
-import { customStyles } from "../../../utils/constants";
 import useToggle from "../../../hooks/useToggle";
 import WarningModal from "./warningModal";
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
@@ -35,29 +32,32 @@ const IncomesModal: FC<Props> = ({
   income,
   isLoanVersion = false,
 }) => {
+  const { supabase } = useSupabase();
   const { loadIncomes, profile, loadLoans } = useAppData();
   const [on, setOn] = useState(false);
-  const { supabase } = useSupabase();
   const [isWarningModalOpen, toggleWarningModal] = useToggle();
 
   return (
     <CModal size="lg" visible={isOpen} onClose={onClose}>
       <Wrapper>
         <Formik
-          validationSchema={
-            isLoanVersion ? ValidationLoanVersionForm : ValidationIncomeForm
-          }
           initialValues={
             income ?? (isLoanVersion ? initialLoanIncome : initialIncome)
+          }
+          validationSchema={
+            isLoanVersion ? ValidationLoanVersionForm : ValidationIncomeForm
           }
           onSubmit={async (values, { resetForm }) => {
             if (income) {
               values.updatedBy = profile?.name;
               values.updatedDate = moment().format();
+
               // @ts-ignore
               delete values.incomeTypes;
+
               // @ts-ignore
               delete values.ministries;
+              
               // @ts-ignore
               delete values.people;
 
@@ -104,7 +104,7 @@ const IncomesModal: FC<Props> = ({
                 loadIncomes();
               }} />}
               <CModalHeader>
-                <CModalTitle>{income ? "ACTUALIZAR" : "AGREGAR"} {isLoanVersion? 'PRESTAMO':'INGRESO'}</CModalTitle>
+                <CModalTitle>{income ? "ACTUALIZAR" : "AGREGAR"} {isLoanVersion ? 'PRESTAMO' : 'INGRESO'}</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 {isLoanVersion ? (
@@ -112,16 +112,16 @@ const IncomesModal: FC<Props> = ({
                 ) : (
                   <div className="field-line">
 
-                      <div>
-                        <label htmlFor="selectIncomeType">Concepto</label>
-                      </div>
-                      <FastField
-                        id="selectIncomeType"
-                        name="type"
-                        component={(props: any) => (
-                          <SelectOptions {...props} table={"incomeTypes"} />
-                        )}
-                      />
+                    <div>
+                      <label htmlFor="selectIncomeType">Concepto</label>
+                    </div>
+                    <FastField
+                      id="selectIncomeType"
+                      name="type"
+                      component={(props: any) => (
+                        <SelectOptions {...props} table={"incomeTypes"} />
+                      )}
+                    />
 
 
                     {errors.type && touched.type && (

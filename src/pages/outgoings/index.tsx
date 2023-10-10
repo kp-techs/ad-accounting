@@ -11,6 +11,7 @@ type Action = "ADD" | "FILTER";
 function Outgoings() {
   const [activeAction, setActiveAction] = useState<Action>();
   const [filters, setFilters] = useState(outgoingsInitialValues);
+  const [isModalActive, setActiveModal] = useState<'ADD'>();
 
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
@@ -22,7 +23,7 @@ function Outgoings() {
       <nav>
         {(activeAction === "ADD" || !activeAction) && (
           <div
-            onClick={() => setActiveAction("ADD")}
+            onClick={() => setActiveModal("ADD")}
             className={"button nav-button"}
           >
             <FaPlus size={20} />
@@ -48,8 +49,8 @@ function Outgoings() {
       />
 
       <OutsModal
-        isOpen={activeAction === "ADD"}
-        onClose={() => toggleAction("ADD")}
+        isOpen={isModalActive === "ADD"}
+        onClose={() => setActiveModal(undefined)}
       />
 
       <div className="table-wrapper">

@@ -25,8 +25,6 @@ function Incomes() {
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE"
   >();
-
-
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
   }

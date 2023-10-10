@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Modal from "react-modal";
 import { TableIncome, TableOutgoing } from "../../../types/models";
 import { FC, useMemo } from "react";
 import useAppData from "../../../hooks/useAppData";
@@ -15,26 +14,25 @@ import { FastField, Field, Form, Formik } from "formik";
 import moment from "moment";
 import SelectOptions from "../../../components/selectOptions";
 import { ValidationLoanPaymentForm } from "../../loans/constant";
-import { customStyles } from "../../../utils/constants";
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   outgoing?: TableOutgoing;
-  isLoanVersion?: boolean;
   income?: TableIncome;
+  isLoanVersion?: boolean;
 };
 
 const OutsModal: FC<Props> = ({
   isOpen,
   onClose,
   outgoing,
+  income,
   isLoanVersion = false,
-  income
 }) => {
-  const { loadOuts, profile, loadLoans } = useAppData();
   const { supabase } = useSupabase();
+  const { loadOuts, profile, loadLoans } = useAppData();
   const filters = useMemo(() => ({ ...outgoingsInitialValues, loanID: income?.id }), [income])
   
   return (
@@ -50,14 +48,16 @@ const OutsModal: FC<Props> = ({
           onSubmit={async (values, { resetForm }) => {
             if (outgoing) {
               values.modifiedBy = profile?.name;
+
               values.modifiedAt = moment().format();
+
               // @ts-ignore
               delete values.people;
+
               // @ts-ignore
               delete values.outgoingTypes;
 
               if (values.type === outgoingTypeID.loan) {
-
                 const x = (outgoing.amount || 0) - (values.amount || 0);
                 const paidAmount = (outgoing.incomes.paidAmount || 0) - x;
                 const current = (outgoing.incomes.amount || 0) - paidAmount;
