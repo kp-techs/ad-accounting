@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AppProvider } from "./contexts/app";
@@ -13,14 +13,14 @@ function App() {
   const navigate = useNavigate();
   const { supabase } = useSupabase();
   const [isPanelOpen, togglePanel] = useToggle();
+  const [isLinksMenuOpen, toggleLinks] = useToggle();
 
   useEffect(() => {
+    console.log(isLinksMenuOpen)
     supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {
         navigate("/login");
-      } else {
-        navigate("/");
-      }
+      } 
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -28,10 +28,10 @@ function App() {
   return (
     <AppProvider>
       <Wrapper>
-        <Sidebar isOpen={isPanelOpen} />
+        <Sidebar isOpen={isPanelOpen} isLinksMenuOpen={isLinksMenuOpen} toggleLinks={toggleLinks} />
         <MainContent>
           <>
-            <Nav togglePanel={togglePanel} />
+            <Nav togglePanel={togglePanel} isLinksMenuOpen={isLinksMenuOpen} toggleLinks={toggleLinks} />
             <main className="outlet-container">
               <section className="outlet">
             <Outlet />
@@ -63,6 +63,10 @@ const Wrapper = styled.div`
     padding: 20px;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
     border-radius: 10px;
+  }
+
+  @media only screen and (max-width:700px){  
+    grid-template-columns: auto;
   }
 `;
 

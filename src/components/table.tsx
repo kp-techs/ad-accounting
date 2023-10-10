@@ -141,6 +141,8 @@ const Wrapper = styled.section`
   place-content: center;
   }
 
+  @media only screen and (max-width:700px) { overflow:scroll}
+
 `;
 
 export default Table;

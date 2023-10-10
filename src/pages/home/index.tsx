@@ -99,12 +99,14 @@ font-family: Poppins;
 }
 	.resumen {
 		display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
+    width: 100%;
     
 		
 		div {
 			background-color: #ffffffb2;
+      width: 100%;
       padding: 10px 20px;
       border-radius: 5px;
       box-shadow: 0px 1px 5px 0px #00000024;
@@ -124,14 +126,20 @@ font-family: Poppins;
     }
 	}
 
+  @media screen and (min-width: 1160px) and (max-width: 1605px) {
+    .resumen {
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+  }
+
   @media only screen and (max-width:700px){
     p {
       font-size: 12px;
     }
     .resumen {
-      display: grid;
-      grid-template: repeat(2, 1fr) auto/ auto ;
-      gap: 20px;
+      /* display: flex; */
+      /* flex-direction: column; */
+      /* gap: 20px; */
       
       div {
     .title {
@@ -144,7 +152,10 @@ font-family: Poppins;
       font-weight: bold;
     }}
     }
+  }
 
+  .chart-container {
+    height: auto;
   }
   
 `;

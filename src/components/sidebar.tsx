@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import useAppData from "../hooks/useAppData";
 import { CSidebarNav } from '@coreui/react'
@@ -11,18 +11,20 @@ import useToggle from "../hooks/useToggle";
 
 type Props = {
    isOpen: boolean
+   isLinksMenuOpen:boolean;
+   toggleLinks: () => void;
 }
-function Sidebar({ isOpen }: Props) {
+function Sidebar({ isOpen , isLinksMenuOpen,  toggleLinks}: Props) {
+   const {profile} = useAppData();
    const location = useLocation();
-   const [isLinksMenuOpen, toggleLinksMenu] = useToggle(); 
-   
+
 
    useEffect(() => { 
    }, [location]);
 
    return (
       <Wrapper>
-         <div className={`sidebar-${isOpen ? 'show' : 'hidden'}`}>
+         <div className={`sidebar sidebar-${isOpen ? 'show' : 'hidden'}`}>
             <div className="sidebar-brand">
                <img src="assets/images/AD-logo.png" className="brand" />
                <img src="assets/images/logo-title.png" className="brand-name" />
@@ -33,6 +35,7 @@ function Sidebar({ isOpen }: Props) {
                </SimpleBar>
             </CSidebarNav>
          </div>
+
       </Wrapper>
    );
 }
@@ -41,7 +44,8 @@ const Wrapper = styled.div`
    font-family: Poppins, Arial, Helvetica, sans-serif;
    border:1px solid #cdcdcd;
    background-color:#ffffff;
-   
+   display: block;
+
    .sidebar-show{
       width: 250px;
       display: block;
@@ -122,6 +126,11 @@ const Wrapper = styled.div`
       text-decoration: none;
       transition: 0.15s ease, color 0.15s ease;;
    } 
+
+
+   @media only screen and (max-width:700px){ 
+      display: none;
+   }
 `;
 
 export default Sidebar;
