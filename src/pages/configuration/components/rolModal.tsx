@@ -5,6 +5,7 @@ import { useSupabase } from "../../../hooks/useSupabase";
 import styled from "styled-components";
 import useAppData from "../../../hooks/useAppData";
 import { customStyles } from "../../../utils/constants";
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
   isOpen: boolean;
@@ -26,74 +27,74 @@ const RolModal: FC<Props> = ({ isOpen, onClose, user, newValue }) => {
   }
 
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-    >
+    <CModal size="lg" visible={isOpen} onClose={onClose}>
       <Wrapper>
-        <h4>
-          ¿Seguro que desea convertir a {user?.name || "esta persona"} en{" "}
-          {newValue}?
-        </h4>
-        <p>
-          El cambio de roles implica cambiar las restrincciones de acceso que
-          esta persona posee.
-        </p>
-        <div className="buttons-container">
-          <button className="cancel" onClick={onClose}>
-            Cancelar
-          </button>
-          <button onClick={switchRol}>Confirmar</button>
-        </div>
+        <CModalHeader>
+          <CModalTitle>
+            ¡CUIDADO!
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <h1>
+            ¿Seguro que desea convertir a {user?.name || "esta persona"} en{" "}
+            {newValue}?
+          </h1>
+          <p>
+            El cambio de roles implica cambiar las restrincciones de acceso que
+            esta persona posee.
+          </p>
+          <CModalFooter>
+
+            <div className="buttons-container">
+              <CButton size="sm" color="warning" className="cancel" onClick={onClose}>
+                Cancelar
+              </CButton>
+              <CButton size="sm" color="secondary" onClick={switchRol}>Confirmar</CButton>
+            </div>
+          </CModalFooter>
+        </CModalBody>
       </Wrapper>
-    </Modal>
+    </CModal>
   );
 };
 
 const Wrapper = styled.div`
-  width: 350px;
   text-align: center;
   margin: 10px;
+  font-family: Poppins, Arial, Helvetica, sans-serif;
 
-  h4 {
-    margin: 5px;
+  h1{
+    font-size: 17px;
   }
+  
   p {
+    font-size: 15px;
     margin: 0;
-    margin-bottom: 20px;
-    font-size: 13px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    margin-bottom: 10px;
   }
 
   .buttons-container {
     display: flex;
-    justify-content: center;
-    grid-area: right;
-    gap: 15px;
+    height: 40px;
+    justify-content: end;
+  }
 
-    .cancel {
-      background-color: #273b6c;
-      color: #ffffff;
-      &:active {
-        color: #000000;
-      }
-    }
-    button {
-      width: 93px;
-      height: 30px;
-      text-align: center;
-      justify-content: center;
+  .cancel {
+    margin-right: 8px;
+  }
+
+  @media only screen and (max-width:700px){  
+    h1 {
       font-size: 14px;
-      box-sizing: border-box;
-      background-color: #eeeeee;
-      border-radius: 5px;
-      font-family: Poppins, Arial, Helvetica, sans-serif;
-      border: 0;
-      cursor: pointer;
-      &:active {
-        background-color: #f5f5f5ad;
-      }
+    }
+
+    p {
+      font-size: 12px;
+    }
+
+    button {
+      font-size: 11px;
     }
   }
 `;

@@ -25,8 +25,6 @@ function Incomes() {
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE"
   >();
-
-
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
   }
@@ -69,13 +67,14 @@ function Incomes() {
 
   return (
     <Wrapper>
+      <h4>INGRESOS</h4>
       <nav>
         {!activeAction && (
           <div
             onClick={() => setActiveModal("EDIT/ADD")}
             className={"button nav-button"}
           >
-            <FaPlus size={20} />
+            <FaPlus size={15} />
             <span>Agregar</span>
           </div>
         )}
@@ -84,7 +83,7 @@ function Incomes() {
             onClick={() => toggleAction("FILTER")}
             className={"button nav-button"}
           >
-            <FaFilter size={20} />
+            <FaFilter size={15} />
             <span>Filtrar </span>
           </div>
         )}
@@ -140,8 +139,14 @@ const Wrapper = styled.section`
     height: 48px;
     display: flex;
     gap: 30px;
+    border-bottom:1px solid #000;
+    margin-bottom: 15px;
   }
-
+  span {
+    font-family: "Poppins";
+    font-size: 15px;
+    text-align: center;
+  }
   select {
     width: 500px;
     border-radius: 20px;
@@ -171,14 +176,15 @@ const Wrapper = styled.section`
     }
   }
 
-  span {
-    font-family: "Poppins";
-    font-size: 18px;
-    text-align: center;
-  }
-
   .table-wrapper {
     overflow: hidden;
+  }
+
+  @media only screen and (max-width:700px){  
+    h4 {
+      font-size: 16px;
+    }
+    span {font-size: 13px;}
   }
 `;
 

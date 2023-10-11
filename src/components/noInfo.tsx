@@ -4,8 +4,7 @@ function NoInfo() {
   return (
     <div className="noInfo">
       <div>
-        <p>No hay registros disponibles</p>
-        <ImSad size={25} />
+        <p>No hay registros disponibles.</p>
       </div>
     </div>
   );

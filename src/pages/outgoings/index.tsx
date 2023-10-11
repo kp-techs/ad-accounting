@@ -11,6 +11,7 @@ type Action = "ADD" | "FILTER";
 function Outgoings() {
   const [activeAction, setActiveAction] = useState<Action>();
   const [filters, setFilters] = useState(outgoingsInitialValues);
+  const [isModalActive, setActiveModal] = useState<'ADD'>();
 
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
@@ -18,10 +19,11 @@ function Outgoings() {
 
   return (
     <Wrapper>
+      <h4>EGRESOS</h4>
       <nav>
         {(activeAction === "ADD" || !activeAction) && (
           <div
-            onClick={() => setActiveAction("ADD")}
+            onClick={() => setActiveModal("ADD")}
             className={"button nav-button"}
           >
             <FaPlus size={20} />
@@ -47,8 +49,8 @@ function Outgoings() {
       />
 
       <OutsModal
-        isOpen={activeAction === "ADD"}
-        onClose={() => toggleAction("ADD")}
+        isOpen={isModalActive === "ADD"}
+        onClose={() => setActiveModal(undefined)}
       />
 
       <div className="table-wrapper">
@@ -66,6 +68,13 @@ const Wrapper = styled.section`
     height: 48px;
     display: flex;
     gap: 30px;
+    border-bottom:1px solid #000;
+    margin-bottom: 15px;
+  }
+  span {
+    font-family: "Poppins";
+    font-size: 15px;
+    text-align: center;
   }
   select {
     width: 500px;
@@ -93,15 +102,18 @@ const Wrapper = styled.section`
       border-radius: 5px;
     }
   }
-  span {
-    font-family: "Poppins";
-    font-size: 18px;
-    text-align: center;
-  }
+
 
   .table-wrapper {
     overflow: hidden;
   }
+
+  @media only screen and (max-width:700px){  
+    h4 {
+      font-size: 16px;
+    }
+    span {font-size: 13px;}
+  } 
 `;
 
 export default Outgoings;

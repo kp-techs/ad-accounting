@@ -229,11 +229,14 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
   });
 
   if (typesStr) mappedFilters.push(typesStr);
-  console.log(mappedFilters)
 
   return mappedFilters;
 }
 
 export function getPaymentFilterString({ ...filters }: PaymentsFilters) {
   return [];
+}
+
+export function getLAvatar(name:any){
+return 'AS'
 }

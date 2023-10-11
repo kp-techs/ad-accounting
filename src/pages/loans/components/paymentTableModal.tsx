@@ -8,6 +8,7 @@ import { TableIncome } from "../../../types/models";
 
 import OutgoingsTable from "../../outgoings/components/table";
 import { outgoingsInitialValues } from "../../outgoings/constants";
+import { CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
   isOpen: boolean;
@@ -20,23 +21,17 @@ const LoanPaymentsModal: FC<Props> = ({ isOpen, income, onClose }) => {
   const filters = useMemo(() => ({ ...outgoingsInitialValues, loanID: income.id }), [income])
 
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Formulario para registrar ingresos"
-    >
+    <CModal size="xl" visible={isOpen} onClose={onClose}>
       <Wrapper>
-        <div className="close">
-          <button onClick={onClose}>
-            <GrFormClose size={22} />
-          </button>
-        </div>
-        <div className="title">
-          <label>HISTORIAL DE PAGOS</label>
-        </div>
+      <CModalHeader>
+        <CModalTitle>
+          HISTORIAL DE PAGOS
+        </CModalTitle>
+      </CModalHeader>
+      <CModalBody>
         <OutgoingsTable filters={filters} isLoanVersion={true} />
+      </CModalBody>
+      <CModalFooter>
         <section className="creation-data">
           <p>
             Registro creado por {capitalize(income.createdBy)}. <br />
@@ -50,22 +45,18 @@ const LoanPaymentsModal: FC<Props> = ({ isOpen, income, onClose }) => {
             </p>
           )}
         </section>
+      </CModalFooter>
       </Wrapper>
-    </Modal>
+    </CModal>
   );
 };
 
 const Wrapper = styled.div`
   text-align: center;
   margin: 10px;
-  width: auto;
-  .title {
-    display: flex;
-    padding-left: 15px;
-  }
 
   label {
-    color: #ffffff;
+    color: #000000;
     font-family: Poppins;
     font-weight: 400;
     font-size: 18px;
@@ -77,20 +68,7 @@ const Wrapper = styled.div`
     text-align: left;
   }
 
-  .close {
-    display: flex;
-    justify-content: flex-end;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
-    button {
-      background-color: transparent;
-      border: 0px;
-      align-self: flex-end;
-      cursor: pointer;
-    }
-  }
+  
   .creation-data {
     font-style: italic;
     font-size: 12px;

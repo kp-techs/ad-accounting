@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
-import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import { BsCheck } from "react-icons/bs";
 import { useTable } from "react-table";
 import styled from "styled-components";
@@ -8,25 +7,27 @@ import NoInfo from "../../../components/noInfo";
 import useAppData from "../../../hooks/useAppData";
 import { User } from "../../../types/models";
 import colsSchema from "../const/columnsUsers";
-import useToggle from "../../../hooks/useToggle";
-import { Menu, MenuItem } from "@szhsin/react-menu";
 import RolModal from "./rolModal";
 import DeleteUserModal from "./removeUserModal";
 import InviteUserModal from "./inviteUserModal";
+import { CButton, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CTable, CTableBody, CTableHead } from "@coreui/react";
+
 
 function UsersTable() {
   const { users, loadUsers } = useAppData();
   const columns = useMemo(() => colsSchema, []);
-  const [isModalOpen, toggleModal] = useToggle();
-  const [isInvitationModalOpen, toggleInvitationModal] = useToggle();
-  const [isRolModalOpen, toggleRolModal] = useToggle();
   const [currentUser, setCurrentUser] = useState<User>();
   const [newValue, setNewValue] = useState("");
+
+  const [activeModal, setActiveModal] = useState<
+     "ROLE" | "DELETE" | "INVITE"
+  >();
 
   useEffect(() => {
     loadUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   const table = useTable<User>({ columns, data: users });
   const { getTableProps, getTableBodyProps, rows, headerGroups, prepareRow } =
@@ -35,132 +36,123 @@ function UsersTable() {
   return (
     <Wrapper>
       <InviteUserModal
-        isOpen={isInvitationModalOpen}
-        onClose={toggleInvitationModal}
+        isOpen={activeModal === 'INVITE'}
+        onClose={() => setActiveModal(undefined)}
       />
-      <DeleteUserModal
-        isOpen={isModalOpen}
-        onClose={toggleModal}
-        user={currentUser}
-      />
+      {currentUser &&
+        <DeleteUserModal
+          isOpen={activeModal === 'DELETE'}
+          onClose={() => setActiveModal(undefined)}
+          user={currentUser}
+        />
+      }
+
       <RolModal
-        isOpen={isRolModalOpen}
-        onClose={toggleRolModal}
+        isOpen={activeModal === 'ROLE'}
+        onClose={() => setActiveModal(undefined)}
         user={currentUser}
         newValue={newValue}
       />
       {users ? (
         <div className="table-container">
-          <table {...getTableProps()}>
-            <thead>
-              <div className="head-row">
-                {headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => (
-                      <th {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </div>
-            </thead>
-            <tbody {...getTableBodyProps()}>
+          <CTable {...getTableProps()}>
+            <CTableHead color="secondary">
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+
+            </CTableHead>
+            <CTableBody {...getTableBodyProps()}>
               {rows.map((user) => {
                 prepareRow(user);
                 return (
-                  <div className="row-body">
-                    <tr {...user.getRowProps()} className="row">
-                      {user.cells.map((cell) => {
-                        return (
-                          <div className="cell">
-                            <td {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </td>
-                            {cell.column.Header === "Rol" ? (
-                              <Menu
-                                menuButton={(props) => {
-                                  return (
-                                    <div className="modifyRol">
-                                      {props.open ? (
-                                        <LuChevronUp id="modifyRol" size={20} />
-                                      ) : (
-                                        <LuChevronDown
-                                          id="modifyRol"
-                                          size={20}
-                                        />
-                                      )}
-                                    </div>
-                                  );
+                  <tr {...user.getRowProps()}>
+                    {user.cells.map((cell) => {
+                      if (cell.column.id === 'actions') {
+                        return <td>
+                          <div id="modifyButtons-container">
+                            <div className="button">
+                              <div
+                                className="button"
+                                onClick={() => {
+                                  setCurrentUser(user.original);
+                                  setActiveModal('DELETE')
                                 }}
                               >
-                                <MenuItem className="menu-item">
-                                  <div
-                                    onClick={() => {
+                                <SlUserUnfollow size={20} />
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      }
+                      return (
+                        <>
+
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell")}
+                            {cell.column.Header === "Rol" ? (
+                              <div className="menu-container">
+                                <CDropdown>
+                                  <CDropdownToggle size="sm" className="bg-wh">{cell.value}</CDropdownToggle>
+                                  <CDropdownMenu>
+                                    <CDropdownItem component='button' onClick={() => {
                                       if (cell.value === "Usuario") {
                                         setNewValue("Administrador");
                                         setCurrentUser(user.original);
-                                        toggleRolModal();
+                                        setActiveModal('ROLE')
+                                      } else {
+                                        setNewValue("Usuario");
+                                        setCurrentUser(user.original);
+                                        setActiveModal('ROLE')
                                       }
-                                    }}
-                                  >
-                                    Administrador
-                                    {cell.value === "Administrador" ? (
-                                      <BsCheck />
-                                    ) : null}
-                                  </div>
-                                </MenuItem>
-                                <MenuItem
-                                  className="menu-item"
-                                  onClick={() => {
-                                    if (cell.value === "Administrador") {
-                                      setNewValue("Usuario");
-                                      setCurrentUser(user.original);
-                                      toggleRolModal();
-                                    }
-                                  }}
-                                >
-                                  <div>
-                                    Usuario
-                                    {cell.value === "Usuario" ? (
-                                      <BsCheck />
-                                    ) : null}
-                                  </div>
-                                </MenuItem>
-                              </Menu>
+                                    }}>
+                                      {cell.value} <BsCheck />
+                                    </CDropdownItem>
+                                    <CDropdownItem component='button' onClick={() => {
+                                      if (cell.value === "Usuario") {
+                                        setNewValue("Administrador");
+                                        setCurrentUser(user.original);
+                                        setActiveModal('ROLE')
+                                      } else {
+                                        setNewValue("Usuario");
+                                        setCurrentUser(user.original);
+                                        setActiveModal('ROLE')
+                                      }
+                                    }}>{cell.value === 'Usuario' ? 'Administrador' : 'Usuario'}</CDropdownItem>
+                                  </CDropdownMenu>
+                                </CDropdown>
+                              </div>
                             ) : null}
-                          </div>
-                        );
-                      })}
-                      <div id="modifyButtons-container">
-                        <div className="button">
-                          <div
-                            className="button"
-                            onClick={() => {
-                              setCurrentUser(user.original);
-                              toggleModal();
-                            }}
-                          >
-                            <SlUserUnfollow size={20} />
-                          </div>
-                        </div>
-                      </div>
-                    </tr>
-                  </div>
+                          </td>
+
+                        </>
+                      );
+                    })}
+
+                  </tr>
                 );
               })}
-            </tbody>
-          </table>
+            </CTableBody>
+          </CTable>
         </div>
       ) : (
-        <NoInfo />
+        <div className="no-data">
+          <NoInfo />
+        </div>
       )}
       <footer>
-        <div className="add-button" onClick={toggleModal}>
-          <button>
-            <span>Nuevo usuario</span>
+        <div className="add-button" onClick={()=> setActiveModal('INVITE')}>
+          {/* Este modal esta mal */}
+          <CButton size="sm" color="secondary" id="new-user">
+            Nuevo usuario
             <SlUserFollow />
-          </button>
+          </CButton>
         </div>
       </footer>
     </Wrapper>
@@ -168,160 +160,61 @@ function UsersTable() {
 }
 
 const Wrapper = styled.section`
-  height: 100%;
-  width: 100%;
   font-style: Poppins;
+  overflow: scroll;
+
+table {
+  font-family: Poppins;
+}
+
+.modifyButtons-container {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
+  height: 100%;
+  align-items: center;
+  gap: 10px;
+}
 
-  .table-container {
-    overflow: auto;
-    height: calc(100% - 45px);
+.button {
+  padding: 3px;
+  cursor: pointer;
+}
 
-    &::-webkit-scrollbar {
-      background-color: #ffffff;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #273b6c;
-      border-radius: 10px;
-    }
-  }
+.bg-wh {
+  color: #000000;
+  background-color: #ffffff;
+  border: 0;
+  margin: 0;
+}
 
-  table {
-    font-family: Poppins;
-    font-size: 14px;
-    width: 100%;
-    border-spacing: 0 15px;
-  }
+.pagination-container {
+  display: flex;
+  justify-content: right;
+}
+.no-data {
+height: 550px;
+display: grid;
+place-content: center;
+}
+.modifyRol {
+  display: inline;
+  background-color: aliceblue;
+}
+.button {
+  padding: 0 15px;
+}
+#new-user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
-  thead {
-    tr {
-      display: grid;
-      grid-template-columns: 1fr 2fr 1fr 1.5fr;
-      align-items: center;
-      th {
-        font-size: 16px;
-        color: #000000;
-        text-align: justify;
-        border: 0;
-        font-weight: 300;
-        padding-left: 25px;
-      }
-    }
-  }
+@media only screen and (max-width:700px) { 
+    overflow:scroll;
 
-  .row-body {
-    border: white 1px solid;
-    border-width: 1px 0 0 0;
-    padding: 10px;
-    height: 50px;
-  }
-
-  tbody {
-    tr {
-      border-radius: 20px;
-      background-color: rgba(33, 80, 119, 0.109);
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr 2fr 1fr 1.5fr;
-      align-items: center;
-      height: 100%;
-      td {
-        font-size: 16px;
-        padding-left: 25px;
-      }
+    table {
+      font-size: small;
     }
 
-    tr:hover {
-      background: #2626262b;
-
-      #modifyRol {
-        display: inline-flex;
-        gap: 10px;
-      }
-    }
-  }
-
-  #modifyButtons-container {
-    height: 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    position: absolute;
-    top: 0;
-    right: 20px;
-    z-index: 50;
-  }
-  .button {
-    display: flex;
-    padding: 3px;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .pagination-container {
-    display: flex;
-    justify-content: right;
-  }
-
-  .noInfo {
-    display: grid;
-    width: 100%;
-    height: 100%;
-    place-items: center;
-    div {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: Poppins;
-      font-size: 16px;
-    }
-  }
-
-  #modifyRol {
-    display: none;
-    cursor: pointer;
-  }
-
-  .cell {
-    display: flex;
-  }
-
-  .modifyRol {
-    display: flex;
-    width: 100%;
-    align-items: center;
-  }
-
-  footer {
-    display: grid;
-    padding: 20px;
-
-    .pagination-container {
-      display: flex;
-      justify-content: end;
-      align-content: left;
-    }
-  }
-  .add-button {
-    button {
-      border: 0;
-      display: flex;
-      padding: 0px 20px;
-      background-color: #273b6c;
-      color: #ffffff;
-      border-radius: 5px;
-      height: 30px;
-      align-items: center;
-      font-family: Poppins;
-      cursor: pointer;
-      gap: 10px;
-    }
   }
 `;
 

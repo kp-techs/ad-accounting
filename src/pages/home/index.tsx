@@ -43,15 +43,15 @@ function Home() {
         <div className="separation-line" />
       </section>
       <section className="resumen">
-        <div className="shortcut" onClick={() => navigate('/incomes')}>
+        <div className="shortcut" onClick={() => navigate('/ingresos')}>
           <p className="title">INGRESOS</p>
           <p>{totalValues.income}</p>
         </div>
-        <div className="shortcut" onClick={() => navigate('/outgoings')}>
+        <div className="shortcut" onClick={() => navigate('/egresos')}>
           <p className="title">EGRESOS</p>
           <p>{totalValues.outgoing}</p>
         </div>
-        <div className="shortcut" onClick={() => navigate('/loans')}>
+        <div className="shortcut" onClick={() => navigate('/prestamos')}>
           <p className="title">PRESTAMOS</p>
           <p>{totalValues.loan}</p>
         </div>
@@ -92,17 +92,21 @@ font-family: Poppins;
   padding: 10px;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 600px;
   box-sizing: border-box;
 }
 	.resumen {
 		display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
+    width: 100%;
     
 		
 		div {
 			background-color: #ffffffb2;
+      width: 100%;
       padding: 10px 20px;
       border-radius: 5px;
       box-shadow: 0px 1px 5px 0px #00000024;
@@ -121,6 +125,39 @@ font-family: Poppins;
       cursor: pointer
     }
 	}
+
+  @media screen and (min-width: 1160px) and (max-width: 1605px) {
+    .resumen {
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+  }
+
+  @media only screen and (max-width:700px){
+    p {
+      font-size: 12px;
+    }
+    .resumen {
+      /* display: flex; */
+      /* flex-direction: column; */
+      /* gap: 20px; */
+      
+      div {
+    .title {
+      font-size: 10px;
+      font-weight: normal;
+    }
+    p {
+      margin: 0;
+      font-size: 12px;
+      font-weight: bold;
+    }}
+    }
+  }
+
+  .chart-container {
+    height: auto;
+  }
+  
 `;
 
 export default Home;

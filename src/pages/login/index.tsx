@@ -1,4 +1,4 @@
-import { Auth, ForgottenPassword } from "@supabase/auth-ui-react";
+import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ if (session) navigate("/");
         <img className="AD-logo" src="assets/images/LOGO.png" alt="Logo" />
       </div>
       <div className="log-container">
-        <div className="log">
+        <div className="log-layer">
           {forgottenPassword ? 
             <RecoverPassword /> :
             <>
@@ -68,14 +68,12 @@ const Wrapper = styled.div`
   }
 
   .log-container {
-    width: 330px;
-    height: 472.875px;
     background: #085690;
     box-shadow: -15px 0px 24px rgba(0, 0, 0, 0.25);
     border-radius: 40px;
     padding: 85px 45px;
   }
-  .log {
+  .log-layer {
     display: flex;
     flex-direction: column;
     align-items: center;

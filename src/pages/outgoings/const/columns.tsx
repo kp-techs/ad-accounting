@@ -39,6 +39,11 @@ function useColumns() {
         // @ts-ignore
         Cell: ({ row }) => formatMoney(row.original.amount),
       },
+      {
+        Header: 'Acciones',
+        Cell: '',
+        id: 'actions'
+      }
     ],
     []
   );

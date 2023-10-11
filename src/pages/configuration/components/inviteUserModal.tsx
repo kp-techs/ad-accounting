@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useId, useState } from "react";
 import useAppData from "../../../hooks/useAppData";
 import { customStyles } from "../../../utils/constants";
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
 	isOpen: boolean;
@@ -30,18 +31,16 @@ const InviteUserModal = ({ isOpen, onClose }: Props) => {
 	};
 
 	return (
-		<Modal
-			ariaHideApp={false}
-			isOpen={isOpen}
-			onRequestClose={onClose}
-			style={customStyles}
-		>
+		<CModal visible={isOpen} onClose={onClose}>
 			<Wrapper>
 				<div>
 					<form className="form-widget" onSubmit={handleInvitation}>
-						<div className="head-modal">
-							<h3>Invitar usuario</h3>
-						</div>
+						<CModalHeader>
+							<CModalTitle>
+								INVITAR USUARIO
+							</CModalTitle>
+						</CModalHeader>
+						<CModalBody>
 						<section className="body-modal">
 							<div className="form-field">
 								<label htmlFor="email">Correo</label>
@@ -72,14 +71,15 @@ const InviteUserModal = ({ isOpen, onClose }: Props) => {
 								/>
 							</div>
 						</section>
-						<div className="foo-modal">
-							<button>Cancelar</button>
-							<button>Enviar</button>
-						</div>
+						</CModalBody>
+						<CModalFooter>
+							<CButton size='sm' color='secondary'>Cancelar</CButton>
+							<CButton size='sm' color='warning' className="send">Enviar</CButton>
+						</CModalFooter>
 					</form>
 				</div>
 			</Wrapper>
-		</Modal>
+		</CModal>
 	);
 };
 const Wrapper = styled.div`
@@ -87,17 +87,10 @@ const Wrapper = styled.div`
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
-		width: 400px;
-		color: #eeeeee;
+		color: #000000;
 		font-family: Poppins, Arial, Helvetica, sans-serif;
 	}
-	.head-modal {
-		border-bottom: 1px gray solid;
-	}
-	h3 {
-		color: #eeeeee;
-		margin: 0;
-	}
+	
 	input,
 	select,
 	textarea {
@@ -123,30 +116,24 @@ const Wrapper = styled.div`
 	.form-field {
 		margin-bottom: 10px;
 	}
-	.foo-modal {
-		display: flex;
-		justify-content: right;
-		gap: 10px;
-	}
-	button {
-		padding: 0px 10px;
-		color: #000;
-		border-radius: 20px;
-		width: 93px;
-		height: 30px;
-		text-align: center;
-		justify-content: center;
-		font-size: 16px;
-		box-sizing: border-box;
-		background-color: #eeeeee;
-		border-radius: 5px;
-		font-family: Poppins, Arial, Helvetica, sans-serif;
-		border: 0;
-		cursor: pointer;
 
-		.unactive {
-			cursor: default;
-		}
-	}
+	.buttons-container {
+    display: flex;
+    height: 40px;
+    justify-content: end;
+  }
+  .send {
+	padding: 4px 19.06px;
+  }
+
+  @media only screen and (max-width:700px){  
+    p {
+      font-size: 13px;
+    }
+
+    button {
+      font-size: 13px;
+    }
+  }
 `;
 export default InviteUserModal;

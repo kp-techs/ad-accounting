@@ -13,6 +13,7 @@ import {
 import { TableOutgoing } from "../../../types/models";
 import { outgoingTypeID } from "../constants";
 import { customStyles } from "../../../utils/constants";
+import { CModal, CModalBody, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
   isOpen: boolean;
@@ -27,87 +28,81 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, outgoing }) => {
   }
 
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Modal para ver detalles"
-    >
+    <CModal visible={isOpen} onClose={onClose}>
       <Wrapper>
-        <div className="concept-container">
-          <h3>{description}</h3>
-        </div>
-        <section className="side">
-          <p className="title">Monto</p>
-          <p>{formatMoney(outgoing?.amount || null)}</p>
-        </section>
-        <section className="side">
-          <p className="title">Fecha</p>
-          <p>{formatDate(outgoing?.date || null)}</p>
-        </section>
-        <section className="side">
-          <p className="title">Tipo de egreso</p>
-          <p>{capitalize(outgoing?.outgoingTypes?.name || "")}</p>
-        </section>
-        <section className="side">
-          <p className="title">
-            {outgoing?.type === outgoingTypeID.loan
-              ? "Acreedor"
-              : "Beneficiario"}
-          </p>
-          <p>{capitalize(outgoing?.people?.name || "")}</p>
-        </section>
-        {outgoing?.type === outgoingTypeID.loan ? (
-          <>
-            <section className="side">
-              <p className="title">Deuda inicial</p>
-              <p>{formatMoney(outgoing?.incomes.amount || null)}</p>
-            </section>
-            <section className="side">
-              <p className="title">Deuda restante</p>
-              <p>{formatMoney(outgoing?.incomes.currentDebt || null)}</p>
-            </section>
-            <section className="side">
-              <p className="title">Total abonado</p>
-              <p>{formatMoney(outgoing?.incomes.paidAmount || null)}</p>
-            </section>
-          </>
-        ) : null}
-
-        {outgoing?.description && (
+        <CModalHeader>
+          <CModalTitle className="sm">
+            {description}
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
           <section className="side">
-            <p className="title">Descripción</p>
-            <p>{capitalize(outgoing?.description || '')}</p>
+            <p className="title">Monto</p>
+            <p>{formatMoney(outgoing?.amount || null)}</p>
           </section>
-        )}
-
-        <section className="side">
-          <p className="title">Creación</p>
-          <div className="user-info">
-            <p>
-              {capitalize(outgoing?.createdBy || "")}.{" "}
-              {formatLongDate(outgoing?.createdDate || null)}
-            </p>
-          </div>
-        </section>
-        {outgoing?.modifiedAt !== null && (
           <section className="side">
-            <p className="title">Última modificación</p>
+            <p className="title">Fecha</p>
+            <p>{formatDate(outgoing?.date || null)}</p>
+          </section>
+          <section className="side">
+            <p className="title">Tipo de egreso</p>
+            <p>{capitalize(outgoing?.outgoingTypes?.name || "")}</p>
+          </section>
+          <section className="side">
+            <p className="title">
+              {outgoing?.type === outgoingTypeID.loan
+                ? "Acreedor"
+                : "Beneficiario"}
+            </p>
+            <p>{capitalize(outgoing?.people?.name || "")}</p>
+          </section>
+          {outgoing?.type === outgoingTypeID.loan ? (
+            <>
+              <section className="side">
+                <p className="title">Deuda inicial</p>
+                <p>{formatMoney(outgoing?.incomes.amount || null)}</p>
+              </section>
+              <section className="side">
+                <p className="title">Deuda restante</p>
+                <p>{formatMoney(outgoing?.incomes.currentDebt || null)}</p>
+              </section>
+              <section className="side">
+                <p className="title">Total abonado</p>
+                <p>{formatMoney(outgoing?.incomes.paidAmount || null)}</p>
+              </section>
+            </>
+          ) : null}
+
+          {outgoing?.description && (
+            <section className="side">
+              <p className="title">Descripción</p>
+              <p>{capitalize(outgoing?.description || '')}</p>
+            </section>
+          )}
+
+          <section className="side">
+            <p className="title">Creación</p>
             <div className="user-info">
               <p>
-                {capitalize(outgoing?.modifiedBy || "")}.{" "}
-                {formatLongDate(outgoing?.modifiedAt || null)}
+                {capitalize(outgoing?.createdBy || "")}.{" "}
+                {formatLongDate(outgoing?.createdDate || null)}
               </p>
             </div>
           </section>
-        )}
-
-        <button onClick={onClose}>
-          <GrClose />
-        </button>
+          {outgoing?.modifiedAt !== null && (
+            <section className="side">
+              <p className="title">Última modificación</p>
+              <div className="user-info">
+                <p>
+                  {capitalize(outgoing?.modifiedBy || "")}.{" "}
+                  {formatLongDate(outgoing?.modifiedAt || null)}
+                </p>
+              </div>
+            </section>
+          )}
+        </CModalBody>
       </Wrapper>
-    </Modal>
+    </CModal>
   );
 };
 
@@ -149,6 +144,13 @@ const Wrapper = styled.div`
     position: absolute;
     background-color: transparent;
     border: 0px;
+  }
+  @media only screen and (max-width:700px) { 
+    font-size: 12px;
+
+    .sm {
+      font-size: 16px;
+    }
   }
 `;
 export default DetailsModal;

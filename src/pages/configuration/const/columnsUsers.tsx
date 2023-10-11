@@ -17,13 +17,18 @@ const colsSchema: Column<User>[] = [
     Header: "Rol",
     accessor: "role",
     // @ts-ignore
-    Cell: ({ row }) => capitalize(row.original.role),
+    Cell: '',
   },
   {
     Header: "Última sesión",
     accessor: "last_sign_in_at",
     // @ts-ignore
     Cell: ({ row }) => formatRelativeDate(row.original.last_sign_in_at),
+  }, 
+  {
+    Header: 'Acciones',
+    Cell: '',
+    id: 'actions'
   },
 ];
 
