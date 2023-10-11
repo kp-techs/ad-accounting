@@ -55,6 +55,10 @@ export function formatTableDate(date: string | null) {
     return momentDate.format("DD/MM/YY");
   }
 }
+export function getMonth (date: string | null){
+  moment.locale("es");
+  if (date) return capitalize(moment(date).format('MMMM'));
+}
 
 export function formatDate(date: string | null) {
   if (date) return moment(date).format("DD [de] MMMM, YYYY");
@@ -240,3 +244,5 @@ export function getPaymentFilterString({ ...filters }: PaymentsFilters) {
 export function getLAvatar(name:any){
 return 'AS'
 }
+
+

@@ -56,7 +56,24 @@ type PaymentsFilters = {
   endAmount: number | null;
 };
 
+type Dataset = {
+  month?: string[],
+  amount: number[]
+}
 
+type AmoutHistory = {
+  month: string;
+  amount: number;
+}
+
+type ChartConfig = {
+  table: string,
+  label:string,
+  backgroundColor?: string,
+  borderColor?: string,
+  pointBackgroundColor?: string,
+  pointBorderColor?: string,
+}
 
 type Filters = IncomesFilters | OutgoingsFilters | LoansFilters | PaymentsFilters;
 

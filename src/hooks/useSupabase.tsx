@@ -5,10 +5,12 @@ import { Database } from "../types/supabase";
 import {
   getIncomeFilterString,
   getLoanFilterString,
+  getMonth,
   getOutgoingFilterString,
   getPaymentFilterString,
 } from "../utils/helper";
 import { incomeTypeID } from "../pages/incomes/constants";
+import moment from "moment";
 
 export const supabase = createClient<Database>(
   process.env.REACT_APP_SUPABASE_URL || "",
@@ -176,4 +178,32 @@ export async function getTotalAmount(
     end_date: endDate,
   });
   return data;
+}
+
+export async function getTotalByMonth(table: string) {
+  const { data } = await supabase.rpc('total_by_month', { table_name: table })
+  const dataset: AmoutHistory[] = data?.map((e) => ({
+    month: e.month_date,
+    amount: (e.month_total)
+  })) || []
+  return dataset;
+}
+
+export async function getHistoricChart(tables: ChartConfig[]) {
+  const tablesData: AmoutHistory[][] = await Promise.all(tables.map(item => getTotalByMonth(item.table)))
+
+  const allMonths = Array.from(new Set(tablesData.flatMap(data => data.map((item: AmoutHistory) => item.month))))
+  const labels = allMonths.map(getMonth)
+  const datasets = tablesData.map((data, index) => {
+    return {
+      ...tables[index],
+      data:
+        allMonths.map(month => {
+          const monthData = data.find(item => item.month === month);
+          return monthData?.amount || 0
+        })
+    }
+  })
+
+  return { labels, datasets }
 }
