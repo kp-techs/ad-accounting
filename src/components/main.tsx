@@ -10,7 +10,8 @@ const MainContent: FC<Props> = ({ children }) => {
 };
 
 const Wrapper = styled.main`
-
+    display: grid;
+    grid-auto-rows: 55px 1fr;
 `;
 
 export default MainContent;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AppProvider } from "./contexts/app";
-import { useSupabase } from "./hooks/useSupabase";
+import { getTotalByMonth, useSupabase } from "./hooks/useSupabase";
 import Sidebar from "./components/sidebar";
 import MainContent from "./components/main";
 import Nav from "./components/nav";
@@ -22,6 +22,10 @@ function App() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(()=>{
+
+  })
 
   return (
     <AppProvider>
@@ -52,7 +56,7 @@ const Wrapper = styled.div`
 
   .outlet-container {
     width: 100%;
-    height: 100%;
+    height: calc(100%-40px);
     background-color: #f3f4f7;
     padding: 50px;
   }
