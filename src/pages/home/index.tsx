@@ -11,7 +11,6 @@ import { MdAttachMoney } from "react-icons/md";
 import ChartGeneral from "../../components/charts/chart";
 
 function Home() {
-  const { profile } = useAppData();
   const navigate = useNavigate();
   const [incomesAmount, setIncomesAmount] = useState<any>(0);
   const [outgoingsAmount, setOutgoingsAmount] = useState<any>(0);
@@ -41,10 +40,6 @@ function Home() {
   }
   return (
     <Wrapper>
-      <section className="top-container">
-        <p>¡Hola, {profile?.name || 'bienvenido devuelta'}!</p>
-        <div className="separation-line" />
-      </section>
       <section className="resumen">
         <div className="resumen-item shortcut" onClick={() => navigate('/ingresos')}>
           <div className="resumen-icon"><GiReceiveMoney color="white" size={42}/></div>

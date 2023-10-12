@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import IncomesModal from "./components/incomeModal";
 import DetailsModal from "./components/detailsModal";
 import { FaPlus, FaFilter } from "react-icons/fa";
@@ -7,13 +7,15 @@ import FilterSection from "./components/incomesFilter";
 import { filterInitialValues } from "./constants";
 import Table from "../../components/table";
 import useAppData from "../../hooks/useAppData";
-import useColumns from "./const/columns";
+import useIncomeColumns from "./const/columns";
 import { useTable } from "react-table";
 import { BsEye } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { TableIncome } from "../../types/models";
 import { AiOutlineDelete } from "react-icons/ai";
 import DeleteModal from "../../components/deleteModal";
+import { StyledCard } from "../../components/styledDiv";
+import PrintButton from "../../components/printButton";
 
 type Action = "ADD" | "FILTER";
 
@@ -25,13 +27,16 @@ function Incomes() {
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE"
   >();
+
+  const myRef = useRef<HTMLDivElement | null>(null);
+
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
   }
 
   const { incomes, loadIncomes } = useAppData();
 
-  const columns = useColumns();
+  const columns = useIncomeColumns();
   const table = useTable({ data: incomes.data, columns });
 
   const actions = [
@@ -67,7 +72,10 @@ function Incomes() {
 
   return (
     <Wrapper>
-      <h4>INGRESOS</h4>
+      <div className="title-wIcon">
+        <h4>INGRESOS</h4>
+        <PrintButton componentRef={myRef} />
+      </div>
       <nav>
         {!activeAction && (
           <div
@@ -118,7 +126,7 @@ function Incomes() {
         />
       )}
 
-      <div className="table-wrapper">
+      <div ref={myRef} className="table-wrapper">
         <Table
           filters={filters}
           table={table}
@@ -131,9 +139,14 @@ function Incomes() {
   );
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled(StyledCard)`
   display: grid;
   overflow: hidden;
+
+  .title-wIcon {
+    display: flex;
+    justify-content: space-between;
+  }
 
   nav {
     height: 48px;

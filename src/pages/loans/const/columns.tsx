@@ -8,7 +8,7 @@ import {
   getCreditorName,
 } from "../../../utils/helper";
 
-function useColumns() {
+function useLoansColumns() {
   const columns = useMemo<Column<TableIncome>[]>(
     () => [
       {
@@ -64,4 +64,4 @@ function useColumns() {
   return columns;
 }
 
-export default useColumns;
+export default useLoansColumns;

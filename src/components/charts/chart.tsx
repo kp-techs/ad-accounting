@@ -1,7 +1,7 @@
 import { CChart } from '@coreui/react-chartjs'
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getHistoricChart, getTotalByMonth } from '../../hooks/useSupabase';
+import { getHistoricChart } from '../../hooks/useSupabase';
 
 function ChartGeneral() {
    const [data, setData] = useState<any>([])

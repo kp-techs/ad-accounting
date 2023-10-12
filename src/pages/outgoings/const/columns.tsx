@@ -8,7 +8,7 @@ import {
   formatMoney,
 } from "../../../utils/helper";
 
-function useColumns() {
+function useOutgoingsColumns() {
   const columns = useMemo<Column<TableOutgoing>[]>(
     () => [
       {
@@ -50,4 +50,4 @@ function useColumns() {
   return columns;
 }
 
-export default useColumns;
+export default useOutgoingsColumns;

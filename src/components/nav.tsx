@@ -1,21 +1,18 @@
 import styled from "styled-components"
 import EditProfileModal from "../pages/configuration/components/userOptionsModal";
-import useToggle from "../hooks/useToggle";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { FiEdit } from "react-icons/fi";
-import { HiChevronUp, HiChevronDown } from "react-icons/hi";
 import UserInformation from "../pages/configuration/components/userInformation";
 import { MdLogout } from "react-icons/md";
-import { IoClose } from "react-icons/io5";
 import { CiMenuBurger } from "react-icons/ci";
 import { useSupabase } from "../hooks/useSupabase";
-import { CAvatar, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from "@coreui/react";
+import { CAvatar } from "@coreui/react";
 import useAppData from "../hooks/useAppData";
 import { useEffect, useState } from "react";
 import {
    getLAvatar
 } from "../utils/helper";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
    togglePanel: () => void;
@@ -23,7 +20,6 @@ type Props = {
 
 
 function Nav({ togglePanel }: Props) {
-   const navigate = useNavigate();
    const [isModalOpen, setModalOpen] = useState<"EDIT">();
    const { supabase } = useSupabase();
    const { profile } = useAppData();

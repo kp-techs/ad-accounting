@@ -6,7 +6,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 
 import useAppData from "../../../hooks/useAppData";
 import { TableOutgoing } from "../../../types/models";
-import useColumns from "../const/columns";
+import useOutgoingsColumns from "../const/columns";
 import DeleteModal from "../../../components/deleteModal";
 import DetailsModal from "./detailsModal";
 import Table from "../../../components/table";
@@ -19,7 +19,7 @@ type Props = {
 
 function OutgoingsTable({ filters, isLoanVersion = false }: Props) {
   const { outgoings, loadOuts } = useAppData();
-  const columns = useColumns();
+  const columns = useOutgoingsColumns();
 
   const table = useTable({ data: outgoings.data, columns });
 

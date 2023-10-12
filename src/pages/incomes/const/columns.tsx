@@ -7,7 +7,7 @@ import {
   generateConcept,
 } from "../../../utils/helper";
 
-function useColumns() {
+function useIncomeColumns() {
   const columns = useMemo<Column<TableIncome>[]>(
     () => [
       {
@@ -39,4 +39,4 @@ function useColumns() {
   return columns;
 }
 
-export default useColumns;
+export default useIncomeColumns;

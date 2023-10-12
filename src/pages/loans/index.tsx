@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa";
 import FilterSection from "./components/loansFilter";
 import { MdAttachMoney } from "react-icons/md";
 import IncomesModal from "../incomes/components/incomeModal";
 import OutsModal from "../outgoings/components/outsModal";
 import useAppData from "../../hooks/useAppData";
-import useColumns from "./const/columns";
+import useLoansColumns from "./const/columns";
 import { useTable } from "react-table";
 import Table from "../../components/table";
 import { BsEye } from "react-icons/bs";
@@ -16,6 +16,8 @@ import LoanPaymentsModal from "./components/paymentTableModal";
 import DeleteModal from "../../components/deleteModal";
 import { TableIncome } from "../../types/models";
 import { loansInitialFilterValues } from "./constant";
+import { StyledCard } from "../../components/styledDiv";
+import PrintButton from "../../components/printButton";
 
 type Action = "ADD" | "PAY" | "FILTER";
 
@@ -27,12 +29,14 @@ function Loans() {
     "SEE" | "EDIT/ADD" | "DELETE" | "PAY"
   >();
 
+  const myRef = useRef<HTMLDivElement | null>(null);
+  
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
   }
 
   const { loadLoans, loans } = useAppData();
-  const columns = useColumns();
+  const columns = useLoansColumns();
   const table = useTable({ data: loans.data, columns });
 
   const actions = [
@@ -72,7 +76,10 @@ function Loans() {
 
   return (
     <Wrapper>
-      <h4>PRESTAMOS</h4>
+      <div className="title-wIcon">
+        <h4>PRESTAMOS</h4>
+        <PrintButton componentRef={myRef} />
+      </div>
       <nav>
         {!activeAction && (
           <div
@@ -144,7 +151,7 @@ function Loans() {
         />
       )}
 
-      <div className="table-wrapper">
+      <div ref={myRef} className="table-wrapper">
         <Table
           table={table}
           filters={filters}
@@ -157,10 +164,13 @@ function Loans() {
   );
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled(StyledCard)`
   display: grid;
   overflow: hidden;
-
+  .title-wIcon {
+    display: flex;
+    justify-content: space-between;
+  }
   nav {
     height: 48px;
     display: flex;
