@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa";
 import FilterSection from "./components/loansFilter";
 import { MdAttachMoney } from "react-icons/md";
@@ -12,10 +12,12 @@ import Table from "../../components/table";
 import { BsEye } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
-import LoanPaymentsModal from "./components/paymentTableModal";
+import LoanPayments from "./components/paymentTableModal";
 import DeleteModal from "../../components/deleteModal";
 import { TableIncome } from "../../types/models";
 import { loansInitialFilterValues } from "./constant";
+import { StyledCard } from "../../components/styledComponents";
+import PrintButton from "../../components/printButton";
 
 type Action = "ADD" | "PAY" | "FILTER";
 
@@ -26,6 +28,13 @@ function Loans() {
   const [activeModal, setActiveModal] = useState<
     "SEE" | "EDIT/ADD" | "DELETE" | "PAY"
   >();
+  const [activeTable, setActiveTable] = useState<"LOANS" | "PAYMENTS">("LOANS");
+
+  useEffect(() => {
+    if (activeModal === "SEE") setActiveTable("PAYMENTS");
+  }, [activeModal]);
+
+  const myRef = useRef<HTMLDivElement | null>(null);
 
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
@@ -66,106 +75,121 @@ function Loans() {
     setActiveLoan(undefined);
   };
 
+  const closePayments = () => {
+    setActiveTable("LOANS");
+    closeModal();
+  };
+
   function onSucess() {
     loadLoans();
   }
 
   return (
     <Wrapper>
-      <h4>PRESTAMOS</h4>
-      <nav>
-        {!activeAction && (
-          <div
-            onClick={() => setActiveModal("EDIT/ADD")}
-            className={"button nav-button"}
-          >
-            <span>Nuevo</span>
-            <FaPlus size={18} />
+      {activeTable === "LOANS" ? (
+        <>
+          <div className="title-wIcon">
+            <h4>PRESTAMOS</h4>
+            <PrintButton componentRef={myRef} />
           </div>
-        )}
-        {!activeAction && (
-          <div
-            onClick={() => setActiveModal("PAY")}
-            className={"button nav-button"}
-          >
-            <span>Pagar</span>
-            <MdAttachMoney size={22} />
-          </div>
-        )}
-        {(activeAction === "FILTER" || !activeAction) && (
-          <div
-            onClick={() => toggleAction("FILTER")}
-            className={"button nav-button"}
-          >
-            <FaFilter size={18} />
-            <span>Filtrar </span>
-          </div>
-        )}
-      </nav>
+          <nav>
+            {!activeAction && (
+              <div
+                onClick={() => setActiveModal("EDIT/ADD")}
+                className={"button nav-button"}
+              >
+                <span>Nuevo</span>
+                <FaPlus size={18} />
+              </div>
+            )}
+            {!activeAction && (
+              <div
+                onClick={() => setActiveModal("PAY")}
+                className={"button nav-button"}
+              >
+                <span>Pagar</span>
+                <MdAttachMoney size={22} />
+              </div>
+            )}
+            {(activeAction === "FILTER" || !activeAction) && (
+              <div
+                onClick={() => toggleAction("FILTER")}
+                className={"button nav-button"}
+              >
+                <FaFilter size={18} />
+                <span>Filtrar </span>
+              </div>
+            )}
+          </nav>
 
-      <IncomesModal
-        isOpen={activeModal === "EDIT/ADD"}
-        onClose={closeModal}
-        isLoanVersion={true}
-        income={activeLoan}
-      />
+          <IncomesModal
+            isOpen={activeModal === "EDIT/ADD"}
+            onClose={closeModal}
+            isLoanVersion={true}
+            income={activeLoan}
+          />
 
-      <OutsModal
-        isOpen={activeModal === "PAY"}
-        onClose={closeModal}
-        isLoanVersion={true}
-      />
+          <OutsModal
+            isOpen={activeModal === "PAY"}
+            onClose={closeModal}
+            isLoanVersion={true}
+          />
 
+          <FilterSection
+            isActive={activeAction === "FILTER"}
+            onClose={() => setActiveAction(undefined)}
+            filters={filters}
+            setFilters={setFilters}
+          />
 
-      <FilterSection
-        isActive={activeAction === "FILTER"}
-        onClose={() => setActiveAction(undefined)}
-        filters={filters}
-        setFilters={setFilters}
-      />
+          {activeLoan && (
+            <DeleteModal
+              isOpen={activeModal === "DELETE"}
+              onClose={closeModal}
+              id={activeLoan.id}
+              tableName={"incomes"}
+              onSucess={onSucess}
+              message="Este préstamo se eliminará permanentemente, y consigo, todo pago que pueda existir asociado al mismo. Esta acción no se puede deshacer."
+            />
+          )}
 
-
-      {activeLoan && (
-        <DeleteModal
-          isOpen={activeModal === "DELETE"}
-          onClose={closeModal}
-          id={activeLoan.id}
-          tableName={"incomes"}
-          onSucess={onSucess}
-          message="Este préstamo se eliminará permanentemente, y consigo, todo pago que pueda existir asociado al mismo. Esta acción no se puede deshacer."
-        />
-      )}
-
-      {activeLoan && (
-        <LoanPaymentsModal
-          isOpen={activeModal === "SEE"}
-          onClose={closeModal}
-          income={activeLoan}
-        />
-      )}
-
-      <div className="table-wrapper">
-        <Table
-          table={table}
-          filters={filters}
-          loadData={loadLoans}
-          count={loans.count}
-          actions={actions}
-        />
-      </div>
+          {activeTable === "LOANS" && (
+            <div ref={myRef} className="table-wrapper">
+              <Table
+                table={table}
+                filters={filters}
+                loadData={loadLoans}
+                count={loans.count}
+                actions={actions}
+              />
+            </div>
+          )}
+        </>
+      ) : activeTable === "PAYMENTS" ? (
+        activeLoan && (
+          <LoanPayments
+            isOpen={activeTable === "PAYMENTS"}
+            onClose={closePayments}
+            income={activeLoan}
+          />
+        )
+      ) : null}
     </Wrapper>
   );
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled(StyledCard)`
   display: grid;
   overflow: hidden;
-
+  .title-wIcon {
+    display: flex;
+    justify-content: space-between;
+  }
   nav {
     height: 48px;
     display: flex;
     gap: 30px;
-    border-bottom:1px solid #000;
+    border-bottom: 1px solid #000;
     margin-bottom: 15px;
   }
   span {
@@ -201,18 +225,18 @@ const Wrapper = styled.section`
     }
   }
 
-
   .table-wrapper {
     overflow: hidden;
   }
 
-  @media only screen and (max-width:700px){  
+  @media only screen and (max-width: 700px) {
     h4 {
       font-size: 16px;
     }
-    span {font-size: 13px;}
-  } 
-  
+    span {
+      font-size: 13px;
+    }
+  }
 `;
 
 export default Loans;

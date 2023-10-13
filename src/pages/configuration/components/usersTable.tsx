@@ -53,7 +53,6 @@ function UsersTable() {
         user={currentUser}
         newValue={newValue}
       />
-      {users ? (
         <div className="table-container">
           <CTable {...getTableProps()}>
             <CTableHead color="secondary">
@@ -140,12 +139,10 @@ function UsersTable() {
               })}
             </CTableBody>
           </CTable>
-        </div>
-      ) : (
-        <div className="no-data">
+          <div className="no-data">
           <NoInfo />
         </div>
-      )}
+        </div>
       <footer>
         <div className="add-button" onClick={()=> setActiveModal('INVITE')}>
           {/* Este modal esta mal */}

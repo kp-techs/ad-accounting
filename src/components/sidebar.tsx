@@ -48,7 +48,6 @@ const Wrapper = styled.div`
    font-family: Poppins, Arial, Helvetica, sans-serif;
    border:1px solid #cdcdcd;
    background-color:#ffffff;
-   /* display: block; */
 
    .sidebar-brand {
       display: flex;

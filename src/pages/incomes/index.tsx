@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import IncomesModal from "./components/incomeModal";
 import DetailsModal from "./components/detailsModal";
 import { FaPlus, FaFilter } from "react-icons/fa";
@@ -14,24 +14,25 @@ import { FiEdit } from "react-icons/fi";
 import { TableIncome } from "../../types/models";
 import { AiOutlineDelete } from "react-icons/ai";
 import DeleteModal from "../../components/deleteModal";
+import { StyledCard } from "../../components/styledComponents";
+import PrintButton from "../../components/printButton";
 
 type Action = "ADD" | "FILTER";
 
 function Incomes() {
   const [activeAction, setActiveAction] = useState<Action>();
-  const [filters, setFilters] = useState<IncomesFilters>(filterInitialValues);
-
   const [activeIncome, setActiveIncome] = useState<TableIncome>();
-  const [activeModal, setActiveModal] = useState<
-    "SEE" | "EDIT/ADD" | "DELETE"
-  >();
+  const [filters, setFilters] = useState<IncomesFilters>(filterInitialValues);
+  const [activeModal, setActiveModal] = useState< "SEE" | "EDIT/ADD" | "DELETE" >();
+
+  const myRef = useRef<HTMLDivElement | null>(null);
+
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
   }
 
-  const { incomes, loadIncomes } = useAppData();
-
   const columns = useColumns();
+  const { incomes, loadIncomes } = useAppData();
   const table = useTable({ data: incomes.data, columns });
 
   const actions = [
@@ -67,7 +68,10 @@ function Incomes() {
 
   return (
     <Wrapper>
-      <h4>INGRESOS</h4>
+      <div className="title-wIcon">
+        <h4>INGRESOS</h4>
+        <PrintButton componentRef={myRef} />
+      </div>
       <nav>
         {!activeAction && (
           <div
@@ -88,65 +92,73 @@ function Incomes() {
           </div>
         )}
       </nav>
-
-      <FilterSection
-        isActive={activeAction === "FILTER"}
-        onClose={() => setActiveAction(undefined)}
-        filters={filters}
-        setFilters={setFilters}
-      />
-
-      <IncomesModal
-        isOpen={activeModal === "EDIT/ADD"}
-        onClose={closeModal}
-        income={activeIncome}
-      />
-
-      <DetailsModal
-        isOpen={activeModal === "SEE"}
-        onClose={closeModal}
-        income={activeIncome}
-      />
-
-      {activeIncome && (
-        <DeleteModal
-          isOpen={activeModal === "DELETE"}
-          onClose={closeModal}
-          id={activeIncome.id}
-          tableName={"incomes"}
-          onSucess={loadIncomes}
-        />
-      )}
-
-      <div className="table-wrapper">
-        <Table
+      <>
+        <FilterSection
+          isActive={activeAction === "FILTER"}
+          onClose={() => setActiveAction(undefined)}
           filters={filters}
-          table={table}
-          loadData={loadIncomes}
-          count={incomes.count}
-          actions={actions}
+          setFilters={setFilters}
         />
-      </div>
+
+        <IncomesModal
+          isOpen={activeModal === "EDIT/ADD"}
+          onClose={closeModal}
+          income={activeIncome}
+        />
+
+        <DetailsModal
+          isOpen={activeModal === "SEE"}
+          onClose={closeModal}
+          income={activeIncome}
+        />
+
+        {activeIncome && (
+          <DeleteModal
+            isOpen={activeModal === "DELETE"}
+            onClose={closeModal}
+            id={activeIncome.id}
+            tableName={"incomes"}
+            onSucess={loadIncomes}
+          />
+        )}
+
+        <div ref={myRef} className="table-wrapper">
+          <Table
+            filters={filters}
+            table={table}
+            loadData={loadIncomes}
+            count={incomes.count}
+            actions={actions}
+          />
+        </div>
+      </>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled(StyledCard)`
   display: grid;
   overflow: hidden;
+
+  .title-wIcon {
+    display: flex;
+    justify-content: space-between;
+  }
 
   nav {
     height: 48px;
     display: flex;
     gap: 30px;
-    border-bottom:1px solid #000;
+    border-bottom: 1px solid #000;
     margin-bottom: 15px;
   }
+
   span {
     font-family: "Poppins";
     font-size: 15px;
     text-align: center;
   }
+
   select {
     width: 500px;
     border-radius: 20px;
@@ -180,12 +192,15 @@ const Wrapper = styled.section`
     overflow: hidden;
   }
 
-  @media only screen and (max-width:700px){  
+  @media only screen and (max-width: 700px) {
     h4 {
       font-size: 16px;
     }
-    span {font-size: 13px;}
+    span {
+      font-size: 13px;
+    }
   }
+  
 `;
 
 export default Incomes;

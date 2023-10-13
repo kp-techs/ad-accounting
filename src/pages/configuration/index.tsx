@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import OptionsTable from "./components/optionsTable";
 import UsersTable from "./components/usersTable";
+import { StyledCard } from "../../components/styledComponents";
+
 
 type Props = {
 	table: string
@@ -24,7 +26,7 @@ function Configuration({ table }: Props) {
 	);
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled(StyledCard)`
 	display: grid;
 	box-sizing: border-box;
 	border-radius: 8px;
@@ -32,7 +34,6 @@ const Wrapper = styled.section`
 
 	.configuration-title {
 		border-bottom: 1px solid #000;
-		margin-bottom: 20px;
 	}
 `;
 

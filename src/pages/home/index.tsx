@@ -2,16 +2,15 @@ import styled from "styled-components";
 import { getTotalAmount } from "../../hooks/useSupabase";
 import { useEffect, useState } from "react";
 import { formatMoney } from "../../utils/helper";
-import useAppData from "../../hooks/useAppData";
 import { useNavigate } from "react-router-dom";
 import {GiPayMoney, GiReceiveMoney} from "react-icons/gi"
 import moment from "moment";
 import { BsBank } from "react-icons/bs";
 import { MdAttachMoney } from "react-icons/md";
-import ChartGeneral from "../../components/charts/chart";
+import LineChart from "../../components/charts/lineChart";
+import Card from "../../components/card";
 
 function Home() {
-  const { profile } = useAppData();
   const navigate = useNavigate();
   const [incomesAmount, setIncomesAmount] = useState<any>(0);
   const [outgoingsAmount, setOutgoingsAmount] = useState<any>(0);
@@ -39,12 +38,9 @@ function Home() {
     loan: formatMoney(loansAmount),
     balance: formatMoney(incomesAmount - outgoingsAmount)
   }
+
   return (
     <Wrapper>
-      <section className="top-container">
-        <p>¡Hola, {profile?.name || 'bienvenido devuelta'}!</p>
-        <div className="separation-line" />
-      </section>
       <section className="resumen">
         <div className="resumen-item shortcut" onClick={() => navigate('/ingresos')}>
           <div className="resumen-icon"><GiReceiveMoney color="white" size={42}/></div>
@@ -75,48 +71,25 @@ function Home() {
         </div>
         </div>
       </section>
-      <section className="chart-container">
-        <ChartGeneral/>
-      </section>
+      <Card title=""><LineChart /></Card>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.section`
 font-family: Poppins;
+padding: 0;
+display: grid;
+gap: 25px;
+width: 100%;
+overflow: hidden;
 
-.top-container {
-  p {
-    margin: 15px 0 0;
-  }
-  margin: 0 0 20px;
-  padding: 0 10px;
-}
-
-.separation-line{
-  border-bottom: 1px solid #0000004f;
-  margin:0;
-  padding: 0;
-}
-
-.chart-container {
-  margin:20px 0;
-  border-radius: 5px;
-  box-shadow: 0px 1px 5px 0px #00000024;
-  background-color: #ffffff;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  /* height: 300px; */
-  box-sizing: border-box;
-}
 	.resumen {
 		display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
     width: 100%;
+    height: 100%;
     
 		.resumen-item {
       display: grid;
@@ -182,10 +155,6 @@ font-family: Poppins;
     }
   }
 
-  .chart-container {
-    height: auto;
-  }
-  
 `;
 
 export default Home;

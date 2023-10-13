@@ -56,6 +56,12 @@ type PaymentsFilters = {
   endAmount: number | null;
 };
 
+type ReporteFilters = {
+  tables: string[]|null;
+  startDate: string | null;
+  endDate: string | null;
+}
+
 type Dataset = {
   month?: string[],
   amount: number[]

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AppProvider } from "./contexts/app";
 import { getTotalByMonth, useSupabase } from "./hooks/useSupabase";
 import Sidebar from "./components/sidebar";
@@ -13,6 +13,7 @@ function App() {
   const navigate = useNavigate();
   const { supabase } = useSupabase();
   const [isPanelOpen, togglePanel] = useToggle();
+  const location = useLocation();
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
@@ -23,10 +24,6 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(()=>{
-
-  })
-
   return (
     <AppProvider>
       <Wrapper>
@@ -36,9 +33,8 @@ function App() {
             <Nav togglePanel={togglePanel} />
 
             <main className="outlet-container">
-              <section className="outlet">
                 <Outlet />
-              </section>
+
             </main>
           </>
         </MainContent>
@@ -61,21 +57,14 @@ const Wrapper = styled.div`
     padding: 50px;
   }
 
-  .outlet{
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
-    border-radius: 10px;
-  }
-
   @media only screen and (max-width:700px){  
     display: flex;
 
       .outlet-container {
-        padding: 10px;
+        /* padding: 10px; */
 
         .outlet {
-          padding: 10px;
+          /* padding: 10px; */
         }
       }
   }

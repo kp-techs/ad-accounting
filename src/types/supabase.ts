@@ -296,8 +296,8 @@ export interface Database {
           table_name: string
         }
         Returns: {
-          month_date: string
-          month_total: number
+          month: string
+          amount: number
         }[]
       }
     }
@@ -309,4 +309,3 @@ export interface Database {
     }
   }
 }
-
