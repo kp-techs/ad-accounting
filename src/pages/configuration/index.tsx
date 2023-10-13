@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import OptionsTable from "./components/optionsTable";
 import UsersTable from "./components/usersTable";
-import { StyledCard } from "../../components/styledDiv";
+import { StyledCard } from "../../components/styledComponents";
 
 
 type Props = {

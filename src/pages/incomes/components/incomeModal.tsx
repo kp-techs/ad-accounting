@@ -66,7 +66,7 @@ const IncomesModal: FC<Props> = ({
                 return;
               }
 
-              if (values.type === incomeTypeID.loan) {
+              if (values.type === incomeTypeID.loan ||isLoanVersion) {
                 if (values.amount && income.paidAmount) values.currentDebt =
                   values.amount - income.paidAmount;
                 if (values.currentDebt) values.status = (values.currentDebt <= 0) ? 'Saldado' : 'Pendiente';

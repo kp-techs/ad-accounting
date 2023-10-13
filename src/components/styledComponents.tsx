@@ -28,6 +28,7 @@ export const StyledFilterSection = styled.section`
 	.container {
 		display: flex;
 		justify-content: space-between;
+		padding: 0;
 		box-sizing: border-box;
 		gap: 30px;
 	}

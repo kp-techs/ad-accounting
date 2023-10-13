@@ -60,6 +60,11 @@ export function getMonth (date: string | null){
   if (date) return capitalize(moment(date).format('MMMM'));
 }
 
+export function getMonthAndYear(date: Date) {
+  moment.locale("es");
+  if (date) return capitalize(moment(date).format('MMMM YYYY'));
+}
+
 export function formatDate(date: string | null) {
   if (date) return moment(date).format("DD [de] MMMM, YYYY");
   return "—";

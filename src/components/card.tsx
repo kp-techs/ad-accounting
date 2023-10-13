@@ -1,20 +1,21 @@
 import { BsCloudDownload } from "react-icons/bs";
 import styled from "styled-components"
-import { StyledCard } from "./styledDiv";
+import { StyledCard } from "./styledComponents";
 import PrintButton from "./printButton";
 import { LegacyRef, useRef } from "react";
 
 type Props = {
    title: string,
    children: JSX.Element,
+   className?:string,
 }
-function Card({ title, children }: Props) {
+function Card({ title, children,className }: Props) {
 
    const ref = useRef<HTMLDivElement | null>(null)
 
    return (
       <Wrapper>
-         <div className="card-top-container">
+         <div className={`card-top-container ${className}`}>
             <div>
                <h5>{title}</h5>
             </div>

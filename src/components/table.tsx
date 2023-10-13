@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { TableInstance } from "react-table";
 import { IconType } from "react-icons";
-
 import NoInfo from "./noInfo";
 import Pagination from "./pagination";
 import { CTable, CTableBody, CTableHead } from "@coreui/react";
@@ -31,7 +30,7 @@ function Table<T extends object, FT extends Filters>({
   actions,
 }: Props<T, FT>) {
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 15;
+  const pageSize = 10;
 
   useEffect(() => {
     loadData(currentPage, pageSize, filters);
@@ -43,7 +42,7 @@ function Table<T extends object, FT extends Filters>({
 
   return (
     <Wrapper>
-      {count ? (
+
         <div className="table-container">
           <CTable {...getTableProps()}>
             <CTableHead color="secondary">
@@ -91,12 +90,8 @@ function Table<T extends object, FT extends Filters>({
               })}
             </CTableBody>
           </CTable>
+          {count? null:(<NoInfo/>)}
         </div>
-      ) : (
-        <div className="no-data">
-          <NoInfo />
-        </div>
-      )}
 
       <div className="pagination-container">
         <Pagination
@@ -117,6 +112,14 @@ const Wrapper = styled.section`
 
   table {
     font-family: Poppins;
+    thead{
+      tr {
+        th {
+          min-width: 80px;
+          font-size: 14px;
+        }
+      }
+    }
   }
 
   .modifyButtons-container {

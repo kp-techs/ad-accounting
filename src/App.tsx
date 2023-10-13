@@ -61,10 +61,10 @@ const Wrapper = styled.div`
     display: flex;
 
       .outlet-container {
-        padding: 10px;
+        /* padding: 10px; */
 
         .outlet {
-          padding: 10px;
+          /* padding: 10px; */
         }
       }
   }

@@ -20,7 +20,7 @@ type Props = {
 
 
 function Nav({ togglePanel }: Props) {
-   const [isModalOpen, setModalOpen] = useState<"EDIT">();
+   const [isModalOpen, setModalOpen] = useState<"EDIT"|undefined>(undefined);
    const { supabase } = useSupabase();
    const { profile } = useAppData();
    const [avatar, setAvatarName] = useState('');
@@ -117,6 +117,7 @@ box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
    align-items: center;
    gap: 5px;
    padding: 3px;
+   cursor: pointer;
 }
    .option {
       height: 100%;

@@ -8,7 +8,7 @@ import {
   formatMoney,
 } from "../../../utils/helper";
 
-function useOutgoingsColumns() {
+function useColumns() {
   const columns = useMemo<Column<TableOutgoing>[]>(
     () => [
       {
@@ -50,4 +50,41 @@ function useOutgoingsColumns() {
   return columns;
 }
 
-export default useOutgoingsColumns;
+export function useOutgoingsColumns() {
+  const columns = useMemo<Column<TableOutgoing>[]>(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "date",
+        // @ts-ignore
+        Cell: ({ row }) => formatTableDate(row.original.date),
+      },
+      {
+        Header: "Cheque",
+        accessor: "checkNumber",
+      },
+      {
+        Header: "Beneficiario",
+        accessor: "beneficiaryID",
+        // @ts-ignore
+        Cell: ({ row }) => getBeneficiaryName(row.original),
+      },
+      {
+        Header: "Descripción",
+        accessor: "description",
+        // @ts-ignore
+        Cell: ({ row }) => getOutgoingDescription(row.original),
+      },
+      {
+        Header: "Monto",
+        accessor: "amount",
+        // @ts-ignore
+        Cell: ({ row }) => formatMoney(row.original.amount),
+      },
+    ],
+    []
+  );
+  return columns;
+}
+
+export default useColumns;

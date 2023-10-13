@@ -4,7 +4,7 @@ import SelectOptions from "../../../components/selectOptions";
 import { FastField, Field, Form, Formik } from "formik";
 import { outgoingsInitialValues } from "../constants";
 import { GrFormClose } from "react-icons/gr";
-import { StyledFilterSection } from "../../../components/styledDiv";
+import { StyledFilterSection } from "../../../components/styledComponents";
 
 type Props = {
   isActive: boolean;

@@ -7,7 +7,7 @@ type Props = {
 }
 
 function PrintButton({ componentRef }: Props) {
-   const handlePrint = useReactToPrint({ content: () => componentRef?.current, pageStyle: `padding: 10px` })
+   const handlePrint = useReactToPrint({ content: () => componentRef?.current, pageStyle: `padding: 10px`})
 
    return (
       <Wrapper onClick={handlePrint}>
@@ -18,7 +18,6 @@ function PrintButton({ componentRef }: Props) {
 }
 
 export default PrintButton;
-
 const Wrapper = styled.button`
    border: 0;
    background-color: #063970;
@@ -28,4 +27,13 @@ const Wrapper = styled.button`
    place-content: center;
    height: 40px;
    width: 40px;
+
+   @media print { 
+      html, body, table { 
+         height: initial !important; 
+         overflow: initial !important; 
+      }
+
+
+   }
 `

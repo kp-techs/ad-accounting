@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StyledCard, StyledFilterSection } from "../../../components/styledDiv";
+import { StyledCard, StyledFilterSection } from "../../../components/styledComponents";
 import { FastField, Field, Form, Formik } from "formik";
 import { initialValues } from "../constant";
 import SelectOptions from "./selectOptions";
@@ -58,7 +58,7 @@ function FilterSeccion({ filters, setFilters }: Props) {
 
                      </section>
                      <div className="buttons-container">
-                        <button type="submit">Aplicar</button>
+                        <button type="submit">Crear</button>
                         <button type="reset">Limpiar</button>
                      </div>
                   </Form>

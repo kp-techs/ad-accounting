@@ -5,7 +5,7 @@ import { outgoingsInitialValues } from "./constants";
 import OutsModal from "./components/outsModal";
 import FilterSection from "./components/filterSeccion";
 import OutgoingsTable from "./components/table";
-import { StyledCard } from "../../components/styledDiv";
+import { StyledCard } from "../../components/styledComponents";
 import PrintButton from "../../components/printButton";
 
 type Action = "ADD" | "FILTER";
