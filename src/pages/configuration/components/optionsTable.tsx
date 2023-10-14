@@ -8,6 +8,7 @@ import DeleteModal from "../../../components/deleteModal";
 import { AiOutlineDelete } from "react-icons/ai";
 import ModifyOptionModal from "./modifyOptionModal";
 import { FiEdit } from "react-icons/fi";
+import styled from "styled-components";
 
 type Props = {
   name: string;
@@ -66,7 +67,7 @@ function OptionsTable({ name }: Props) {
   ];
 
   return (
-    <>
+    <Wrapper>
       {activeOption && (
         <>
           <DeleteModal
@@ -92,8 +93,22 @@ function OptionsTable({ name }: Props) {
         count={data.count}
         actions={actions}
       />
-    </>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+    table {
+    font-family: Poppins;
+    thead{
+      tr {
+        th {
+          min-width: 270px;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+`
 
 export default OptionsTable;

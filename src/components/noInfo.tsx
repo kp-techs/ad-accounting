@@ -2,10 +2,9 @@ import { ImSad } from "react-icons/im";
 
 function NoInfo() {
   return (
-    <div className="noInfo">
+    <div style={{width:'100%'}} className="noInfo">
       <div>
-        <p>No hay registros disponibles</p>
-        <ImSad size={25} />
+        <p>No hay registros disponibles.</p>
       </div>
     </div>
   );

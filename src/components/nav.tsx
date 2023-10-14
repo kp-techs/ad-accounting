@@ -1,135 +1,130 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components"
+import EditProfileModal from "../pages/configuration/components/userOptionsModal";
+import { Menu, MenuItem } from "@szhsin/react-menu";
+import { FiEdit } from "react-icons/fi";
+import UserInformation from "../pages/configuration/components/userInformation";
+import { MdLogout } from "react-icons/md";
+import { CiMenuBurger } from "react-icons/ci";
+import { useSupabase } from "../hooks/useSupabase";
+import { CAvatar } from "@coreui/react";
 import useAppData from "../hooks/useAppData";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+   getLAvatar
+} from "../utils/helper";
+import { useNavigate } from "react-router-dom";
 
-function Nav() {
-	const location = useLocation();
-
-	const { profile } = useAppData();
-
-	useEffect(() => {}, [location]);
-
-	return (
-		<Wrapper>
-			<div className="link-container">
-				<Link to={`/incomes`}>Ingresos</Link>
-
-				<svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M0.5 32L25 0L47.5 32H0.5Z"
-						fill={`${location.pathname === "/incomes" ? "#7D7D7D" : "none"}`}
-						fill-opacity="0.2"
-					/>
-				</svg>
-			</div>
-			<div className="separation">
-				<div className="separate-line"></div>
-			</div>
-			<div className="link-container">
-				<Link to={`/outgoings`}>Egresos</Link>
-				<svg
-					width="48"
-					height="32"
-					viewBox="0 0 48 32"
-					fill={`${location.pathname === "/outgoings" ? "#7D7D7D" : "none"}`}
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<path d="M0.5 32L25 0L47.5 32H0.5Z" fill="#7d7d7d0" fill-opacity="0.2" />
-				</svg>
-			</div>
-
-			{/* <div className="separation">
-        <div className="separate-line"></div>
-      </div>
-      <div className="link-container">
-        <Link to={`/reportes`}>Reportes</Link>
-        <svg
-          width="48"
-          height="32"
-          viewBox="0 0 48 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0.5 32L25 0L47.5 32H0.5Z"
-            fill={`${location.pathname === "/reportes" ? "#7D7D7D" : "none"}`}
-            fill-opacity="0.2"
-          />
-        </svg>
-      </div> */}
-			<div className="separation">
-				<div className="separate-line"></div>
-			</div>
-			<div className="link-container">
-				<Link to={`/loans`}>Préstamos</Link>
-				<svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M0.5 32L25 0L47.5 32H0.5Z"
-						fill={`${location.pathname === "/loans" ? "#7D7D7D" : "none"}`}
-						fill-opacity="0.2"
-					/>
-				</svg>
-			</div>
-			{profile?.role === "Administrador" ? (
-				<>
-					<div className="separation">
-						<div className="separate-line"></div>
-					</div>
-					<div className="link-container">
-						<Link to={`/configuration`}>Configuración</Link>
-						<svg
-							width="48"
-							height="32"
-							viewBox="0 0 48 32"
-							fill={`${location.pathname === "/configuration" ? "#7D7D7D" : "none"}`}
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path d="M0.5 32L25 0L47.5 32H0.5Z" fill="#7d7d7d0" fill-opacity="0.2" />
-						</svg>
-					</div>
-				</>
-			) : null}
-		</Wrapper>
-	);
+type Props = {
+   togglePanel: () => void;
 }
 
-const Wrapper = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	box-sizing: border-box;
-	gap: 80px;
-	flex-direction: row;
-	height: 100%;
-	width: 100%;
-	margin: 0;
 
-	a {
-		font-size: 24px;
-		&:active {
-			color: #ffffff;
-			background-color: #273b6c55;
-			backdrop-filter: blur(40px);
-			border-radius: 20px;
-		}
-	}
-	.link-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		align-items: center;
-		height: 100%;
-	}
-	.separation {
-		padding-top: 20px;
-		height: 100%;
-		.separate-line {
-			border: 1px solid black;
-			height: 50px;
-		}
-	}
-`;
+function Nav({ togglePanel }: Props) {
+   const [isModalOpen, setModalOpen] = useState<"EDIT"|undefined>(undefined);
+   const { supabase } = useSupabase();
+   const { profile } = useAppData();
+   const [avatar, setAvatarName] = useState('');
+
+   useEffect(() => {
+      togglePanel();
+      setAvatarName(getLAvatar(profile?.name))
+   }, [])
+
+
+   return (
+      <Wrapper>
+         <EditProfileModal isOpen={isModalOpen === 'EDIT'} onClose={() => setModalOpen(undefined)} />
+          <div className="header-toggle" onClick={togglePanel}>
+            <CiMenuBurger size={25}/>
+         </div>
+        
+
+            <div className="header-options">
+               <div className="profile-menu option">
+                  <Menu
+                     menuButton={
+                        <CAvatar className="avatar" color="warning" textColor="white">{avatar}</CAvatar>
+                     }
+                  >
+                     <div className="profile-option-wrapper">
+                        <div className="profile-info">
+                           <UserInformation />
+                        </div>
+                        <MenuItem className="menu-item" onClick={() => setModalOpen('EDIT')
+                        }>
+                           <FiEdit />
+                           <div>Editar perfil </div>
+                        </MenuItem>
+                        <MenuItem
+                           className="menu-item"
+                           onClick={() => supabase.auth.signOut()}
+                        >
+                           <MdLogout />
+                           <div> Cerrar sesión</div>
+                        </MenuItem>
+                     </div>
+                  </Menu>
+               </div>
+
+            </div>
+
+      </Wrapper>
+   )
+}
+
+const Wrapper = styled.nav`
+   display: grid;
+   grid-template-columns: auto 1fr;
+   gap: 10px;
+    width: 100%;
+    height: 55px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+   border:1px solid #cdcdcd ;
+   border-left:0;
+   
+ .avatar {
+   cursor: pointer;
+ }
+   
+.header-toggle {
+   display: grid;
+   place-content: center;
+   cursor: pointer;
+   height: 100%;
+   padding: 10px;
+}
+
+.header-options {
+   height: 100%;
+   display: flex;
+   justify-content: right;
+   box-sizing: border-box;
+   gap: 10px;
+   margin: 0 25px;
+}
+
+.profile-option-wrapper {
+ background-color: #ffffff ; 
+box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
+ border-radius: 5px;
+ padding: 5px;
+}
+
+.menu-item {
+   text-decoration: none;
+   display: flex;
+   align-items: center;
+   gap: 5px;
+   padding: 3px;
+   cursor: pointer;
+}
+   .option {
+      height: 100%;
+      display: grid;
+      place-content: center;
+   }
+   `
 
 export default Nav;
+

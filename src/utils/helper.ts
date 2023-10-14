@@ -55,6 +55,15 @@ export function formatTableDate(date: string | null) {
     return momentDate.format("DD/MM/YY");
   }
 }
+export function getMonth (date: string | null){
+  moment.locale("es");
+  if (date) return capitalize(moment(date).format('MMMM'));
+}
+
+export function getMonthAndYear(date: Date) {
+  moment.locale("es");
+  if (date) return capitalize(moment(date).format('MMMM YYYY'));
+}
 
 export function formatDate(date: string | null) {
   if (date) return moment(date).format("DD [de] MMMM, YYYY");
@@ -236,3 +245,9 @@ export function getLoanFilterString({ ...filters }: LoansFilters) {
 export function getPaymentFilterString({ ...filters }: PaymentsFilters) {
   return [];
 }
+
+export function getLAvatar(name:any){
+return 'AS'
+}
+
+

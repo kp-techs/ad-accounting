@@ -1,10 +1,10 @@
-import Modal from "react-modal";
 import { FC } from "react";
 import { User } from "../../../types/models";
 import { useSupabase } from "../../../hooks/useSupabase";
 import styled from "styled-components";
 import useAppData from "../../../hooks/useAppData";
-import { customStyles } from "../../../utils/constants";
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
+
 
 type Props = {
   isOpen: boolean;
@@ -16,80 +16,81 @@ const DeleteUserModal: FC<Props> = ({ isOpen, onClose, user }) => {
   const { supabase } = useSupabase();
   const { loadUsers } = useAppData();
 
+
+
   async function deleteUser() {
     if (user) {
       await supabase.from("users").update({ active: false }).eq("id", user.id);
       await supabase.auth.admin.deleteUser(user.id);
       loadUsers();
       onClose();
-    }
+    } 
   }
 
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-    >
+    <CModal visible={isOpen} onClose={onClose}>
       <Wrapper>
-        <h3>¿Seguro que desea eliminar a {user?.name || "este usuario"}?</h3>
-        <p>
-          Este usuario se eliminará permanentemente. Esta acción no se puede
-          deshacer.
-        </p>
-        <div className="buttons-container">
-          <button className="cancel" onClick={onClose}>
-            Cancelar
-          </button>
-          <button onClick={deleteUser}>Confirmar</button>
-        </div>
+        <CModalHeader>
+          <CModalTitle>
+            ¡CUIDADO!
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <h1>¿Seguro que desea eliminar a {user?.name || "este usuario"}?</h1>
+          <p>
+            Este usuario se eliminará permanentemente. <br/> Esta acción no se puede
+            deshacer.
+          </p>
+        </CModalBody>
+        <CModalFooter>
+          <div className="buttons-container">
+            <CButton color="warning" size="sm" className="cancel" onClick={onClose}>
+              Cancelar
+            </CButton>
+            <CButton color="secondary" size="sm" onClick={deleteUser}>Confirmar</CButton>
+          </div>
+        </CModalFooter>
       </Wrapper>
-    </Modal>
+    </CModal>
   );
 };
 
 const Wrapper = styled.div`
-  width: 450px;
   text-align: center;
   margin: 10px;
+  font-family: Poppins, Arial, Helvetica, sans-serif;
 
-  h3 {
-    margin: 5px;
+  h1{
+    font-size: 18px;
   }
+  
   p {
+    font-size: 15px;
     margin: 0;
-    margin-bottom: 20px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
   }
 
   .buttons-container {
     display: flex;
-    justify-content: center;
-    grid-area: right;
-    gap: 15px;
+    height: 40px;
+    justify-content: end;
+  }
 
-    .cancel {
-      background-color: #273b6c;
-      color: #ffffff;
-      &:active {
-        color: #000000;
-      }
-    }
-    button {
-      width: 93px;
-      height: 30px;
-      text-align: center;
-      justify-content: center;
+  .cancel {
+    margin-right: 8px;
+  }
+
+  @media only screen and (max-width:700px){  
+    h1 {
       font-size: 14px;
-      box-sizing: border-box;
-      background-color: #eeeeee;
-      border-radius: 5px;
-      font-family: Poppins, Arial, Helvetica, sans-serif;
-      border: 0;
-      cursor: pointer;
-      &:active {
-        background-color: #f5f5f5ad;
-      }
+    }
+
+    p {
+      font-size: 13px;
+    }
+
+    button {
+      font-size: 13px;
     }
   }
 `;

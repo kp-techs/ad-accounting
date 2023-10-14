@@ -11,6 +11,7 @@ import {
 } from "../../../utils/helper";
 import { customStyles } from "../../../utils/constants";
 import { TableIncome } from "../../../types/models";
+import { CModal, CModalBody, CModalHeader, CModalTitle } from "@coreui/react";
 
 type Props = {
   isOpen: boolean;
@@ -20,18 +21,14 @@ type Props = {
 
 const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Modal para ver detalles"
-    >
+    <CModal visible={isOpen} onClose={onClose}>
       <Wrapper>
-        <div className="concept-container">
-          <h3>{capitalize(income.loanName || "")}</h3>
-        </div>
-
+        <CModalHeader>
+          <CModalTitle>
+          {capitalize(income.loanName || "")}
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
         <section className="side">
           <p className="title">Fecha</p>
           <p>{formatDate(income.date || "—")}</p>
@@ -79,12 +76,9 @@ const DetailsModal: FC<Props> = ({ isOpen, onClose, income }) => {
             </div>
           </section>
         )}
-
-        <button onClick={onClose}>
-          <GrClose />
-        </button>
+ </CModalBody>
       </Wrapper>
-    </Modal>
+    </CModal>
   );
 };
 

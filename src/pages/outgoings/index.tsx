@@ -1,16 +1,21 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FaPlus, FaFilter } from "react-icons/fa";
 import { outgoingsInitialValues } from "./constants";
 import OutsModal from "./components/outsModal";
 import FilterSection from "./components/filterSeccion";
 import OutgoingsTable from "./components/table";
+import { StyledCard } from "../../components/styledComponents";
+import PrintButton from "../../components/printButton";
 
 type Action = "ADD" | "FILTER";
 
 function Outgoings() {
   const [activeAction, setActiveAction] = useState<Action>();
   const [filters, setFilters] = useState(outgoingsInitialValues);
+  const [isModalActive, setActiveModal] = useState<'ADD'>();
+
+  const myRef = useRef<HTMLDivElement | null>(null);
 
   function toggleAction(action: Action) {
     setActiveAction(action === activeAction ? undefined : action);
@@ -18,10 +23,14 @@ function Outgoings() {
 
   return (
     <Wrapper>
+      <div className="title-wIcon">
+        <h4>EGRESOS</h4>
+        <PrintButton componentRef={myRef} />
+      </div>
       <nav>
         {(activeAction === "ADD" || !activeAction) && (
           <div
-            onClick={() => setActiveAction("ADD")}
+            onClick={() => setActiveModal("ADD")}
             className={"button nav-button"}
           >
             <FaPlus size={20} />
@@ -47,25 +56,37 @@ function Outgoings() {
       />
 
       <OutsModal
-        isOpen={activeAction === "ADD"}
-        onClose={() => toggleAction("ADD")}
+        isOpen={isModalActive === "ADD"}
+        onClose={() => setActiveModal(undefined)}
       />
 
-      <div className="table-wrapper">
+      <div ref={myRef} className="table-wrapper">
         <OutgoingsTable filters={filters} />
       </div>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled(StyledCard)`
   display: grid;
   overflow: hidden;
 
+  .title-wIcon {
+    display: flex;
+    justify-content: space-between;
+  }
+  
   nav {
     height: 48px;
     display: flex;
     gap: 30px;
+    border-bottom:1px solid #000;
+    margin-bottom: 15px;
+  }
+  span {
+    font-family: "Poppins";
+    font-size: 15px;
+    text-align: center;
   }
   select {
     width: 500px;
@@ -93,15 +114,18 @@ const Wrapper = styled.section`
       border-radius: 5px;
     }
   }
-  span {
-    font-family: "Poppins";
-    font-size: 18px;
-    text-align: center;
-  }
+
 
   .table-wrapper {
     overflow: hidden;
   }
+
+  @media only screen and (max-width:700px){  
+    h4 {
+      font-size: 16px;
+    }
+    span {font-size: 13px;}
+  } 
 `;
 
 export default Outgoings;

@@ -2,13 +2,15 @@ import styled from "styled-components";
 import { getTotalAmount } from "../../hooks/useSupabase";
 import { useEffect, useState } from "react";
 import { formatMoney } from "../../utils/helper";
-import useAppData from "../../hooks/useAppData";
 import { useNavigate } from "react-router-dom";
-import MyStockChart from "../../components/charts/lineChart";
+import {GiPayMoney, GiReceiveMoney} from "react-icons/gi"
 import moment from "moment";
+import { BsBank } from "react-icons/bs";
+import { MdAttachMoney } from "react-icons/md";
+import LineChart from "../../components/charts/lineChart";
+import Card from "../../components/card";
 
 function Home() {
-  const { profile } = useAppData();
   const navigate = useNavigate();
   const [incomesAmount, setIncomesAmount] = useState<any>(0);
   const [outgoingsAmount, setOutgoingsAmount] = useState<any>(0);
@@ -36,91 +38,123 @@ function Home() {
     loan: formatMoney(loansAmount),
     balance: formatMoney(incomesAmount - outgoingsAmount)
   }
+
   return (
     <Wrapper>
-      <section className="top-container">
-        <p>¡Hola, {profile?.name || 'bienvenido devuelta'}!</p>
-        <div className="separation-line" />
-      </section>
       <section className="resumen">
-        <div className="shortcut" onClick={() => navigate('/incomes')}>
+        <div className="resumen-item shortcut" onClick={() => navigate('/ingresos')}>
+          <div className="resumen-icon"><GiReceiveMoney color="white" size={42}/></div>
+          <div className="resumen-detail">
           <p className="title">INGRESOS</p>
           <p>{totalValues.income}</p>
+          </div>
         </div>
-        <div className="shortcut" onClick={() => navigate('/outgoings')}>
-          <p className="title">EGRESOS</p>
+        <div className="resumen-item shortcut" onClick={() => navigate('/egresos')}>
+        <div className="resumen-icon"><GiPayMoney color='white' size={45} /></div>
+          <div className="resumen-detail">
+        <p className="title">EGRESOS</p>
           <p>{totalValues.outgoing}</p>
         </div>
-        <div className="shortcut" onClick={() => navigate('/loans')}>
-          <p className="title">PRESTAMOS</p>
+        </div>
+        <div className="resumen-item shortcut" onClick={() => navigate('/prestamos')}>
+        <div className="resumen-icon"><BsBank size={37} color="white"/></div> 
+          <div className="resumen-detail">
+        <p className="title">PRESTAMOS</p>
           <p>{totalValues.loan}</p>
         </div>
-        <div>
+        </div>
+        <div className="resumen-item">
+        <div className="resumen-icon"><MdAttachMoney color="white" size={45}/></div>
+          <div className="resumen-detail">
           <p className="title">BALANCE</p>
           <p>{totalValues.balance}</p>
         </div>
+        </div>
       </section>
-      <section className="chart-container">
-        <p>Las gráficas aún no están disponibles.</p>
-      </section>
+      <Card title=""><LineChart /></Card>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.section`
 font-family: Poppins;
+padding: 0;
+display: grid;
+gap: 25px;
+width: 100%;
+overflow: hidden;
 
-.top-container {
-  p {
-    margin: 15px 0 0;
-  }
-  margin: 0 0 20px;
-  padding: 0 10px;
-}
-
-.separation-line{
-  border-bottom: 1px solid #0000004f;
-  margin:0;
-  padding: 0;
-}
-
-.chart-container {
-  margin:20px 0;
-  border-radius: 5px;
-  box-shadow: 0px 1px 5px 0px #00000024;
-  background-color: #ffffff;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  box-sizing: border-box;
-}
 	.resumen {
 		display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
+    width: 100%;
+    height: 100%;
     
-		
-		div {
-			background-color: #ffffffb2;
-      padding: 10px 20px;
+		.resumen-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      background-color: #ffffffb2;
+      width: 100%;
       border-radius: 5px;
       box-shadow: 0px 1px 5px 0px #00000024;
+      gap: 10px;
 
-      .title {
-        font-size: 12px;
-        font-weight: normal;
+      .resumen-icon {
+        display: grid;
+        place-content: center;
+        background-color: #063970;
+        height: 90px;
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px 0 0 5px;
       }
-      p {
-        margin: 0;
-        font-size: 16px;
-        font-weight: bold;
+      .resumen-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .title {
+          font-size: 12px;
+          font-weight: normal;
+        }
+        p {
+          margin: 0;
+          font-size: 16px;
+          font-weight: bold;
+        }
       }
-		}
+    }
     .shortcut {
       cursor: pointer
     }
 	}
+
+  @media screen and (min-width: 1160px) and (max-width: 1605px) {
+    .resumen {
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+  }
+
+  @media only screen and (max-width:700px){
+    p {
+      font-size: 12px;
+    }
+    .resumen {      
+      div {
+        .title {
+          font-size: 10px;
+          font-weight: normal;
+        }
+
+        p {
+          margin: 0;
+          font-size: 12px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
 `;
 
 export default Home;
