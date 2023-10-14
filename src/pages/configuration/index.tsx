@@ -3,10 +3,10 @@ import OptionsTable from "./components/optionsTable";
 import UsersTable from "./components/usersTable";
 import { StyledCard } from "../../components/styledComponents";
 
-
 type Props = {
 	table: string
 }
+
 function Configuration({ table }: Props) {
 	return (
 		<Wrapper>
